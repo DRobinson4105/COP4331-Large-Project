@@ -1,0 +1,15 @@
+swagger: '2.0'
+info:
+  title: NomNomNetwork App
+  description: This is the API documentation for the Glasses8P App, including user signup/login, profile, recipe, and tag management.
+  version: 1.0.0
+  contact:
+    email: drobinson@ucf.edu
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+host: nomnom.network
+basePath: /api
+schemes:
+- http
