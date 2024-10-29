@@ -1,0 +1,57 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model recipe {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  desc     String
+  body     String
+  image    BinData
+  author   account      @relation(fields: [authorId], references: [id])
+  authorId String    @db.ObjectId
+  instructions String[]
+  ingredients ingredient[]
+  tags tag[]
+  comments Comment[]
+}
+
+model account {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String   @unique
+  name    String?
+  username String  @unique
+  image    BinData
+  desc    String
+  recipesId  String[]     @db.ObjectId
+  filters   filter[]
+}
+
+model Comment {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  comment String
+  post    Post   @relation(fields: [postId], references: [id])
+  postId  String @db.ObjectId
+}
+
+type filter {
+    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    tags tag []
+    name String
+}
+
+type ingredient {
+    id   String @id @defualt(auto()) @map("_id") @db.ObjectId
+    name String
+}
+
+type tag {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    name String
+    color String
+}
