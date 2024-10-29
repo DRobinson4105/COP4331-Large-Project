@@ -13,6 +13,7 @@ model recipe {
   desc     String
   body     String
   image    BinData
+  macroTrack   macros
   author   account      @relation(fields: [authorId], references: [id])
   authorId String    @db.ObjectId
   instructions String[]
@@ -50,8 +51,14 @@ type ingredient {
     name String
 }
 
-type tag {
+model tag {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     name String
     color String
+}
+
+type macros {
+  macroName String
+  amount    Double
+  measurement String
 }
