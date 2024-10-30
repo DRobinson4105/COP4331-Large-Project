@@ -11,54 +11,35 @@ model recipe {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   desc     String
-  body     String
   image    BinData
-  macroTrack   macros
-  author   account      @relation(fields: [authorId], references: [id])
+  macroTrack   Double[]
   authorId String    @db.ObjectId
   instructions String[]
-  ingredients ingredient[]
-  tags tag[]
-  comments Comment[]
+  ingredients String[]
+  tagId String[]
 }
 
 model account {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email   String   @unique
-  name    String?
+  name    String
   username String  @unique
   image    BinData
   desc    String
   recipesId  String[]     @db.ObjectId
-  filters   filter[]
+  filterId String[]
+  password String
+  googleId String
 }
 
-model Comment {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  comment String
-  post    Post   @relation(fields: [postId], references: [id])
-  postId  String @db.ObjectId
-}
-
-type filter {
+model filter {
     id    String @id @default(auto()) @map("_id") @db.ObjectId
-    tags tag []
-    name String
-}
-
-type ingredient {
-    id   String @id @defualt(auto()) @map("_id") @db.ObjectId
-    name String
+    tagId String[]
+    macros Double[]
 }
 
 model tag {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     name String
     color String
-}
-
-type macros {
-  macroName String
-  amount    Double
-  measurement String
 }
