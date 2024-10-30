@@ -13,11 +13,12 @@ const PORT = process.env.PORT || 3000;
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
+import {PrismaClient} from '@prisma/client'
 
 
 //Connect to database
 const client = new MongoClient(process.env.DATABASE_URL);
-client.connect();
+const prisma = new PrismaClient() 
 
 const app = express();
 app.use(cors());
@@ -86,13 +87,14 @@ app.post('/api/login', async (req, res, next) => {
     catch (e) {
         return res.status(500).send('Server Error');
     }
+    //return res.status(200).send('Login');
 
 });
 
 //Signup
 app.post('/api/signup', async (req, res, next) => {
     //incoming username, display name, password, googleID, email
-    const { username, displayName, password, googleID, email } = req.body;
+    //const { username, displayName, password, googleID, email } = req.body;
 
     //If any missing, return 204
     if (username == null || displayName == null || password == null || googleID == null || email == null) {
@@ -128,74 +130,21 @@ app.post('/api/signup', async (req, res, next) => {
         const db = client.db();
         const result = db.collection('Users').insertOne(newUser);
         return res.status(200).send(result);
+
+        await prisma.account.create({
+            data:{
+                email: email,
+                name: displayName,
+                username: username,
+                password: password,
+                googleId: googleID,
+                image: profilePic,
+                desc: description
+            }
+        })
     }
     catch (e) {
         error = e.toString();
         return res.status(500).send('Server error');
     }
 });
-
-//GetProfile
-app.post('/api/getProfile', async(req, res, next) =>{
-    
-})
-
-
-
-
-//UpdateProfile
-
-
-
-
-
-//DeleteProfile
-
-
-
-
-//Search Profile
-
-
-
-
-
-
-//Search Tag
-
-
-
-
-
-//CreateTag
-
-
-
-
-
-//Get Macros
-
-
-
-
-
-//Create Recipe
-
-
-
-
-
-//Update Recipe
-
-
-
-//Delete Recipe
-
-
-
-
-
-//Generate PDF
-
-
-
