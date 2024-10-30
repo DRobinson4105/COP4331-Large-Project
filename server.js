@@ -17,6 +17,7 @@ import path from 'path';
 
 //Connect to database
 const client = new MongoClient(process.env.DATABASE_URL);
+client.connect();
 
 const app = express();
 app.use(cors());
@@ -85,7 +86,6 @@ app.post('/api/login', async (req, res, next) => {
     catch (e) {
         return res.status(500).send('Server Error');
     }
-    //return res.status(200).send('Login');
 
 });
 
@@ -134,3 +134,68 @@ app.post('/api/signup', async (req, res, next) => {
         return res.status(500).send('Server error');
     }
 });
+
+//GetProfile
+app.post('/api/getProfile', async(req, res, next) =>{
+    
+})
+
+
+
+
+//UpdateProfile
+
+
+
+
+
+//DeleteProfile
+
+
+
+
+//Search Profile
+
+
+
+
+
+
+//Search Tag
+
+
+
+
+
+//CreateTag
+
+
+
+
+
+//Get Macros
+
+
+
+
+
+//Create Recipe
+
+
+
+
+
+//Update Recipe
+
+
+
+//Delete Recipe
+
+
+
+
+
+//Generate PDF
+
+
+
