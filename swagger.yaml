@@ -9,6 +9,67 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
+paths:
+  /signup:
+    post:
+      tags:
+      - Users
+      summary: Signs up for an account for the NomNom App
+      operationId: doSignUp
+      description: Signs up for an account for the NomNom App
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: signUpItem
+        description: signUp
+        schema:
+          $ref: '#defintions/SignUp'
+      responses:
+        200:
+          description: OK
+        204:
+          description: No Content
+        400:
+          description: Invalid Input
+        404:
+          description: URL Not Found
+        409:
+          description: Account with provided username or email already exists
+        500:
+          description: Server Error
+  
+  /login:
+    post:
+      tags:
+      - Users
+      summary: Checks the inputted user information to see if it matches an account in the system and returns ID
+      operationId: doLogin
+      description: Matches input with an existing account and returns ID
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: loginItem
+        description: login
+        schema:
+          $ref: '#defintions/Login'
+        200:
+          description: Login Successful
+        204:
+          description: No Content
+        400:
+          description: Invalid Input (Username/Password Do Not Match)
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+
+
 host: nomnom.network
 basePath: /api
 schemes:
