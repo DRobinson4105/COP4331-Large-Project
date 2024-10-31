@@ -164,10 +164,9 @@ app.post('/api/signup', async (req, res, next) => {
 app.post('/api/getProfile', async(req, res, next) =>{
    
     const {id, temp} = req.body;
-    console.log("id: " + id + " id2: " + temp + "\n");
     
     const user = await prisma.account.findFirst({
-        where: { id: '6723f60a1367f3592b28b760' }
+        where: { id: id }
     })
     return user;
 })
