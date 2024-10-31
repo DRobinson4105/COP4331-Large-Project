@@ -10,7 +10,7 @@ dotenv.config({ path: '../../.env' })
 
 import express from 'express';
 import { MongoClient } from 'mongodb';
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.VITE_PORT || 3000;
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
@@ -19,12 +19,12 @@ import {PrismaClient} from '@prisma/client'
 
 //Connect to database
 const client = new MongoClient(process.env.DATABASE_URL);
-const prisma = new PrismaClient(process.env.DATABASE_URL) 
+//const prisma = new PrismaClient(process.env.DATABASE_URL) 
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.set('port', (process.env.PORT || PORT));
+app.set('port', (PORT));
 
 
 app.use((req, res, next) => {
@@ -55,6 +55,10 @@ app.use(express.json());
 //API Calls***************************************************************************************
 //Login
 //Login
+app.get('/status', async (req, res, next) =>{
+    return res.status(200).send('Server is On\n');
+})
+
 app.post('/api/login', async (req, res, next) => {
 
     // incoming: username, password
@@ -68,7 +72,7 @@ app.post('/api/login', async (req, res, next) => {
         
         const er = {error: 'No Content'};
         console.log(er);
-        return res.status(204).json('No Content');
+        return res.status(204).json(er);
     }
     //Search database for users with username and password. If so, return UserID
     // try {
@@ -128,7 +132,7 @@ app.post('/api/signup', async (req, res, next) => {
     //     return res.status(500).send('Server Error');
     // }
 
-    const newUser = { UserName: username, DisplayName: displayName, Password: password, GoogleID: googleID, Email: email };
+    const newUser = { UserName: username, DisplayName: display_name, Password: password, GoogleID: googleID, Email: email };
     //Create user in database & return UserID
     // try {
     //     const db = client.db();
