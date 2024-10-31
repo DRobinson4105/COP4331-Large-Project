@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../../.env' })
 
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient , ObjectId } from 'mongodb';
 const PORT = process.env.VITE_PORT || 3000;
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -172,16 +172,83 @@ app.post('/api/signup', async (req, res, next) => {
 // //GetProfile
 app.post('/api/getProfile', async(req, res, next) =>{
    
-    const {id} = req.body;
-    console.log(id+"\n");
-    const user = await prisma.account.findMany({
-        where: { email: "testme@test.com" }
-    })
-    return user;
+    var error = ''
+  const { userId } = req.body
+  const input = req.body
+
+  //If any missing, return 204
+  if (userId == null) {
+    const er = { error: 'No Content' }
+    console.log(er)
+    return res.status(204).json(er)
+  }
+  //Search database for users with username and password. If so, return UserID
+  try {
+    await client.connect()
+    const db = client.db('COP4331LargeProjectDatabase');
+    const collection = db.collection('account');
+    var tempId = new ObjectId(userId);
+    const cursor = collection.find({_id:tempId});
+    //const cursor = collection.find({});
+    const result = await cursor.toArray();
+
+    if (result.length > 0) {
+      var ret = {   
+                name: result[0].name, 
+                desc: result[0].desc,
+                image: result[0].image,
+                username: result[0].username,
+                recipesId: result[0].recipesId,
+                filterId: result[0].filterId,
+                }
+      return res.status(200).json(ret)
+    }
+  } finally {
+    await client.close()
+  }
+  return res.status(409).send('Username or Password Wrong')
 })
 
 
 // //UpdateProfile
+app.post('/api/updateProfile', async(req, res, next) =>{
+   
+    var error = ''
+  const { userId, username, name, image, desc } = req.body
+  const input = req.body
+
+  //If any missing, return 204
+  if (userId == null) {
+    const er = { error: 'No ID' }
+    console.log(er)
+    return res.status(204).json(er)
+  }
+  //Search database for users with username and password. If so, return UserID
+  try {
+    await client.connect()
+    const db = client.db('COP4331LargeProjectDatabase');
+    const collection = db.collection('account');
+    var tempId = new ObjectId(userId);
+    const cursor = collection.update({_id:tempId}, );
+    //const cursor = collection.find({});
+    const result = await cursor.toArray();
+
+    if (result.length > 0) {
+      var ret = {   
+                name: result[0].name, 
+                desc: result[0].desc,
+                image: result[0].image,
+                username: result[0].username,
+                recipesId: result[0].recipesId,
+                filterId: result[0].filterId,
+                }
+      return res.status(200).json(ret)
+    }
+  } finally {
+    await client.close()
+  }
+  return res.status(409).send('Username or Password Wrong')
+})
 
 // //DeleteProfile
 

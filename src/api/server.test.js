@@ -13,7 +13,7 @@ test('create account for database', async () => {
         data: {
             email: "testme@test.com",
             name: 'Billy Bob Joe',
-            username: 'The "Creature"',
+            username: 'The Creature',
             password: 'BIG EATER',
             desc: 'I CONSUME the EARTH and all of its inhabitants',
         },
