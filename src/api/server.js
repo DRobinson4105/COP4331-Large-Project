@@ -6,6 +6,7 @@ dotenv.config();
 //const path = require('path');
 
 
+dotenv.config({ path: '../../.env' })
 
 import express from 'express';
 import { MongoClient } from 'mongodb';
@@ -18,7 +19,7 @@ import {PrismaClient} from '@prisma/client'
 
 //Connect to database
 const client = new MongoClient(process.env.DATABASE_URL);
-const prisma = new PrismaClient() 
+const prisma = new PrismaClient(process.env.DATABASE_URL) 
 
 const app = express();
 app.use(cors());
@@ -53,98 +54,131 @@ app.use(express.json());
 
 //API Calls***************************************************************************************
 //Login
+//Login
 app.post('/api/login', async (req, res, next) => {
 
     // incoming: username, password
     // outgoing: id, error
     var error = '';
-    const { username, password } = req.body;
+    const { username, password, email, googleID} = req.body;
+    const input = req.body;
 
     //If any missing, return 204
-    if (username == null || password == null) {
+    if (username == null || password == null || email == null || googleID == null) {
         
         const er = {error: 'No Content'};
         console.log(er);
         return res.status(204).json('No Content');
     }
     //Search database for users with username and password. If so, return UserID
-    try {
-        const db = client.db();
-        const results = await
-            db.collection('Users').find({ Login: username, Password: password }).toArray();
-        var id = -1;
-        var fn = '';
-        var ln = '';
-        if (results.length > 0) {
-            id = results[0].UserId;
-            var ret = { UserID: id, error: '' };
-            return res.status(200).json(ret);
-        }
-        //If not, return 400 error stating either username or password is wrong
-        return res.status(400).json('Username or Password Is Wrong');
+    // try {
+    //     const db = client.db();
+    //     const results = await
+    //         db.collection('Users').find({ Login: username, Password: password }).toArray();
+    //     var id = -1;
+    //     var fn = '';
+    //     var ln = '';
+    //     if (results.length > 0) {
+    //         id = results[0].UserId;
+    //         var ret = { UserID: id, error: '' };
+    //         return res.status(200).json(ret);
+    //     }
+    //     //If not, return 400 error stating either username or password is wrong
+    //     return res.status(400).json('Username or Password Is Wrong');
 
-    }
-    catch (e) {
-        return res.status(500).send('Server Error');
-    }
-    //return res.status(200).send('Login');
+    // }
+    // catch (e) {
+    //     return res.status(500).send('Server Error');
+    // }
+    return res.status(200).send(input);
 
 });
 
 //Signup
 app.post('/api/signup', async (req, res, next) => {
     //incoming username, display name, password, googleID, email
-    //const { username, displayName, password, googleID, email } = req.body;
+    const { username, display_name, password, googleID, email } = req.body;
+    const input = req.body;
 
     //If any missing, return 204
-    if (username == null || displayName == null || password == null || googleID == null || email == null) {
+    if (username == null || display_name == null || password == null || googleID == null || email == null) {
         const er = {error: 'No Content'};
         console.log(er);
         return res.status(204).send('No Content');
     }
 
     //Search for any users with the same username or email
-    try {
-        const db = client.db();
-        const results = await
-            db.collection('Users').find({ UserName: username }).toArray();
-        var id = -1;
-        var fn = '';
-        var ln = '';
-        if (results.length > 0) {
-            return res.status(409).json('Account with provided username already exists');
-        }
-        results = await
-            db.collection('Users').find({ Email: email }).toArray();
-        if (results.length > 0) {
-            return res.status(409).json('Account with provided email already exists');
-        }
-    }
-    catch (e) {
-        return res.status(500).send('Server Error');
-    }
+    // try {
+    //     const db = client.db();
+    //     const results = await
+    //         db.collection('Users').find({ UserName: username }).toArray();
+    //     var id = -1;
+    //     var fn = '';
+    //     var ln = '';
+    //     if (results.length > 0) {
+    //         return res.status(409).json('Account with provided username already exists');
+    //     }
+    //     results = await
+    //         db.collection('Users').find({ Email: email }).toArray();
+    //     if (results.length > 0) {
+    //         return res.status(409).json('Account with provided email already exists');
+    //     }
+    // }
+    // catch (e) {
+    //     return res.status(500).send('Server Error');
+    // }
 
     const newUser = { UserName: username, DisplayName: displayName, Password: password, GoogleID: googleID, Email: email };
     //Create user in database & return UserID
-    try {
-        const db = client.db();
-        const result = db.collection('Users').insertOne(newUser);
-        return res.status(200).send(result);
+    // try {
+    //     const db = client.db();
+    //     const result = db.collection('Users').insertOne(newUser);
+    //     return res.status(200).send(result);
 
-        await prisma.account.create({
-            data:{
-                email: email,
-                name: displayName,
-                username: username,
-                password: password,
-                googleId: googleID,
-                image: profilePic,
-                desc: description
-            }
-        })
-    }
-    catch (e) {
-        error = e.toString();
-        return res.status(500).send('Server error');
-    }
+    //     await prisma.account.create({
+    //         data:{
+    //             email: email,
+    //             name: displayName,
+    //             username: username,
+    //             password: password,
+    //             googleId: googleID,
+    //             image: profilePic,
+    //             desc: description
+    //         }
+    //     })
+    // }
+    // catch (e) {
+    //     error = e.toString();
+    //     return res.status(500).send('Server error');
+    // }
+
+    return res.status(200).send(input);
 });
+
+
+// //GetProfile
+// app.post('/api/getProfile', async(req, res, next) =>{
+    
+// })
+
+
+
+// //UpdateProfile
+
+// //DeleteProfile
+
+// //Search Profile
+
+// //Search Tag
+
+// //CreateTag
+
+// //Get Macros
+
+// //Create Recipe
+
+// //Update Recipe
+
+// //Delete Recipe
+
+// //Generate PDF
