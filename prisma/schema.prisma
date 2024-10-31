@@ -11,8 +11,8 @@ model recipe {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   desc     String
-  image    BinData
-  macroTrack   Double[]
+  image    Bytes
+  macroTrack   Float[]
   authorId String    @db.ObjectId
   instructions String[]
   ingredients String[]
@@ -24,18 +24,18 @@ model account {
   email   String   @unique
   name    String
   username String  @unique
-  image    BinData
+  image    Bytes?
   desc    String
   recipesId  String[]     @db.ObjectId
-  filterId String[] @db.ObjectId
-  password String
-  googleId String
+  filterId String[]  @db.ObjectId
+  password String?
+  googleId String?
 }
 
 model filter {
     id    String @id @default(auto()) @map("_id") @db.ObjectId
     tagId String[] @db.ObjectId
-    macros Double[]
+    macros Float[]
 }
 
 model tag {
