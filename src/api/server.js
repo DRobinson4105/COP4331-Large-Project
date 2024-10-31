@@ -1,7 +1,7 @@
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 //const express = require('express');//Enables express
 //const bodyParser = require('body-parser');//Body parser for incoming request. May not be needed
-//const cors = require('cors');//Enables CORS secuirty handleing 
+//const cors = require('cors');//Enables CORS secuirty handleing
 //const path = require('path');
 
 dotenv.config({ path: '../../.env' })
@@ -16,7 +16,7 @@ import {PrismaClient} from '@prisma/client'
 const prisma = new PrismaClient()
 
 //Connect to database
-const client = new MongoClient(process.env.DATABASE_URL);
+const client = new MongoClient(process.env.DATABASE_URL)
 // const prisma = new PrismaClient(process.env.DATABASE_URL)
 
 const app = express()
@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log('Server listening on port ' + PORT + '\n');
+  console.log('Server listening on port ' + PORT + '\n')
   // console.log('Database_URL: ' + process.env.DATABASE_URL + '\n');
 })
 
@@ -74,11 +74,11 @@ app.post('/api/login', async (req, res, next) => {
   //Search database for users with username and password. If so, return UserID
   try {
     await client.connect()
-    const db = client.db('COP4331LargeProjectDatabase');
-    const collection = db.collection('account');
-    const cursor = collection.find({username:username, password:password});
+    const db = client.db('COP4331LargeProjectDatabase')
+    const collection = db.collection('account')
+    const cursor = collection.find({ username: username, password: password })
     // const cursor = collection.find({});
-    const result = await cursor.toArray();
+    const result = await cursor.toArray()
 
     if (result.length > 0) {
       const id = result[0]._id
@@ -94,27 +94,6 @@ app.post('/api/login', async (req, res, next) => {
 //Signup
 app.post('/api/signup', async (req, res, next) => {
   //Create user in database & return UserID
-  // try {
-  //     const db = client.db();
-  //     const result = db.collection('Users').insertOne(newUser);
-  //     return res.status(200).send(result);
-
-  //     await prisma.account.create({
-  //         data:{
-  //             email: email,
-  //             name: displayName,
-  //             username: username,
-  //             password: password,
-  //             googleId: googleID,
-  //             image: profilePic,
-  //             desc: description
-  //         }
-  //     })
-  // }
-  // catch (e) {
-  //     error = e.toString();
-  //     return res.status(500).send('Server error');
-  // }
 
   //incoming username, display name, password, googleID, email
   const { username, display_name, password, googleID, email } = req.body
@@ -145,7 +124,7 @@ app.post('/api/signup', async (req, res, next) => {
 
     const db = client.db('COP4331LargeProjectDatabase')
     const collection = db.collection('account')
-    const cursor = collection.find({username:username})
+    const cursor = collection.find({ username: username })
     const result = await cursor.toArray()
     if (result.length > 0) {
       return res.status(409).json('Account Exists')
@@ -158,7 +137,7 @@ app.post('/api/signup', async (req, res, next) => {
     await client.connect()
     const db = client.db('COP4331LargeProjectDatabase')
     const collection = db.collection('account')
-   
+
     const result = await collection.insertOne(newUser)
     const id = result.insertedId
     console.log(id)
@@ -267,3 +246,176 @@ app.post('/api/updateProfile', async(req, res, next) =>{
 // //Delete Recipe
 
 // //Generate PDF
+
+// //UpdateProfile (Bobby)
+
+// //DeleteProfile (Bobby)
+
+// //Search Profile (Bobby)
+
+// //Search Tag (Fred)
+app.post('/api/searchTag', async (req, res, next) => {
+  // incoming: username, password
+  // outgoing: id, error
+  const { name, color } = req.body
+
+  //If any missing, return 204
+  if (name == null && color == null) {
+    const er = { error: 'No Content' }
+    console.log(er)
+    return res.status(204).json(er)
+  }
+  //Search database for users with username and password. If so, return UserID
+  try {
+    await client.connect()
+    const db = client.db('COP4331LargeProjectDatabase')
+    const collection = db.collection('tag')
+    const cursor = collection.find({ color: color }, { name: name })
+    if (name == null) {
+      //Search for tagId
+      const cursor = collection.find({ color: color })
+      const result = await cursor.toArray()
+      //Use tagId to search recipes and retunr array of recipes
+      const collection2 = db.collection('recipe')
+      const cursor2 = collection2.find({ tagId: result[0]._id })
+      result2 = await cursor2.toArray()
+      return res.status(200).json(result2)
+    } else if (color == null) {
+      //Search for tagId
+      const cursor = collection.find({ name: name })
+      const result = await cursor.toArray()
+      //Use tagId to search recipes and retunr array of recipes
+      const collection2 = db.collection('recipe')
+      const cursor2 = collection2.find({ tagId: result[0]._id })
+      result2 = await cursor2.toArray()
+      return res.status(200).json(result2)
+    } else {
+      //Search for tagId
+      const cursor = collection.find({ color: color }, { name: name })
+      const result = await cursor.toArray()
+      //Use tagId to search recipes and retunr array of recipes
+      const collection2 = db.collection('recipe')
+      const cursor2 = collection2.find({ tagId: result[0]._id })
+      result2 = await cursor2.toArray()
+      return res.status(200).json(result2)
+    }
+  } finally {
+    await client.close()
+  }
+  return res.status(409).send('')
+})
+
+// //CreateTag (Fred)
+app.post('/api/createTag', async (req, res, next) => {
+  //Create tag in database and return nothing
+
+  //incoming username, display name, password, googleID, email
+  const { name, color } = req.body
+  const input = req.body
+
+  //If any missing, return 204
+  if (name == null && color == null) {
+    const er = { error: 'No Content' }
+    console.log(er)
+    return res.status(204).send('No Content')
+  }
+
+  const newTag = {
+    name: name,
+    color: color
+  }
+
+  try {
+    await client.connect()
+
+    const db = client.db('COP4331LargeProjectDatabase')
+    const collection = db.collection('tag')
+    const cursor = collection.find({ color: color }, { name: name })
+    const result = await cursor.toArray()
+    if (result.length > 0) {
+      return res.status(409).json('Tag Exists')
+    }
+  } finally {
+    await client.close()
+  }
+
+  try {
+    await client.connect()
+    const db = client.db('COP4331LargeProjectDatabase')
+    const collection = db.collection('tag')
+
+    const result = await collection.insertOne(newTag)
+    const id = result.insertedId
+    console.log(id)
+    var ret = { tagId: id, error: '' }
+    //return res.status(200).json(ret)
+    return res.status(200)
+  } finally {
+    client.close()
+  }
+})
+// //Get Macros (Bobby)
+
+// //Create Recipe (Fred)
+app.post('/api/createRecipe', async (req, res, next) => {
+  //Create recipe in database and return recipeId.
+
+  //incoming username, display name, password, googleID, email
+  const {
+    name,
+    desc,
+    image,
+    macroTrack,
+    authorId,
+    instructions,
+    ingredients,
+    tagId
+  } = req.body
+  const input = req.body
+
+  //If any missing, return 204
+  if (name == null || authorId == null) {
+    const er = { error: 'No Content' }
+    console.log(er)
+    return res.status(204).send('No Content')
+  }
+
+  const newTag = {
+    name: name,
+    color: color
+  }
+
+  try {
+    await client.connect()
+
+    const db = client.db('COP4331LargeProjectDatabase')
+    const collection = db.collection('tag')
+    const cursor = collection.find({ color: color }, { name: name })
+    const result = await cursor.toArray()
+    if (result.length > 0) {
+      return res.status(409).json('Tag Exists')
+    }
+  } finally {
+    await client.close()
+  }
+
+  try {
+    await client.connect()
+    const db = client.db('COP4331LargeProjectDatabase')
+    const collection = db.collection('tag')
+
+    const result = await collection.insertOne(newTag)
+    const id = result.insertedId
+    console.log(id)
+    var ret = { tagId: id, error: '' }
+    //return res.status(200).json(ret)
+    return res.status(200)
+  } finally {
+    client.close()
+  }
+})
+// //Update Recipe (Fred)
+
+// //Delete Recipe (Fred)
+
+// //Generate PDF (Bobby)
