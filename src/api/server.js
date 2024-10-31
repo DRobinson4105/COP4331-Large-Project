@@ -15,7 +15,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
 import {PrismaClient} from '@prisma/client'
-
+const prisma = new PrismaClient()
 
 //Connect to database
 const client = new MongoClient(process.env.DATABASE_URL);
@@ -161,10 +161,16 @@ app.post('/api/signup', async (req, res, next) => {
 
 
 // //GetProfile
-// app.post('/api/getProfile', async(req, res, next) =>{
+app.post('/api/getProfile', async(req, res, next) =>{
+   
+    const {id, temp} = req.body;
+    console.log("id: " + id + " id2: " + temp + "\n");
     
-// })
-
+    const user = await prisma.account.findFirst({
+        where: { id: '6723f60a1367f3592b28b760' }
+    })
+    return user;
+})
 
 
 // //UpdateProfile
