@@ -25,7 +25,7 @@ model account {
   name    String
   username String  @unique
   image    Bytes?
-  desc    String
+  desc    String?
   recipesId  String[]     @db.ObjectId
   filterId String[]  @db.ObjectId
   password String?
