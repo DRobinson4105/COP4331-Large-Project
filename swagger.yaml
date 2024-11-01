@@ -10,7 +10,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
 paths:
-  /user/signup:
+  /signup:
     post:
       tags:
       - account
@@ -26,7 +26,7 @@ paths:
         name: signUpItem
         description: signUp
         schema:
-          $ref: '#defintions/SignUp'
+          $ref: '#defintions/user/signUp'
       responses:
         200:
           description: OK
@@ -41,7 +41,7 @@ paths:
         500:
           description: Server Error
   
-  /user/login:
+  /login:
     post:
       tags:
       - account
@@ -57,21 +57,21 @@ paths:
         name: loginItem
         description: login
         schema:
-          $ref: '#defintions/Login'
+          $ref: '#defintions/user/login'
         200:
           description: Login Successful
         204:
           description: No Content
         400:
           description: Invalid Input
-        401:
+        400:
           description: Incorrect Input (Username/Password Incorrect)
         404:
           description: URL Not Found
         500:
           description: Server Error
       
-  /recipe/create:
+  /createRecipe:
     post:
       tags:
       - recipe
@@ -84,20 +84,20 @@ paths:
       - application/json
       parameters:
       - in: body
-        name: createRecipeItem
-        description: createRecipe
-        schema:
-          $ref: '#definitions/CreateRecipe'
-          200:
-            description: Create Recipe Successful
-          204:
-            description: No Content
-          400:
-            description: Invalid Input (Missing Inputs)
-          404:
-            description: URL Not Found
-          500:
-            description: Server Error
+      name: createRecipeItem
+      description: createRecipe
+      schema:
+        $ref: '#definitions/recipe/create
+        200:
+          description: Create Recipe Successful
+        204:
+          description: No Content
+        400:
+          description: Invalid Input (Missing Inputs)
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
 
 
 
