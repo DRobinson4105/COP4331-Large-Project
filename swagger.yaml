@@ -10,7 +10,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
 paths:
-  /signup:
+  /user/signup:
     post:
       tags:
       - account
@@ -41,7 +41,7 @@ paths:
         500:
           description: Server Error
   
-  /login:
+  /user/login:
     post:
       tags:
       - account
@@ -71,7 +71,7 @@ paths:
         500:
           description: Server Error
       
-  /createRecipe:
+  /recipe/create:
     post:
       tags:
       - recipe
@@ -84,20 +84,20 @@ paths:
       - application/json
       parameters:
       - in: body
-      name: createRecipeItem
-      description: createRecipe
-      schema:
-        $ref: '#definitions/CreateRecipe'
-        200:
-          description: Create Recipe Successful
-        204:
-          description: No Content
-        400:
-          description: Invalid Input (Missing Inputs)
-        404:
-          description: URL Not Found
-        500:
-          description: Server Error
+        name: createRecipeItem
+        description: createRecipe
+        schema:
+          $ref: '#definitions/CreateRecipe'
+          200:
+            description: Create Recipe Successful
+          204:
+            description: No Content
+          400:
+            description: Invalid Input (Missing Inputs)
+          404:
+            description: URL Not Found
+          500:
+            description: Server Error
 
 
 
