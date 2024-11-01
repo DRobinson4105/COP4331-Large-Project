@@ -32,21 +32,84 @@ app.get('/', (req, res) => {
   	res.send('Server Is Ready')
 })
 
-app.listen(PORT, () => {
-  	console.log('Server listening on port ' + PORT + '\n')
-})
-
 app.use(express.json())
 
 app.get('/status', async (req, res, next) => {
   return res.status(200).send('Server is On\n')
 })
 
-app.post('/api/login', async (req, res, next) => {
+app.post('/user/signup', async (req, res, next) => {
+	const { username, displayName, password, googleId, email } = req.body
+
+	if (
+		(username && typeof username !== 'string') ||
+		(displayName && typeof displayName !== 'string') ||
+		(password && typeof password !== 'string') ||
+		(email && typeof email !== 'string') ||
+		(googleId && typeof googleId !== 'string')
+	) {
+		return res.status(400).json({
+			error: 'Each argument must be a string'
+		})
+	}
+
+	if (
+		username == null || displayName == null || email == null ||
+		(googleId == null && password == null)
+	) {
+		return res.status(400).json({
+			error: 'Missing argument (requires username, email, displayName, and either googleId or password)'
+		})
+	}
+
+	let user = await prisma.account.findFirst({
+		where: { username },
+		select: { id: true }
+	})
+
+	if (user != null) {
+		return res.status(409).json({ error: 'Username is taken' })
+	}
+
+	user = await prisma.account.findFirst({
+		where: { email },
+		select: { id: true }
+	})
+
+	if (user != null) {
+		return res.status(409).json({ error: 'Account with email exists' })
+	}
+
+	user = await prisma.account.create({
+		data: {
+			username: username,
+			name: displayName,
+			email: email,
+			...(password ? { password } : {}),
+			...(googleId ? { googleId } : {}),
+		}
+	})
+
+	let ret = { userId: user.id, error: '' }
+	return res.status(201).json(ret)
+})
+
+app.post('/user/login', async (req, res, next) => {
 	const { username, password, email, googleId } = req.body
 
+	if (
+		(username && typeof username !== 'string') ||
+		(password && typeof password !== 'string') ||
+		(email && typeof email !== 'string') ||
+		(googleId && typeof googleId !== 'string')
+	) {
+		return res.status(400).json({
+			error: 'username, password, email, and googleId must be a string'
+		})
+	}
+
 	if ((username == null && email == null) || (googleId == null && password == null)) {
-		return res.status(200).json({
+		return res.status(400).json({
 			error: 'Missing argument (requires either username or email, and either googleId or password)'
 		})
 	}
@@ -62,56 +125,58 @@ app.post('/api/login', async (req, res, next) => {
 	})
 
 	if (user == null) {
-		return res.status(200).json({ error: 'Incorrect Username or Password' })
+		return res.status(401).json({ error: 'Incorrect Username or Password' })
 	}
 
-	let ret = { UserID: user.id, error: '' }
+	let ret = { userId: user.id, error: '' }
 	return res.status(200).json(ret)
 })
 
-app.post('/api/signup', async (req, res, next) => {
-	const { username, display_name, password, googleId, email } = req.body
+app.post('/recipe/create', async (req, res, next) => {
+//   //Create recipe in database and return recipeId.
 
-	if (
-		username == null || display_name == null || email == null ||
-		(googleId == null && password == null)
-	) {
-		return res.status(200).json({
-			error: 'Missing argument (requires username, email, display_name, and either googleId or password)'
-		})
+//   //incoming name, desc, image, macroTrack, authorId, instructions, ingredients, tagId
+	const {
+	name,
+	desc,
+	image,
+	macroTrack,
+	authorId,
+	instructions,
+	ingredients,
+	tagId
+	} = req.body
+
+
+//   //If any missing, return error
+	if (name == null || desc == null || image == null || macroTrack == null || authorId == null || instructions == null || ingredients == null) {
+		error: 'Missing argument (requires username, email, display_name, and either googleID or password)'
 	}
 
-	let user = await prisma.account.findFirst({
-		where: { username },
-		select: { id: true }
-	})
-
-	if (user != null) {
-		return res.status(200).json({ error: 'Username is taken' })
-	}
-
-	user = await prisma.account.findFirst({
-		where: { email },
-		select: { id: true }
-	})
-
-	if (user != null) {
-		return res.status(200).json({ error: 'Account with email exists' })
-	}
-
-	user = await prisma.account.create({
-		data: {
-			username: username,
-			name: display_name,
-			email: email,
-			...(password ? { password } : {}),
-			...(googleId ? { googleId } : {}),
+	let recipe = await prisma.recipe.create({
+		data:{
+			name: name,
+			desc: desc,
+			image :image,
+			macroTrack: macroTrack,
+			authorId: authorId,
+			...(instructions ? {instructions} : {}),
+			...(ingredients ? {ingredients} : {}),
+			...(tagId ? { tagId } : {})
 		}
 	})
 
-	let ret = { UserID: user.id, error: '' }
+	let ret = {recipeId: recipe.id, error: ''}
 	return res.status(200).json(ret)
 })
+
+module.exports = app
+
+if (require.main === module) {
+	app.listen(PORT, () => {
+		  console.log('Server listening on port ' + PORT + '\n')
+	})
+}
 
 // // //GetProfile
 // app.post('/api/getProfile', async(req, res, next) =>{
@@ -329,43 +394,63 @@ app.post('/api/signup', async (req, res, next) => {
 // // //Get Macros (Bobby)
 
 // // //Create Recipe (Fred)
-app.post('/api/createRecipe', async (req, res, next) => {
+// app.post('/api/createRecipe', async (req, res, next) => {
 //   //Create recipe in database and return recipeId.
 
-//   //incoming name, desc, image, macroTrack, authorId, instructions, ingredients, tagId
-  const {
-    name,
-    desc,
-    image,
-    macroTrack,
-    authorId,
-    instructions,
-    ingredients,
-    tagId
-  } = req.body
+//   //incoming username, display name, password, googleID, email
+//   const {
+//     name,
+//     desc,
+//     image,
+//     macroTrack,
+//     authorId,
+//     instructions,
+//     ingredients,
+//     tagId
+//   } = req.body
+//   const input = req.body
 
+//   //If any missing, return 204
+//   if (name == null || authorId == null) {
+//     const er = { error: 'No Content' }
+//     console.log(er)
+//     return res.status(204).send('No Content')
+//   }
 
-//   //If any missing, return error
-	if (name == null || desc == null || image == null || macroTrack == null || authorId == null || instructions == null || ingredients == null) {
-		error: 'Missing argument (requires username, email, display_name, and either googleID or password)'
-	}
+//   const newTag = {
+//     name: name,
+//     color: color
+//   }
 
-	let recipe = await prisma.recipe.create({
-		data:{
-			name: name,
-			desc: desc,
-			image :image,
-			macroTrack: macroTrack,
-			authorId: authorId,
-			...(instructions ? {instructions} : {}),
-			...(ingredients ? {ingredients} : {}),
-			...(tagId ? { tagId } : {})
-		}
-	})
+//   try {
+//     await client.connect()
 
-	let ret = {recipeId: recipe.id, error: ''}
-	return res.status(200).json(ret)
-})
+//     const db = client.db('COP4331LargeProjectDatabase')
+//     const collection = db.collection('tag')
+//     const cursor = collection.find({ color: color }, { name: name })
+//     const result = await cursor.toArray()
+//     if (result.length > 0) {
+//       return res.status(409).json('Tag Exists')
+//     }
+//   } finally {
+//     await client.close()
+//   }
+
+//   try {
+//     await client.connect()
+//     const db = client.db('COP4331LargeProjectDatabase')
+//     const collection = db.collection('tag')
+
+//     const result = await collection.insertOne(newTag)
+//     const id = result.insertedId
+//     console.log(id)
+//     var ret = { tagId: id, error: '' }
+//     //return res.status(200).json(ret)
+//     return res.status(200)
+//   } finally {
+//     client.close()
+//   }
+// })
 // // //Update Recipe (Fred)
 
 // // //Delete Recipe (Fred)
