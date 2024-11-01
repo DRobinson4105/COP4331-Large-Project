@@ -193,6 +193,6 @@ definitions:
 
 
 host: nomnom.network
-basePath: /api
+basePath: /src
 schemes:
 - http
