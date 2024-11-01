@@ -43,11 +43,11 @@ app.get('/status', async (req, res, next) => {
 })
 
 app.post('/api/login', async (req, res, next) => {
-	const { username, password, email, googleID } = req.body
+	const { username, password, email, googleId } = req.body
 
-	if ((username == null && email == null) || (googleID == null && password == null)) {
+	if ((username == null && email == null) || (googleId == null && password == null)) {
 		return res.status(200).json({
-			error: 'Missing argument (requires either username or email, and either googleID or password)'
+			error: 'Missing argument (requires either username or email, and either googleId or password)'
 		})
 	}
 
@@ -56,7 +56,7 @@ app.post('/api/login', async (req, res, next) => {
 			...(username ? { username } : {}),
 			...(email ? { email } : {}),
 			...(password ? { password } : {}),
-			...(googleID ? { googleID } : {}),
+			...(googleId ? { googleId } : {}),
 		},
 		select: { id: true }
 	})
@@ -70,14 +70,14 @@ app.post('/api/login', async (req, res, next) => {
 })
 
 app.post('/api/signup', async (req, res, next) => {
-	const { username, display_name, password, googleID, email } = req.body
+	const { username, display_name, password, googleId, email } = req.body
 
 	if (
 		username == null || display_name == null || email == null ||
-		(googleID == null && password == null)
+		(googleId == null && password == null)
 	) {
 		return res.status(200).json({
-			error: 'Missing argument (requires username, email, display_name, and either googleID or password)'
+			error: 'Missing argument (requires username, email, display_name, and either googleId or password)'
 		})
 	}
 
@@ -105,7 +105,7 @@ app.post('/api/signup', async (req, res, next) => {
 			name: display_name,
 			email: email,
 			...(password ? { password } : {}),
-			...(googleID ? { googleID } : {}),
+			...(googleId ? { googleId } : {}),
 		}
 	})
 
