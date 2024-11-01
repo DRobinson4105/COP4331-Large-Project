@@ -10,7 +10,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
 paths:
-  /signup:
+  /user/signup:
     post:
       tags:
       - account
@@ -26,7 +26,7 @@ paths:
         name: signUpItem
         description: signUp
         schema:
-          $ref: '#defintions/user/signUp'
+          $ref: '#/definitions/SignUp'
       responses:
         200:
           description: OK
@@ -41,7 +41,7 @@ paths:
         500:
           description: Server Error
   
-  /login:
+  /user/login:
     post:
       tags:
       - account
@@ -57,26 +57,25 @@ paths:
         name: loginItem
         description: login
         schema:
-          $ref: '#defintions/user/login'
+          $ref: '#/definitions/Login'
+      responses:
         200:
           description: Login Successful
         204:
           description: No Content
         400:
           description: Invalid Input
-        400:
-          description: Incorrect Input (Username/Password Incorrect)
         404:
           description: URL Not Found
         500:
           description: Server Error
       
-  /createRecipe:
+  /recipe/create:
     post:
       tags:
       - recipe
-      summary: Creates a recipe using inputted info and returns the recipeId.
-      operation: doCreateRecipe
+      summary: Creates a recipe using (name, desc, image, macroTrack, authorId, instructions, ingredients, tagId) and returns the recipeId.
+      operationId: doCreateRecipe
       description: Creates a recipe using inputted info and returns the recipeId.
       consumes:
       - application/json
@@ -84,21 +83,113 @@ paths:
       - application/json
       parameters:
       - in: body
-      name: createRecipeItem
-      description: createRecipe
-      schema:
-        $ref: '#definitions/recipe/create
-        200:
-          description: Create Recipe Successful
-        204:
-          description: No Content
-        400:
-          description: Invalid Input (Missing Inputs)
-        404:
-          description: URL Not Found
-        500:
-          description: Server Error
+        name: createRecipeItem
+        description: createRecipe
+        schema:
+          $ref: '#/definitions/CreateRecipe'
+      responses:
+          200:
+            description: Create Recipe Successful
+          204:
+            description: No Content
+          400:
+            description: Invalid Input (Missing Inputs)
+          404:
+            description: URL Not Found
+          500:
+            description: Server Error
 
+definitions:
+  Login:
+    type: object
+    required:
+    - username
+    - password
+    - email
+    - googleId
+    properties:
+      username:
+        type: string
+        example: "LebronJ"
+      password:
+        type: string
+        example: "Cleveland"
+      email:
+        type: string
+        example: "nba@nba.com"
+      googleId:
+        type: string
+        example: "67252a9906b07a7478339fe9"
+  
+  SignUp:
+    type: object
+    required:
+    - username
+    - displayName
+    - password
+    - email
+    - googleId
+    properties:
+      username:
+        type: string
+        example: "LebronJ"
+      displayName:
+        type: string
+        example: "KingJames"
+      password:
+        type: string
+        example: "Cleveland"
+      email:
+        type: string
+        example: "nba@nba.com"
+      googleId:
+        type: string
+        example: "67252a9906b07a7478339fe9"
+  
+  CreateRecipe:
+    type: object
+    required:
+    - name
+    - desc
+    - image
+    - macroTrack
+    - authorId
+    - instructions
+    - ingredients
+    - tagId
+    properties:
+      name:
+        type: string
+        example: "Green Eggs"
+      desc:
+        type: string
+        example: "Cat & The Hat"
+      image:
+        type: string
+        example: "L1VzZXJzL2ZyZWRyaWNrYm91bG91dGUvRG9jdW1lbnRzL0dpdEh1Yi9DT1A0MzMxLUxhcmdlLVByb2plY3Qvc3JjL19fdGVzdHNfXy9fdGVzdFBob3RvLmpwZw=="
+      macroTrack: 
+        type: array
+        items:
+          type: number
+        example: [120.0, 120.0, 120.0, 120.0]
+      authorId:
+        type: string
+        example: "67252a9906b07a7478339fe9"
+      instructions:
+        type: array
+        items: 
+          type: string
+        example: ["Cooked the food"]
+      ingredients:
+        type: array
+        items:
+          type: string
+        example: ["Eggs"]
+      tagId: 
+        type: array
+        items:
+          type: string
+        example: ["67252a9906b07a7478339fe9"]
 
 
 host: nomnom.network
