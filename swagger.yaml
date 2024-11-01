@@ -10,7 +10,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
 paths:
-  /signup:
+  /user/signup:
     post:
       tags:
       - Users
@@ -41,7 +41,7 @@ paths:
         500:
           description: Server Error
   
-  /login:
+  /user/login:
     post:
       tags:
       - Users
