@@ -329,63 +329,43 @@ app.post('/api/signup', async (req, res, next) => {
 // // //Get Macros (Bobby)
 
 // // //Create Recipe (Fred)
-// app.post('/api/createRecipe', async (req, res, next) => {
+app.post('/api/createRecipe', async (req, res, next) => {
 //   //Create recipe in database and return recipeId.
 
-//   //incoming username, display name, password, googleID, email
-//   const {
-//     name,
-//     desc,
-//     image,
-//     macroTrack,
-//     authorId,
-//     instructions,
-//     ingredients,
-//     tagId
-//   } = req.body
-//   const input = req.body
+//   //incoming name, desc, image, macroTrack, authorId, instructions, ingredients, tagId
+  const {
+    name,
+    desc,
+    image,
+    macroTrack,
+    authorId,
+    instructions,
+    ingredients,
+    tagId
+  } = req.body
 
-//   //If any missing, return 204
-//   if (name == null || authorId == null) {
-//     const er = { error: 'No Content' }
-//     console.log(er)
-//     return res.status(204).send('No Content')
-//   }
 
-//   const newTag = {
-//     name: name,
-//     color: color
-//   }
+//   //If any missing, return error
+	if (name == null || desc == null || image == null || macroTrack == null || authorId == null || instructions == null || ingredients == null) {
+		error: 'Missing argument (requires username, email, display_name, and either googleID or password)'
+	}
 
-//   try {
-//     await client.connect()
+	let recipe = await prisma.recipe.create({
+		data:{
+			name: name,
+			desc: desc,
+			image :image,
+			macroTrack: macroTrack,
+			authorId: authorId,
+			...(instructions ? {instructions} : {}),
+			...(ingredients ? {ingredients} : {}),
+			...(tagId ? { tagId } : {})
+		}
+	})
 
-//     const db = client.db('COP4331LargeProjectDatabase')
-//     const collection = db.collection('tag')
-//     const cursor = collection.find({ color: color }, { name: name })
-//     const result = await cursor.toArray()
-//     if (result.length > 0) {
-//       return res.status(409).json('Tag Exists')
-//     }
-//   } finally {
-//     await client.close()
-//   }
-
-//   try {
-//     await client.connect()
-//     const db = client.db('COP4331LargeProjectDatabase')
-//     const collection = db.collection('tag')
-
-//     const result = await collection.insertOne(newTag)
-//     const id = result.insertedId
-//     console.log(id)
-//     var ret = { tagId: id, error: '' }
-//     //return res.status(200).json(ret)
-//     return res.status(200)
-//   } finally {
-//     client.close()
-//   }
-// })
+	let ret = {recipeId: recipe.id, error: ''}
+	return res.status(200).json(ret)
+})
 // // //Update Recipe (Fred)
 
 // // //Delete Recipe (Fred)
