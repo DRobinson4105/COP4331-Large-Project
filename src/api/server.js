@@ -8,7 +8,7 @@ dotenv.config({ path: '../../.env' })
 
 import express from 'express';
 import { MongoClient , ObjectId } from 'mongodb';
-const PORT = process.env.VITE_PORT || 3000;
+const PORT = process.env.SERVER_PORT || 3000;
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
