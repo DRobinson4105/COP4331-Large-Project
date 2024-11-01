@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import {PrismaClient} from '@prisma/client'
 
-dotenv.config({ path: '../../.env' })
+dotenv.config({ path: '../.env' })
 
 const prisma = new PrismaClient()
 const app = express()
