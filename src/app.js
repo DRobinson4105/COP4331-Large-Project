@@ -107,41 +107,47 @@ app.post('/user/login', async (req, res, next) => {
 })
 
 app.post('/recipe/create', async (req, res, next) => {
-//   //Create recipe in database and return recipeId.
-
-//   //incoming name, desc, image, macroTrack, authorId, instructions, ingredients, tagId
-	const {
-	name,
-	desc,
-	image,
-	macroTrack,
-	authorId,
-	instructions,
-	ingredients,
-	tagId
-	} = req.body
-
-
-//   //If any missing, return error
-	if (name == null || desc == null || image == null || macroTrack == null || authorId == null || instructions == null || ingredients == null) {
-		error: 'Missing argument (requires username, email, display_name, and either googleID or password)'
-	}
-
-	let recipe = await prisma.recipe.create({
-		data:{
-			name: name,
-			desc: desc,
-			image :image,
-			macroTrack: macroTrack,
-			authorId: authorId,
-			...(instructions ? {instructions} : {}),
-			...(ingredients ? {ingredients} : {}),
-			...(tagId ? { tagId } : {})
+	//   //Create recipe in database and return recipeId.
+	
+	//   //incoming name, desc, image, macroTrack, authorId, instructions, ingredients, tagId
+		const {
+		name,
+		desc,
+		image,
+		macroTrack,
+		authorId,
+		instructions,
+		ingredients,
+		tagId
+		} = req.body
+	
+	
+	//   //If any missing, return error
+		if (name == null || desc == null || image == null || macroTrack == null || authorId == null) {
+			return res.status(400).json({
+				error: 'Missing argument (requires name, desc, image, macroTrack & authorId)'
+			})
 		}
-	})
-
-	let ret = {recipeId: recipe.id, error: ''}
-	return res.status(200).json(ret)
+		if(macroTrack.length != 4){
+			return res.status(400).json({
+				error: 'Marco Array missing parameter [Must Be 4 Floats]'
+			})
+		}
+		let recipe = await prisma.recipe.create({
+			data:{
+				name: name,
+				desc: desc,
+				image : image,
+				macroTrack: macroTrack,
+				authorId: authorId,
+				...(instructions ? {instructions} : {}),
+				...(ingredients ? {ingredients} : {}),
+				...(tagId ? { tagId } : {})
+			}
+		})
+	
+		let ret = {recipeId: recipe.id, error: ''}
+		return res.status(200).json(ret)
 })
 
 export default app;
