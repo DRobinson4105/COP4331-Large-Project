@@ -185,7 +185,7 @@ app.post('/api/getProfile', async(req, res, next) =>{
   } finally {
     await client.close()
   }
-  return res.status(409).send('Username or Password Wrong')
+  return res.status(409).send('invalid search')
 })
 
 
@@ -208,21 +208,29 @@ app.post('/api/updateProfile', async(req, res, next) =>{
     const db = client.db('COP4331LargeProjectDatabase');
     const collection = db.collection('account');
     var tempId = new ObjectId(userId);
-    const cursor = collection.update({_id:tempId}, );
-    //const cursor = collection.find({});
-    const result = await cursor.toArray();
+    
+    if(image == null){
 
-    if (result.length > 0) {
-      var ret = {   
-                name: result[0].name, 
-                desc: result[0].desc,
-                image: result[0].image,
-                username: result[0].username,
-                recipesId: result[0].recipesId,
-                filterId: result[0].filterId,
-                }
-      return res.status(200).json(ret)
+        await collection.updateOne({_id:tempId},{ 
+            $set:{
+                name: name,
+                desc: desc,
+                username: username
+            }
+        });
     }
+    else{
+        await collection.updateOne({_id:tempId},{ 
+            $set:{
+                name: name,
+                desc: desc,
+                image: image,
+                username: username
+            }
+        });
+    }
+
+    res.status(200)
   } finally {
     await client.close()
   }
