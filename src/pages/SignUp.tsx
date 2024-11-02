@@ -28,8 +28,7 @@ const SignUpPage = () =>
                         }
                     })
                     .then((res) => {
-                        let profile = res.data
-                        doSignUp(profile.id, profile.name, "", profile.id, profile.email)
+                        finishGoogleLogin(res.data.email, res.data.id)
                     })
                     .catch((err) => console.log(err));
 
@@ -37,12 +36,35 @@ const SignUpPage = () =>
             onError: (error) => console.log('Login Failed:', error)
         });
 
+    async function finishGoogleLogin(email: string, googleId: string) {
+        setMessage('')
+
+        try {
+            var response = await fetch(
+                buildPath('user/verifyemail'),
+                {method:'POST',body:JSON.stringify({ email }),headers:{'Content-Type': 'application/json'}}
+            );
+        } catch (error: any) {
+            setMessage('Cannot complete action at this time');
+            return;
+        }
+
+        var res = JSON.parse(await response.text());
+
+        if (res.taken) {
+            setMessage('Account with email exists')
+            return;
+        }
+
+        localStorage.setItem('signup_data', JSON.stringify({email, googleId}));
+        window.location.href = '/completeprofile';
+    }
+
     async function doSignUp(username: string, displayName: string, password: string, googleId: string, email: string) : Promise<void> {
         setMessage('');
 
         const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
         const isAlphanumeric = /^[a-zA-Z0-9]+$/;
-
 
         if(!isValidEmail.test(email)) {
             setMessage("Email is invalid");
@@ -65,32 +87,33 @@ const SignUpPage = () =>
         }
 
         let obj = {username:username,displayName:displayName,password:password,googleId:googleId,email:email};
-        let js = JSON.stringify(obj);
-        
-        try
-        {    
-            const response = await fetch(buildPath('user/signup'),
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-  
-            var res = JSON.parse(await response.text());
-  
-            if( res.userId == undefined )
-            {
-                setMessage(res.error);
-            }
-            else
-            {
-                var user = {id:res.userId}
-                localStorage.setItem('user_data', JSON.stringify(user));
-  
-                setMessage('');
-                window.location.href = '/home';
-            }
-        }
-        catch(error:any)
-        {
-            console.error(error.toString());
+   
+        let response;
+
+        try {
+            response = await fetch(
+                buildPath('user/signup'),
+                {method:'POST',body:JSON.stringify(obj),headers:{'Content-Type': 'application/json'}}
+            );
+        } catch (error: any) {
+            setMessage('Cannot complete action at this time');
             return;
+        }
+
+
+        var res = JSON.parse(await response.text());
+
+        if( res.userId == undefined )
+        {
+            setMessage(res.error);
+        }
+        else
+        {
+            var user = {id:res.userId}
+            localStorage.setItem('user_data', JSON.stringify(user));
+
+            setMessage('');
+            window.location.href = '/home';
         }
     }
 

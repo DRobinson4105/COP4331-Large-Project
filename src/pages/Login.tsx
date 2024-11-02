@@ -82,33 +82,31 @@ const LoginPage = () =>
             var obj = {username:loginName,email:"",password:loginPassword,googleId:googleId};
         }
 
-        var js = JSON.stringify(obj);
-  
-        try
-        {    
-            const response = await fetch(buildPath('user/login'),
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-  
-            var res = JSON.parse(await response.text());
-  
-            if( res.userId == undefined )
-            {
-                setMessage(res.error);
-            }
-            else
-            {
-                var user = {id:res.userId}
-                localStorage.setItem('user_data', JSON.stringify(user));
-  
-                setMessage('');
-                window.location.href = '/Home';
-            }
-        }
-        catch(error:any)
-        {
-            console.error(error.toString());
+        try {
+            var response = await fetch(
+                buildPath('user/signup'),
+                {method:'POST',body:JSON.stringify(obj),headers:{'Content-Type': 'application/json'}}
+            );
+        } catch (error: any) {
+            setMessage('Cannot complete action at this time');
             return;
         }
+
+        var res = JSON.parse(await response.text());
+
+        if( res.userId == undefined )
+        {
+            setMessage(res.error);
+        }
+        else
+        {
+            var user = {id:res.userId}
+            localStorage.setItem('user_data', JSON.stringify(user));
+
+            setMessage('');
+            window.location.href = '/home';
+        }
+        
     }
 
     async function handleLogin(event:any) : Promise<void>

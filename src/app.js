@@ -106,6 +106,30 @@ app.post('/user/login', async (req, res, next) => {
 	return res.status(200).json(ret)
 })
 
+app.post('/user/verifyemail', async (req, res, next) => {
+	const { email } = req.body
+	
+	if (email == null) {
+		return res.status(400).json({
+			error: 'Missing email argument'
+		})
+	}
+
+	if (typeof email !== 'string') {
+		return res.status(400).json({
+			error: 'email must be a string'
+		})
+	}
+
+	let user = await prisma.account.findFirst({
+		where: { email },
+		select: { id: true }
+	})
+
+	let ret = { taken: user != null, error: '' }
+	return res.status(200).json(ret)
+})
+
 app.get('/recipe', async (req, res, next) =>{
 	const{
 		id

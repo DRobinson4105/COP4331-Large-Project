@@ -16,7 +16,7 @@ const ForgotPasswordPage = () =>
             setMessage("Email field cannot be empty");
         }
         else {
-            window.location.href = '/ResetCodeInput';
+            window.location.href = '/resetcodeinput';
         }
     };
 
