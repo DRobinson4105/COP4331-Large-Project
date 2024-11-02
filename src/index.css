@@ -1,7 +1,7 @@
 .fira-code-custom {
     font-family: "Fira Code", monospace;
     font-optical-sizing: auto;
-    font-weight: 300; 
+    font-weight: 100; 
     font-style: normal;
   }
   
@@ -85,15 +85,16 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #f5f5dc; 
+    background-color: #8ED081;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box; 
   }
   
   .nav-links {
     display: flex;
-    gap: 50px;
+    gap: 100px;
     margin-left: auto; 
+    margin-right: 10%;
     font-size: 20px;
   }
   
@@ -112,4 +113,35 @@ a {
     color: black;
 }
 
+.landing-title {
+    font-size: 36px;
+    font-weight: 100;
+    color: #000;
+    text-align: bottom;
+    padding-left: 6%;
+    margin-top: 200px;
+  }
 
+  body, .landing-title {
+    font-family: 'Fira Code', monospace;
+  }
+
+  .landing-body {
+    font-size: 24;
+    font-weight: 100;
+    color: #000;
+    text-align: bottom;
+    padding-left: 6%;
+    max-width: 35%;
+    margin-top: 0%;
+  }
+
+  .landing-logo {
+    position: absolute;
+    top: 200px; 
+    right: 5%; 
+    width: 30%; 
+    height: auto; 
+  }
+  
+ 
