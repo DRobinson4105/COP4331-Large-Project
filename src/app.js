@@ -128,6 +128,26 @@ app.post('/recipe/create', async (req, res, next) => {
 				error: 'Missing argument (requires name, desc, image, macroTrack & authorId)'
 			})
 		}
+
+		if (
+			(name && typeof name !== 'string') ||
+			(desc && typeof desc !== 'string') ||
+			(image && typeof image !== 'string') || //arrays return object
+			(macroTrack && typeof macroTrack != 'object') ||
+			(authorId && typeof authorId !== 'string') ||
+			(instructions && typeof instructions != 'object') ||
+			(ingredients && typeof ingredients != 'object') ||
+			(tagId && typeof tagId != 'object') ||
+			(macroTrack[0] && typeof macroTrack[0] != 'number') ||
+			(instructions[0] && typeof instructions[0] != 'string') ||
+			(ingredients[0] && typeof ingredients[0] != 'string') ||
+			(tagId[0] && typeof tagId[0] != 'string')
+		) {
+			return res.status(400).json({
+				error: 'Username, password, and authorId must be strings.\n All others must be objects.'
+			})
+		}
+		
 		if(macroTrack.length != 4){
 			return res.status(400).json({
 				error: 'Marco Array missing parameter [Must Be 4 Floats]'

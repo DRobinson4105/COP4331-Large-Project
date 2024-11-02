@@ -280,10 +280,7 @@ describe('User API Endpoints', () => {
 	it('POST /recipe/create - should create a new recipe with parameters and return recipeId', async() =>{
 		let newRecipe, response, expected;
 
-        let user = { username: "_test1", password: "test" }
-        response = await request(app)
-            .post('/user/login')
-            .send(user)
+    
         
 
 		const testImage = `${__dirname}/_testPhoto.jpg`
@@ -294,11 +291,11 @@ describe('User API Endpoints', () => {
 			image: unencoded,
 			macroTrack: [1.0, 2.0, 3.0, 4.0],//Needs Four 
 			authorId: test1Id,
-			instructions: ["test Instructions"],
-			ingredients: ["test ing"],
+			instructions: ["testInstructions"],
+			ingredients: ["testing"],
 			tagId: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
 		}
-		
+        
 		response = await request(app)
             .post('/recipe/create')
             .send(newRecipe)
@@ -333,182 +330,186 @@ describe('User API Endpoints', () => {
 	
 
 	})
+    
+	it('POST /recipe/create - should fail and return a 400 due to invalid arguments', async() =>{
+		let newRecipe, response;
+        const testImage = `${__dirname}/_testPhoto.jpg`
+        const unencoded = btoa(testImage);
 
-// 	it('POST /user/createRecipe - should fail and return a 400 due to invalid arguments', async() =>{
-// 		let newRecipe, response;
+		newRecipe = {
+			name: 1,
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
 
-// 		newRecipe = {
-// 			name: 1,
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
+		newRecipe = {
+			name: "_test",
+			desc: 1,
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
 
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: 1,
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: 1,
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:1,
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:1,
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:1,
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:1,
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:1
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 	})
-
-// 	it('POST /user/createRecipe - should fail and return a 400 due to missing arguments', async() =>{
-// 		let newRecipe, response;
-
-// 		newRecipe = {
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
-
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			macroTrack:[0.0],
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: 1,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
 
 
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			authorId:"_test authorId2",
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack: 1,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach"
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
 
-// 		newRecipe = {
-// 			name: "_test",
-// 			desc: "testing desc2",
-// 			image: document.getElementById("_testPhoto.jpeg"),
-// 			macroTrack:[0.0],
-// 			instructions:"_test Instructions",
-// 			ingredients:"_test ing",
-// 			tagId:"_testId2"
-// 		}
-// 		response = await request(app).post('/user/createRecipe').send(newRecipe)
-//         expect(response.status).toBe(400)
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: 1,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:1,
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:1,
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:1
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+	})
+
+	it('POST /recipe/create - should fail and return a 400 due to missing arguments', async() =>{
+		let newRecipe, response;
+        const testImage = `${__dirname}/_testPhoto.jpg`
+        const unencoded = btoa(testImage);
+
+		newRecipe = {
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
 
 
-// 	})
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(app).post('/recipe/create').send(newRecipe)
+        expect(response.status).toBe(400)
+
+
+	})
 
 })
