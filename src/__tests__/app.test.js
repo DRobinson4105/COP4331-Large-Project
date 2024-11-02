@@ -547,4 +547,16 @@ describe('User API Endpoints', () => {
 
     })
 
+    it('GET /recipe - should fail/return 409 due to missing argument', async() =>{
+        let recipe, response, expected;
+
+        recipe = {id: test1Id} //Uses testId since it should not exist in recipe collection
+        response = await request(app).get('/recipe').send(recipe)
+        expected = await prisma.recipe.findFirst({
+            where: {id : testRecipeId}
+        })
+        expect(response.status).toBe(409)
+
+    })
+
 })
