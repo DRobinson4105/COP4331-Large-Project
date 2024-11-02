@@ -5,19 +5,9 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const LoginPage = () =>
-{
-    const app_name = 'nomnom.network'
-    function buildPath(route:string) : string
-    {
-        if (process.env.NODE_ENV != 'development') 
-        {
-            return 'http://' + app_name +  ':3000/' + route;
-        }
-        else
-        {        
-            return 'http://localhost:3000/' + route;
-        }
+const LoginPage = () => {
+    function buildPath(route:string) : string {  
+        return `http://localhost:${import.meta.env.VITE_SERVER_PORT || 3000}/${route}`;
     }
 
     const [user, setUser] = useState({access_token: "0"});
@@ -38,7 +28,6 @@ const LoginPage = () =>
     useEffect(
         () => {
             if (user) {
-              console.log(user)
                 axios
                     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
                         headers: {
@@ -47,7 +36,6 @@ const LoginPage = () =>
                         }
                     })
                     .then((res) => {
-                        console.log(res.data)
                         setProfile(res.data);
                     })
                     .catch((err) => console.log(err));
@@ -82,33 +70,31 @@ const LoginPage = () =>
             var obj = {username:loginName,email:"",password:loginPassword,googleId:googleId};
         }
 
-        var js = JSON.stringify(obj);
-  
-        try
-        {    
-            const response = await fetch(buildPath('user/login'),
-                {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-  
-            var res = JSON.parse(await response.text());
-  
-            if( res.userId == undefined )
-            {
-                setMessage(res.error);
-            }
-            else
-            {
-                var user = {id:res.userId}
-                localStorage.setItem('user_data', JSON.stringify(user));
-  
-                setMessage('');
-                window.location.href = '/Home';
-            }
-        }
-        catch(error:any)
-        {
-            console.error(error.toString());
+        try {
+            var response = await fetch(
+                buildPath('user/login'),
+                {method:'POST',body:JSON.stringify(obj),headers:{'Content-Type': 'application/json'}}
+            );
+        } catch (error: any) {
+            setMessage('Cannot complete action at this time');
             return;
         }
+
+        var res = JSON.parse(await response.text());
+
+        if( res.userId == undefined )
+        {
+            setMessage(res.error);
+        }
+        else
+        {
+            var user = {id:res.userId}
+            localStorage.setItem('user_data', JSON.stringify(user));
+
+            setMessage('');
+            window.location.href = '/home';
+        }
+        
     }
 
     async function handleLogin(event:any) : Promise<void>

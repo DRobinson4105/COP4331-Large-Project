@@ -16,7 +16,7 @@ const ForgotPasswordPage = () =>
             setMessage("Code field cannot be empty");
         }
         else {
-            window.location.href = '/ResetPassword';
+            window.location.href = '/resetpassword';
         }
     };
 

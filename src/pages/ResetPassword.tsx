@@ -19,7 +19,7 @@ const ResetPasswordPage = () =>
         }
 
         if(newPassword === verifyPassword) {
-          window.location.href = '/LogIn';
+          window.location.href = '/logIn';
         }
         else {
           setMessage('Passwords do not match');
