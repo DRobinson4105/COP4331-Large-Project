@@ -4,3 +4,4 @@ node_modules
 tsconfig.node.tsbuildinfo
 tsconfig.app.tsbuildinfo
 dist
+.vercel

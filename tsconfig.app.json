@@ -20,5 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/__tests__/app.test.js"]
+  "include": ["src", "src/app.te.js"]
 }

@@ -16,44 +16,26 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { username, password, email, googleId } = req.body
-
-        if (
-            (username && typeof username !== 'string') ||
-            (password && typeof password !== 'string') ||
-            (email && typeof email !== 'string') ||
-            (googleId && typeof googleId !== 'string')
-        ) {
+        const { email } = req.body
+	
+        if (email == null) {
             return res.status(400).json({
-            error: 'username, password, email, and googleId must be a string'
+                error: 'Missing email argument'
             })
         }
 
-        if (
-            (username == null && email == null) ||
-            (googleId == null && password == null)
-        ) {
+        if (typeof email !== 'string') {
             return res.status(400).json({
-            error:
-                'Missing argument (requires either username or email, and either googleId or password)'
+                error: 'email must be a string'
             })
         }
 
         let user = await prisma.account.findFirst({
-            where: {
-            ...(username ? { username } : {}),
-            ...(email ? { email } : {}),
-            ...(password ? { password } : {}),
-            ...(googleId ? { googleId } : {})
-            },
+            where: { email },
             select: { id: true }
         })
 
-        if (user == null) {
-            return res.status(401).json({ error: 'Incorrect Username or Password' })
-        }
-
-        let ret = { userId: user.id, error: '' }
+        let ret = { taken: user != null, error: '' }
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {

@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "start": "node src/server.js",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "jest --runInBand",
     "start:all": "npm test && npm run build && concurrently \"npm start\" \"npm run preview\"",
     "postinstall": "prisma generate"
   },
@@ -25,7 +25,8 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.27.0",
-    "styled-components": "^5.3.10"
+    "styled-components": "^5.3.10",
+    "vercel": "^37.14.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.0",
