@@ -7,8 +7,12 @@ import axios from 'axios';
 
 const SignUpPage = () =>
 {
-    function buildPath(route:string) : string {  
-        return `http://localhost:${import.meta.env.VITE_SERVER_PORT || 3000}/${route}`;
+    const baseUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://cop-4331-large-project-three.vercel.app' 
+        : 'http://localhost:3000';
+
+    function buildPath(route: string) : string {  
+        return baseUrl + "/api/" + route;
     }
 
     const [message,setMessage] = useState('');
