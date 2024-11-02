@@ -97,9 +97,41 @@ paths:
         404:
           description: URL Not Found
         409:
-          description: No Recipe Found.
+          description: Recipe Not Found Error
         500:
           description: Server Error
+
+  /recipe/search:
+    post:
+      tags:
+      - recipe
+      summary: Takes in name search &OR filters and returns list of recipes
+      operationId: doSearchRecipe
+      description: Takes in name search &OR filters and returns list of recipes
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: SearchRecipes
+        description: Takes in name search &OR filters and returns list of recipes
+        schema:
+          $ref: '#/definitions/SearchRecipes'
+      responses:
+        200:
+          description: Found & Returned list of recipes
+        204:
+          description: No Content
+        400:
+          description: Invalid Input (Missing Inputs)
+        404:
+          description: URL Not Found
+        409:
+          description: Recipes Not Found Error
+        500:
+          description: Server Error
+      
 
   /recipe/create:
     post:
@@ -186,6 +218,20 @@ definitions:
         type: string
         example: "67252a9906b07a7478339fe9"
 
+  SearchRecipes:
+    type: object
+    required:
+    - name
+    - filters
+    properties:
+      name:
+        type: string
+        example: "Green"
+      filters:
+        type: array
+        items:
+          type: string
+        example: ["6724e84caf5041d082f98234"]
   
   CreateRecipe:
     type: object
