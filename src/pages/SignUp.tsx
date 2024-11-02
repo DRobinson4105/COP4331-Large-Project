@@ -8,7 +8,7 @@ import axios from 'axios';
 const SignUpPage = () =>
 {
     const baseUrl = process.env.NODE_ENV === 'production' 
-        ? 'https://https://cop-4331-large-project-three.vercel.app' 
+        ? 'https://cop-4331-large-project-three.vercel.app' 
         : 'http://localhost:3000';
 
     function buildPath(route: string) : string {  
