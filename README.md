@@ -1,50 +1,26 @@
-# React + TypeScript + Vite
+# Nom Nom Network
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Nom Nom Network is a recipe manager that lets users track nutrition effortlessly by automatically calculating macros for each ingredient added to a recipe, with options to adjust or override totals as needed. This makes it easy to find, create, and enjoy recipes that align with specific dietary goals, all in one convenient platform.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+```bash
+git clone https://github.com/DRobinson4105/COP4331-Large-Project.git nomnom
+cd nomnom
+npm i
+npx prisma generate
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Running Locally
+```bash
+npm run dev # Front end
+node src/server.js # Back end
 ```
+
+## Tech Stack
+* Front-end - Vite, React
+* Back-end - Node.js, Express
+* Database - MongoDB, Prisma
+* Unit Testing - Jest
+
+## Contributions
+If you'd like to report a bug, request a feature, or contribute code, please submit an issue or pull request
