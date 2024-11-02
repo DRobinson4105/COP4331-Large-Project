@@ -127,8 +127,6 @@ paths:
           description: Invalid Input (Missing Inputs)
         404:
           description: URL Not Found
-        409:
-          description: Recipes Not Found Error
         500:
           description: Server Error
       
