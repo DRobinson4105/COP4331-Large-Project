@@ -26,6 +26,7 @@ describe('User API Endpoints', () => {
     })
 
     let test1Id, test2Id
+    let testRecipeId
 
     it('POST /user/signup - should create a new user with a password and return an ID', async () => {
         let newUser, response, expected;
@@ -274,9 +275,6 @@ describe('User API Endpoints', () => {
         expect(response.status).toBe(400)
     })
 
-
-
-
 	it('POST /recipe/create - should create a new recipe with parameters and return recipeId', async() =>{
 		let newRecipe, response, expected;
 
@@ -295,7 +293,7 @@ describe('User API Endpoints', () => {
 			ingredients: ["testing"],
 			tagId: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
 		}
-        
+
 		response = await request(app)
             .post('/recipe/create')
             .send(newRecipe)
@@ -306,7 +304,7 @@ describe('User API Endpoints', () => {
 
 		expect(response.status).toBe(200)
 		expect(response.body.recipeId).toEqual(expected.id)
-		
+        testRecipeId = expected.id
 
 
 		newRecipe = {
@@ -511,5 +509,42 @@ describe('User API Endpoints', () => {
 
 
 	})
+
+    it('GET /recipe - should take in an id and return the recipe', async() =>{
+        let recipe, response, expected;
+
+        recipe = { id: testRecipeId}
+        response = await request(app).get('/recipe').send(recipe)
+        expected = await prisma.recipe.findFirst({
+            where: {id : testRecipeId}
+        })
+        expect(response.status).toBe(200)
+		expect(response.body.id).toEqual(expected.id)
+
+    })
+
+    it('GET /recipe - should fail/return 400 due to invalid argument', async() =>{
+        let recipe, response, expected;
+
+        recipe = { id: 1}
+        response = await request(app).get('/recipe').send(recipe)
+        expected = await prisma.recipe.findFirst({
+            where: {id : testRecipeId}
+        })
+        expect(response.status).toBe(400)
+
+    })
+
+    it('GET /recipe - should fail/return 400 due to missing argument', async() =>{
+        let recipe, response, expected;
+
+        recipe = {}
+        response = await request(app).get('/recipe').send(recipe)
+        expected = await prisma.recipe.findFirst({
+            where: {id : testRecipeId}
+        })
+        expect(response.status).toBe(400)
+
+    })
 
 })

@@ -69,7 +69,38 @@ paths:
           description: URL Not Found
         500:
           description: Server Error
-      
+
+  /recipe:
+    post:
+      tags:
+      - recipe
+      summary: Take in recipeId and return its details.
+      operationId: doRecipe
+      description: Take in recipeId and return its details.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: recipeItem
+        description: Take in recipeId and return its details.
+        schema:
+          $ref: '#/definitions/Recipe'
+      responses:
+        200:
+          description: Found Recipe
+        204:
+          description: No Content
+        400:
+          description: Invalid Input (Missing Inputs)
+        404:
+          description: URL Not Found
+        409:
+          description: No Recipe Found.
+        500:
+          description: Server Error
+
   /recipe/create:
     post:
       tags:
@@ -88,16 +119,16 @@ paths:
         schema:
           $ref: '#/definitions/CreateRecipe'
       responses:
-          200:
-            description: Create Recipe Successful
-          204:
-            description: No Content
-          400:
-            description: Invalid Input (Missing Inputs)
-          404:
-            description: URL Not Found
-          500:
-            description: Server Error
+        200:
+          description: Created Recipe
+        204:
+          description: No Content
+        400:
+          description: Invalid Input (Missing Inputs)
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
 
 definitions:
   Login:
@@ -145,6 +176,16 @@ definitions:
       googleId:
         type: string
         example: "67252a9906b07a7478339fe9"
+  
+  Recipe:
+    type: object
+    required:
+    - id
+    properties:
+      recipeId:
+        type: string
+        example: "67252a9906b07a7478339fe9"
+
   
   CreateRecipe:
     type: object

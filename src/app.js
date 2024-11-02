@@ -106,6 +106,37 @@ app.post('/user/login', async (req, res, next) => {
 	return res.status(200).json(ret)
 })
 
+app.get('/recipe', async (req, res, next) =>{
+	const{
+		id
+	} = req.body
+
+	if(id == null){
+		return res.status(400).json({
+			error: 'Missing argument (id))'
+		})
+	}
+	if(id && typeof id != 'string'){
+		return res.status(400).json({
+			error: 'id must be string'
+		})
+	}
+
+	let recipe = await prisma.recipe.findFirst({
+		where: {
+			...(id ? {id} : {})
+		},
+	})
+
+	if(recipe == null){
+		return res.status(409).json({error: 'Recipe not found'})
+	}
+
+	return res.status(200).json(recipe);
+
+
+
+})
 
 app.get('/recipe/search', async (req, res, next) =>{
 
@@ -120,10 +151,9 @@ app.get('/recipe/search', async (req, res, next) =>{
 		})
 	}
 	if(
-	(name && typeof name != 'string')
-	&&
-	(filter && typeof filter != 'object')
-	(filter[0] && typeof filter[0] != 'string')
+	(name && typeof name != 'string') &&
+	((filter && typeof filter != 'object')
+	(filter[0] && typeof filter[0] != 'string'))
 	){
 
 	}
