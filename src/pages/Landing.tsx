@@ -5,7 +5,7 @@ const LandingPage: React.FC = () => {
   return (
     <div>
       <NavBar />
-      <div className="p-4">Content below the navbar...</div>
+      <div className="p-4">Nom Nom Network</div>
     </div>
   );
 };

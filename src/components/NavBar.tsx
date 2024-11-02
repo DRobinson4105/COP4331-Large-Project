@@ -1,18 +1,14 @@
 import React from 'react';
+import Branding from '../components/Branding.tsx';
+import "../index.css";
 
 const NavBar: React.FC = () => {
   return (
-    <nav className="w-full p-4 flex items-center justify-between fixed top-0" style={{ backgroundColor: '#F8F6DD', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-      {/* Logo */}
-      <div className="flex items-center">
-        <img src="/NomNom Network Logo.png" alt="Logo" className="h-10 w-10 mr-4 rounded-md" />
-        <span className="text-xl font-medium">Nom Nom Network</span>
-      </div>
-
-      {/* Nav */}
-      <div className="flex space-x-6">
-        <a href="login" className="text-black font-medium">Login</a>
-        <a href="signup" className="text-black font-medium">Sign Up</a>
+    <nav className="navbar fira-code-custom">
+      <Branding />
+      <div className="nav-links">
+        <a href="/login" className="nav-link">Login</a>
+        <a href="/signup" className="nav-link">Signup</a>
       </div>
     </nav>
   );
