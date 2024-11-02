@@ -24,7 +24,7 @@ const ForgotPasswordPage = () =>
             </div>
             <h2 className="center">Forgot Password?</h2>
             <input className="center input" type="text" id="loginName" placeholder="Enter your email" onChange={handleSetEmail} style={{textAlign: "left"}} />
-            <input className="center input darkgreen" type="submit" id="loginButton" value = "Send recovery email" onClick={doRecovery} style={{color: "white"}}/>
+            <input className="center input darkgreen button" type="submit" id="loginButton" value = "Send recovery email" onClick={doRecovery} />
             <Link to={"/LogIn"} className="center" style={{display: "block"}}>Back to Log in</Link>
             <br></br>
         </div>
