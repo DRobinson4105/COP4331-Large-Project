@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Branding from '../components/Branding.tsx';
 import "../index.css"
 import { useGoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const SignUpPage = () =>
 {
@@ -19,24 +20,82 @@ const SignUpPage = () =>
         }
     }
 
+    const [user, setUser] = useState({access_token: ""});
+    const [profile, setProfile] = useState({id: "", email: "", name: ""});
     const [message,setMessage] = useState('');
     const [email,setEmail] = React.useState('');
+    const [googleId,setGoogleId] = React.useState('');
     const [signupPassword,setPassword] = React.useState('');
     const [signupVerifyPassword,setVerifyPassword] = React.useState('');
     const [username,setUsername] = React.useState('');
     const [displayName,setDisplayName] = React.useState('');
 
     const login = useGoogleLogin({
-        onSuccess: (codeResponse) => console.log("Yay!"),
+        onSuccess: (codeResponse) => {
+            setUser(codeResponse);
+        },
         onError: (error) => console.log('Login Failed:', error)
     });
 
-    async function doSignUp(event:any) : Promise<void>
-    {
-        event.preventDefault();
+    useEffect(
+        () => {
+            if (user.access_token.length != 0) {
+                console.log(user)
+                axios
+                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                        headers: {
+                            Authorization: `Bearer ${user.access_token}`,
+                            Accept: 'application/json'
+                        }
+                    })
+                    .then((res) => {
+                        console.log(res.data)
+                        setProfile(res.data);
+                    })
+                    .catch((err) => console.log(err));
+            }
+        },
+        [ user ]
+    );
+
+    useEffect(
+        () => {
+            if (profile.id.length != 0) {
+                googleLogIn();
+            }
+        },
+        [ profile ]
+    );
+
+    function googleLogIn() {
+        setUsername(profile.id);
+        setGoogleId(profile.id);
+        setDisplayName(profile.name);
+        setEmail(profile.email);
+        setPassword("");
+        doSignUp();
+    }
+
+    async function doSignUp() : Promise<void> {
         setMessage('');
 
-        var obj = {username:username,displayName:displayName,password:signupPassword,googleId:null,email:email};
+        const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if(!regex.test(email)) {
+            setMessage("Email is invalid");
+            return;
+        }
+
+        if(googleId.length == 0 && !(signupPassword === signupVerifyPassword)) {
+            setMessage("Passwords do not match");
+            return;
+        }
+
+        if(username.length == 0 || displayName.length == 0 || (signupPassword.length == 0 && googleId.length == 0) || email.length == 0) {
+            setMessage("All fields must be filled out");
+            return;
+        }
+
+        var obj = {username:username,displayName:displayName,password:signupPassword,googleId:googleId,email:email};
         var js = JSON.stringify(obj);
   
         try
@@ -52,7 +111,7 @@ const SignUpPage = () =>
             }
             else
             {
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.userId}
+                var user = {id:res.userId}
                 localStorage.setItem('user_data', JSON.stringify(user));
   
                 setMessage('');
@@ -61,9 +120,15 @@ const SignUpPage = () =>
         }
         catch(error:any)
         {
-            alert(error.toString());
+            console.error(error.toString());
             return;
         }
+    }
+
+    async function handleSignUp(event:any) : Promise<void>
+    {
+        event.preventDefault();
+        doSignUp();
     };
 
     function handleSetUsername( e: any ) : void
@@ -97,13 +162,13 @@ const SignUpPage = () =>
                 <Branding />
             </div>
             <h2 className="center">Sign up to Continue</h2>
-            <a id="loginResult">{message}</a>
+            <a id="signupResult" className="center">{message}</a>
             <input className="center input" type="text" id="username" placeholder="Enter a username" onChange={handleSetUsername} style={{textAlign: "left"}} />
             <input className="center input" type="text" id="displayName" placeholder="Enter a display name" onChange={handleSetDisplayName} style={{textAlign: "left"}} />
             <input className="center input" type="email" id="signupEmail" placeholder="Enter your email" onChange={handleSetEmail} style={{textAlign: "left"}} />
             <input className="center input" type="password" id="signupPassword" placeholder="Enter a password" onChange={handleSetPassword} style={{textAlign: "left"}} />
             <input className="center input" type="password" id="signupVerifyPassword" placeholder="Retype your password" onChange={handleSetVerifyPassword} style={{textAlign: "left"}} />
-            <input className="center input darkgreen button" type="submit" id="loginButton" value = "Sign Up" onClick={doSignUp} />
+            <input className="center input darkgreen button" type="submit" id="loginButton" value = "Sign Up" onClick={handleSignUp} />
             <h2 className="center">Or continue with:</h2>
             <input className="center input google" type="submit" id="loginButton" value = "Google" onClick={() => login()} />
             <Link to={"/LogIn"} className="center" style={{display: "block"}}>Already have an account? Log in</Link>

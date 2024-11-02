@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ForgotPasswordPage from './pages/ForgotPassword';
+import ResetCodeInputPage from './pages/ResetCodeInput'
 import ResetPasswordPage from './pages/ResetPassword'
 
 const App: React.FC = () => {
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/LogIn" element={<LoginPage />} />
         <Route path="/ForgotPassword" element={<ForgotPasswordPage />} />
+        <Route path="/ResetCodeInput" element={<ResetCodeInputPage />} />
         <Route path="/ResetPassword" element={<ResetPasswordPage />} />
         <Route path="/SignUp" element={<SignUpPage />} />
       </Routes>

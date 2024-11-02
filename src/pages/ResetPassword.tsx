@@ -5,19 +5,26 @@ import { Link } from 'react-router-dom';
 
 const ResetPasswordPage = () =>
 {
-    const [code,setCode] = React.useState('');
+    const [message,setMessage] = useState('');
     const [newPassword,setNewPassword] = React.useState('');
     const [verifyPassword,setVerifyPassword] = React.useState('');
 
     async function doReset(event:any) : Promise<void>
     {
         event.preventDefault();
-    };
 
-    function handleSetCode( e: any ) : void
-    {
-      setCode( e.target.value );
-    }
+        if(newPassword.length == 0 || verifyPassword.length == 0) {
+            setMessage("Password fields cannot be empty");
+            return;
+        }
+
+        if(newPassword === verifyPassword) {
+          window.location.href = '/LogIn';
+        }
+        else {
+          setMessage('Passwords do not match');
+        }  
+    };
 
     function handleSetNewPassword( e: any ) : void
     {
@@ -35,9 +42,9 @@ const ResetPasswordPage = () =>
                 <Branding />
             </div>
             <h2 className="center">Reset Password</h2>
-            <input className="center input" type="text" id="resetCode" placeholder="Enter code" onChange={handleSetCode} style={{textAlign: "left"}} />
-            <input className="center input" type="text" id="newPassword" placeholder="Enter new password" onClick={handleSetNewPassword} style={{textAlign: "left"}}/>
-            <input className="center input" type="text" id="verifyNewPassword" placeholder="Re-enter new password" onClick={handleSetVerifyPassword} style={{textAlign: "left"}}/>
+            <a id="passwordResult" className="center">{message}</a>
+            <input className="center input" type="password" id="newPassword" placeholder="Enter new password" onChange={handleSetNewPassword} style={{textAlign: "left"}}/>
+            <input className="center input" type="password" id="verifyNewPassword" placeholder="Re-enter new password" onChange={handleSetVerifyPassword} style={{textAlign: "left"}}/>
             <input className="center input darkgreen button" type="submit" id="resetButton" value = "Reset Password" onClick={doReset} />
             <Link to={"/LogIn"} className="center" style={{display: "block"}}>Back to Log in</Link>
             <br></br>
