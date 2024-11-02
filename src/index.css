@@ -4,7 +4,7 @@
 
 .accentColumn {
     background-color: #FFFEEE;
-    width: 50%;
+    width: 30em;
     margin-inline: auto;
     position: sticky;
     top: 5%;
@@ -44,7 +44,25 @@
     border: 1px solid black;
 }
 
+.button {
+    color: white;
+}
+
+.button:hover {
+    background-color: #8ED081;
+    color: black;
+}
+
+.google {
+    background-color: white;
+}
+
+.google:hover {
+    background-color: #e7e7e7;
+}
+
 .center {
+    display: block;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
