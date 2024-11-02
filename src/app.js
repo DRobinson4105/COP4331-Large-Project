@@ -106,6 +106,29 @@ app.post('/user/login', async (req, res, next) => {
 	return res.status(200).json(ret)
 })
 
+
+app.get('/recipe/search', async (req, res, next) =>{
+
+	const{
+		name,
+		filter
+	} = req.body
+
+	if(name == null && filer == null){
+		return res.status(400).json({
+			error: 'Missing argument (requires name or filter)'
+		})
+	}
+	if(
+	(name && typeof name != 'string')
+	&&
+	(filter && typeof filter != 'object')
+	(filter[0] && typeof filter[0] != 'string')
+	){
+
+	}
+})
+
 app.post('/recipe/create', async (req, res, next) => {
 	//   //Create recipe in database and return recipeId.
 	
@@ -135,17 +158,41 @@ app.post('/recipe/create', async (req, res, next) => {
 			(image && typeof image !== 'string') || //arrays return object
 			(macroTrack && typeof macroTrack != 'object') ||
 			(authorId && typeof authorId !== 'string') ||
-			(instructions && typeof instructions != 'object') ||
-			(ingredients && typeof ingredients != 'object') ||
-			(tagId && typeof tagId != 'object') ||
-			(macroTrack[0] && typeof macroTrack[0] != 'number') ||
-			(instructions[0] && typeof instructions[0] != 'string') ||
-			(ingredients[0] && typeof ingredients[0] != 'string') ||
-			(tagId[0] && typeof tagId[0] != 'string')
+			(macroTrack[0] && typeof macroTrack[0] != 'number') //instructions/ingredients/tagId not necessary		
 		) {
 			return res.status(400).json({
-				error: 'Username, password, and authorId must be strings.\n All others must be objects.'
+				error: 'Name, desc and authorId must be strings.\n MacroTrack must be an array of floats.'
 			})
+		}
+		if((
+		(tagId && typeof tagId != 'object') ||
+		(ingredients[0] && typeof ingredients[0] != 'string') ||
+		(tagId[0] && typeof tagId[0] != 'string'))){
+
+		}
+		if(instructions != null){
+			if((instructions && typeof instructions != 'object') ||
+			(instructions[0] && typeof instructions[0] != 'string')){
+				return res.status(400).json({
+					error: 'Instructions must be an array of strings'
+				})
+			}
+		}
+		if(ingredients != null){
+			if((ingredients && typeof ingredients != 'object') ||
+			(ingredients[0] && typeof ingredients[0] != 'string')){
+				return res.status(400).json({
+					error: 'Ingredients must be an array of strings'
+				})
+			}
+		}
+		if(tagId != null){
+			if((tagId && typeof tagId != 'object') ||
+			(tagId[0] && typeof tagId[0] != 'string')){
+				return res.status(400).json({
+					error: 'tagId must be an array of strings'
+				})
+			}
 		}
 		
 		if(macroTrack.length != 4){
