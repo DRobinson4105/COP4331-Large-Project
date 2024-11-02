@@ -8,6 +8,6 @@ dotenv.config();
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: process.env.VITE_PORT
+    port: +(process.env.VITE_PORT || "")
   }
 })
