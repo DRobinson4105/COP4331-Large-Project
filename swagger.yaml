@@ -191,8 +191,7 @@ definitions:
           type: string
         example: ["67252a9906b07a7478339fe9"]
 
-
-host: nomnom.network
-basePath: /src
+host: nomnom.network:3000
+basePath: /
 schemes:
 - http
