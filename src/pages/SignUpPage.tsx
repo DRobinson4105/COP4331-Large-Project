@@ -7,97 +7,66 @@ import axios from 'axios';
 
 const SignUpPage = () =>
 {
-    const app_name = 'nomnom.network'
-    function buildPath(route:string) : string
-    {
-        if (process.env.NODE_ENV != 'development') 
-        {
-            return 'http://' + app_name +  ':3000/' + route;
-        }
-        else
-        {        
-            return 'http://localhost:3000/' + route;
-        }
+    function buildPath(route:string) : string {  
+        return `http://localhost:${import.meta.env.VITE_SERVER_PORT || 3000}/${route}`;
     }
 
-    const [user, setUser] = useState({access_token: ""});
-    const [profile, setProfile] = useState({id: "", email: "", name: ""});
     const [message,setMessage] = useState('');
     const [email,setEmail] = React.useState('');
-    const [googleId,setGoogleId] = React.useState('');
-    const [signupPassword,setPassword] = React.useState('');
-    const [signupVerifyPassword,setVerifyPassword] = React.useState('');
+    const [password,setPassword] = React.useState('');
+    const [confirmedPassword,setConfirmedPassword] = React.useState('');
     const [username,setUsername] = React.useState('');
     const [displayName,setDisplayName] = React.useState('');
 
     const login = useGoogleLogin({
-        onSuccess: (codeResponse) => {
-            setUser(codeResponse);
-        },
-        onError: (error) => console.log('Login Failed:', error)
-    });
-
-    useEffect(
-        () => {
-            if (user.access_token.length != 0) {
-                console.log(user)
+            onSuccess: (codeResponse) => {
                 axios
-                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${codeResponse.access_token}`, {
                         headers: {
-                            Authorization: `Bearer ${user.access_token}`,
+                            Authorization: `Bearer ${codeResponse.access_token}`,
                             Accept: 'application/json'
                         }
                     })
                     .then((res) => {
-                        console.log(res.data)
-                        setProfile(res.data);
+                        let profile = res.data
+                        doSignUp(profile.id, profile.name, "", profile.id, profile.email)
                     })
                     .catch((err) => console.log(err));
-            }
-        },
-        [ user ]
-    );
 
-    useEffect(
-        () => {
-            if (profile.id.length != 0) {
-                googleLogIn();
-            }
-        },
-        [ profile ]
-    );
+            },
+            onError: (error) => console.log('Login Failed:', error)
+        });
 
-    function googleLogIn() {
-        setUsername(profile.id);
-        setGoogleId(profile.id);
-        setDisplayName(profile.name);
-        setEmail(profile.email);
-        setPassword("");
-        doSignUp();
-    }
-
-    async function doSignUp() : Promise<void> {
+    async function doSignUp(username: string, displayName: string, password: string, googleId: string, email: string) : Promise<void> {
         setMessage('');
 
-        const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-        if(!regex.test(email)) {
+        const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        const isAlphanumeric = /^[a-zA-Z0-9]+$/;
+
+
+        if(!isValidEmail.test(email)) {
             setMessage("Email is invalid");
             return;
         }
 
-        if(googleId.length == 0 && !(signupPassword === signupVerifyPassword)) {
+        if(googleId.length == 0 && password !== confirmedPassword) {
             setMessage("Passwords do not match");
             return;
         }
 
-        if(username.length == 0 || displayName.length == 0 || (signupPassword.length == 0 && googleId.length == 0) || email.length == 0) {
+        if(username.length == 0 || displayName.length == 0 || (password.length == 0 && googleId.length == 0) || email.length == 0) {
             setMessage("All fields must be filled out");
             return;
         }
 
-        var obj = {username:username,displayName:displayName,password:signupPassword,googleId:googleId,email:email};
-        var js = JSON.stringify(obj);
-  
+        if (!isAlphanumeric.test(username)) {
+            setMessage("Username must only contain alphanumeric characters");
+            return;
+        }
+
+        let obj = {username:username,displayName:displayName,password:password,googleId:googleId,email:email};
+        let js = JSON.stringify(obj);
+        
         try
         {    
             const response = await fetch(buildPath('user/signup'),
@@ -115,7 +84,7 @@ const SignUpPage = () =>
                 localStorage.setItem('user_data', JSON.stringify(user));
   
                 setMessage('');
-                window.location.href = '/Home';
+                window.location.href = '/home';
             }
         }
         catch(error:any)
@@ -128,7 +97,7 @@ const SignUpPage = () =>
     async function handleSignUp(event:any) : Promise<void>
     {
         event.preventDefault();
-        doSignUp();
+        doSignUp(username, displayName, password, "", email);
     };
 
     function handleSetUsername( e: any ) : void
@@ -153,7 +122,7 @@ const SignUpPage = () =>
 
     function handleSetVerifyPassword( e: any ) : void
     {
-        setVerifyPassword( e.target.value );
+        setConfirmedPassword( e.target.value );
     }
 
     return(

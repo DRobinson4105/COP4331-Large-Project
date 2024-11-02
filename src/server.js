@@ -1,6 +1,6 @@
 import app from './app.js'
 
-const PORT = process.env.SERVER_PORT || 3000
+const PORT = process.env.VITE_SERVER_PORT || 3000
 
 app.set('port', PORT)
 
