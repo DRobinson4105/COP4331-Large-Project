@@ -556,7 +556,52 @@ describe('User API Endpoints', () => {
             where: {id : testRecipeId}
         })
         expect(response.status).toBe(409)
-
     })
+
+    it('GET /recipe/search - should take in name/filters and return an array of recipes', async() =>{
+        let recipeList, response, expected;
+
+        recipeList = {
+            name: "_test", 
+            filters: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+        }
+        // expected = await prisma.recipe.findMany({
+        //     where: {name : recipeList.name}
+        // })
+        response = await request(app).get('/recipe/search').send(recipeList)
+        
+        expect(response.status).toBe(200)
+    })
+
+    it('GET /recipe/search - should fail/return 400 due to invalid input', async() => {
+        let recipeList, response, expected;
+
+        recipeList = {
+            name: 1, 
+            filters: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+        }
+        response = await request(app).get('/recipe/search').send(recipeList)
+        expect(response.status).toBe(400)
+
+
+        recipeList = {
+            name: "G", 
+            filters: 1//Make tags before recipes to attach
+        }
+        response = await request(app).get('/recipe/search').send(recipeList)
+        expect(response.status).toBe(400)
+        
+    })
+
+    it('GET /recipe/search - should fail/return 400 due to missing inputs', async() => {
+        let recipeList, response, expected;
+
+        recipeList = {
+        }
+        response = await request(app).get('/recipe/search').send(recipeList)
+        expect(response.status).toBe(400)
+       
+    })
+
 
 })
