@@ -1,6 +1,6 @@
 # Nom Nom Network
 
-Recipe Manager lets users track nutrition effortlessly by automatically calculating macros for each ingredient added to a recipe, with options to adjust or override totals as needed. This makes it easy to find, create, and enjoy recipes that align with specific dietary goals, all in one convenient platform.
+Nom Nom Network is a recipe manager that lets users track nutrition effortlessly by automatically calculating macros for each ingredient added to a recipe, with options to adjust or override totals as needed. This makes it easy to find, create, and enjoy recipes that align with specific dietary goals, all in one convenient platform.
 
 ## Installation
 ```bash
