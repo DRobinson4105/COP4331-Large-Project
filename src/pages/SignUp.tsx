@@ -8,7 +8,7 @@ import axios from 'axios';
 const SignUpPage = () =>
 {
     const baseUrl = process.env.NODE_ENV === 'production' 
-        ? process.env.VITE_API_URL 
+        ? import.meta.env.VITE_API_URL
         : 'http://localhost:3000';
 
     function buildPath(route: string) : string {  
