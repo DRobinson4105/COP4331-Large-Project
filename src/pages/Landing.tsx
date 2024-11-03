@@ -1,6 +1,5 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
-import Logo from "../assets/NomNom Network Logo.png"
 import "../index.css";
 
 const LandingPage: React.FC = () => {
@@ -11,7 +10,8 @@ const LandingPage: React.FC = () => {
       <div className="landing-body">
         Discover a world of flavors with Nom Nom Network
       </div>
-      <img src={Logo} alt="Logo" className="landing-logo" />
+      <img src="/food2.webp" alt="Food image" className="landing-logo" />
+
     </div>
   );
 };

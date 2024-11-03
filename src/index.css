@@ -127,13 +127,13 @@ a {
   }
 
   .landing-body {
-    font-size: 24;
+    font-size: 20px;
     font-weight: 100;
     color: #000;
     text-align: bottom;
     padding-left: 6%;
     max-width: 35%;
-    margin-top: 0%;
+    margin-top: 1%; 
   }
 
   .landing-logo {
@@ -144,4 +144,3 @@ a {
     height: auto; 
   }
   
- 
