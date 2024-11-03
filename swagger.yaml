@@ -70,6 +70,37 @@ paths:
         500:
           description: Server Error
 
+  /user/getProfile:
+    post:
+      tags:
+      - account
+      summary: Gets all of the information of the account whose id is entered and returns the information
+      operationId: doGetProfile
+      description: Matches input with existing account and returns all information about it\
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: getProfileItem
+        description: getProfile
+        schema:
+          $ref: '#definitions/GetProfile'
+      responses:
+        200:
+          description: Found and returned account object containing all of the account's information
+        204:
+          description: No content
+        400:
+          description: Invalid input (missing id)\
+        404:
+          description: URL not found
+        409:
+          description: Account not found error
+        500:
+          description: Server Error
+
   /recipe:
     post:
       tags:
@@ -206,6 +237,15 @@ definitions:
       googleId:
         type: string
         example: "67252a9906b07a7478339fe9"
+
+  GetProfile:
+    type: object
+    required:
+    - id
+    properties:
+    accountId:
+      type: string
+      example: "67257d85a43154e1fb7cd14b"
   
   Recipe:
     type: object
