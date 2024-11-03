@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 describe('POST /api/recipe/search', () => {
     const request = async (body) => {
         const req = {
-            method: 'GET',
+            method: 'POST',
             body: body
         };
     
