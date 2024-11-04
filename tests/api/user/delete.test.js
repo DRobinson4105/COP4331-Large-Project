@@ -3,10 +3,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-describe('DELETE /api/user/delete', () => {
+describe('POST /api/user/delete', () => {
     const request = async (body) => {
         const req = {
-            method: 'DELETE',
+            method: 'POST',
             body: body
         };
     

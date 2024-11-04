@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 describe('POST /api/user/update', () => {
     const request = async (body) => {
         const req = {
-            method: 'PUT',
+            method: 'POST',
             body: body
         };
     
