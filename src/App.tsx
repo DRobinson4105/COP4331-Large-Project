@@ -7,6 +7,7 @@ import ForgotPasswordPage from './pages/ForgotPassword'
 import ResetCodeInputPage from './pages/ResetCodeInput'
 import ResetPasswordPage from './pages/ResetPassword'
 import CompleteProfilePage from './pages/CompleteProfile'
+import SearchPage from './pages/Search'
 
 const App: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         <Route path="/resetpassword" element={<ResetPasswordPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/completeprofile" element={<CompleteProfilePage />} />
+        <Route path="/Search" element={<SearchPage />} />
       </Routes>
     </Router>
   );

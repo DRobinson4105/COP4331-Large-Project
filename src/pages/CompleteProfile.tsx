@@ -76,12 +76,13 @@ export default () => {
     return(
         <div className="accentColumn">
             <div className="center" style={{marginTop: "25px"}}>
+                <br></br>
                 <Branding />
             </div>
             <h2 className="center">Choose your username and password</h2>
             <a id="codeResult" className="center">{message}</a>
-            <input className="center input" type="text" id="username" placeholder="username" onChange={handleSetUsername} style={{textAlign: "left"}} />
-            <input className="center input" type="text" id="displayName" placeholder="display name" onChange={handleSetDisplayName} style={{textAlign: "left"}} />
+            <input className="center input" type="text" id="username" placeholder="Username" onChange={handleSetUsername} style={{textAlign: "left"}} />
+            <input className="center input" type="text" id="displayName" placeholder="Display Name" onChange={handleSetDisplayName} style={{textAlign: "left"}} />
             <input className="center input darkgreen button" type="submit" id="signUpButton" value = "Sign Up" onClick={doSignUp} />
             <Link to={"/LogIn"} className="center" style={{display: "block"}}>Back to Log in</Link>
             <br></br>

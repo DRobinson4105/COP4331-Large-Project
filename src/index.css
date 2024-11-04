@@ -34,8 +34,8 @@
 }
 
 .shortinput {
-    width: 40%;
-    height: 30px;
+    width: 45%;
+    height: 38px;
     font-size: large;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -82,31 +82,30 @@
     align-items: center;
     justify-content: space-between;
     padding: 8px 24px; 
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     background-color: #8ED081;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box; 
-  }
-  
-  .nav-links {
+}
+
+.nav-links {
     display: flex;
     gap: 100px;
     margin-left: auto; 
     margin-right: 10%;
     font-size: 20px;
-  }
-  
-  .nav-link {
+}
+
+.nav-link {
     color: #000; 
     text-decoration: none;
-  }
-  
-  .nav-link:hover {
+}
+
+.nav-link:hover {
     text-decoration: underline;
-  }
-  
+}
   
 a {
     text-decoration: none;
@@ -114,33 +113,69 @@ a {
 }
 
 .landing-title {
-    font-size: 36px;
-    font-weight: 100;
-    color: #000;
-    text-align: bottom;
-    padding-left: 6%;
-    margin-top: 200px;
-  }
+  font-size: 36px;
+  font-weight: 100;
+  color: #000;
+  text-align: bottom;
+  padding-left: 6%;
+  margin-top: 200px;
+}
 
-  body, .landing-title {
-    font-family: 'Fira Code', monospace;
-  }
+body, .landing-title {
+  font-family: 'Fira Code', monospace;
+}
 
-  .landing-body {
-    font-size: 20px;
-    font-weight: 100;
-    color: #000;
-    text-align: bottom;
-    padding-left: 6%;
-    max-width: 35%;
-    margin-top: 1%; 
-  }
+.landing-body {
+  font-size: 20px;
+  font-weight: 100;
+  color: #000;
+  text-align: bottom;
+  padding-left: 6%;
+  max-width: 35%;
+  margin-top: 1%; 
+}
 
-  .landing-logo {
-    position: absolute;
-    top: 200px; 
-    right: 5%; 
-    width: 30%; 
-    height: auto; 
-  }
+.landing-logo {
+  position: absolute;
+  top: 200px; 
+  right: 5%; 
+  width: 30%; 
+  height: auto; 
+}
   
+.recipe-info-card {
+  background-color: #FFFFFF;
+  margin: 10px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.recipes {
+  width: calc(70% - 40px);
+  display: inline-block;
+}
+
+.filter {
+  width: 30%;
+  display: inline-block;
+}
+
+.branding {
+  display: inline-block;
+}
+
+@media (max-width: 800px) {
+  .filter {
+    width: 100%;
+    display: block;
+  }
+
+  .recipes {
+    width: 100%;
+    display: block;
+  }
+
+  .branding {
+    display: none;
+  }
+}

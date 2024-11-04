@@ -155,6 +155,7 @@ const SignUpPage = () =>
     return(
         <div className="accentColumn">
             <div className="center" style={{marginTop: "25px"}}>
+                <br></br>
                 <Branding />
             </div>
             <h2 className="center">Sign up to Continue</h2>
