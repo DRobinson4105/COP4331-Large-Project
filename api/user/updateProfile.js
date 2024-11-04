@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { username, name, image, desc, id, password } = req.body;
+        const { username, name, image, desc, id, password, email } = req.body;
 
         if (id == null) {
             return res.status(400).json({
@@ -31,6 +31,7 @@ export default async function handler(req, res) {
             ((id && typeof id !== 'string')) ||
             ((desc && typeof desc !== 'string') && desc != null) ||
             ((image && typeof image !== 'string') && image != null) ||
+            ((email && typeof email !== 'string') && email != null) ||
             ((password && typeof password !== 'string') && password != null)
         ) {
             return res.status(400).json({
@@ -45,6 +46,10 @@ export default async function handler(req, res) {
         if(checker == null){
             return res.status(409).json({ error: 'Account not found' })
         }
+
+        if(checker.googleId != null && password != null){
+            return res.status(409).json({ error: 'Cannot input a password to an object with a googleId'})
+        }
         
         let updated = await prisma.account.update({
             where: {
@@ -55,6 +60,7 @@ export default async function handler(req, res) {
                 ...(name ? { name } : {}),
                 ...(image ? { image } : {}),
                 ...(desc ? { desc } : {}),
+                ...(email ? { email } : {}),
                 ...(password ? { password } : {})
             }
         })

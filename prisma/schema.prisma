@@ -24,7 +24,7 @@ model account {
   email   String   @unique
   name    String
   username String  @unique
-  image    Bytes?
+  image    String?
   desc    String?
   filterId String[]  @db.ObjectId
   password String?

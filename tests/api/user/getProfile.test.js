@@ -83,11 +83,11 @@ describe('POST /api/user/getProfile', () => {
 
         account = { id: testAccountId}
         response = await request(account)
-        expected = { id: testAccountId, email: '_test1@test.com', 
+        expected = { email: '_test1@test.com', 
             name: '_test1', username: 'testuser', 
             image: unencoded, desc: 'testing desc', error: ''};
         expect(response.status).toBe(200)
-        expect(response.body.id).toEqual(expected.id)
+        expect(response.body).toEqual(expected)
 
     })
 

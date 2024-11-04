@@ -161,68 +161,29 @@ describe('POST /api/user/updateProfile', () => {
         expect(response.status).toBe(409)
     })
 
-    /*
-    it('should fail and return a 400 because of missing arguments', async () => {
-        let newUser, response;
+    it('should fail/return 409 due to inputting a password when there is a googleId', async() =>{
+        let account, response, expected;
 
-        newUser = {
-            username: '_test12', email: 'test12@test.com',
-            displayName: 'test'
-        }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
+        const testImage = './_testPhoto.jpg'
+        const unencoded = btoa(testImage);
 
-        newUser = {
-            username: '_test12', email: 'test12@test.com',
-            password: 'test'
-        }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
+        let testAccountId2 = await prisma.account.create({
+            data: {
+                name: "_test1",
+                desc: "testing desc",
+                image: unencoded,
+                email: "_test1@test.com",
+                username: "testuser",
+                googleId: "defagoogleid",
+            }
+        })
+        testAccountId2 = testAccountId2.id
 
-        newUser = {
-            username: '_test12',
-            displayName: 'test', password: 'test'
+        account = {
+            id: testAccountId2, password: 'password'
         }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
-
-        newUser = {
-            email: 'test12@test.com',
-            displayName: 'test', password: 'test'
-        }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
+        response = await request(account)
+        
+        expect(response.status).toBe(409)
     })
-
-    it('should fail and return a 400 because of invalid arguments', async () => {
-        let newUser, response;
-
-        newUser = {
-            username: 1, email: 'test1@test.com',
-            displayName: 'test', password: 'test'
-        }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
-
-        newUser = {
-            username: '_test1', email: 1,
-            displayName: 'test', password: 'test'
-        }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
-
-        newUser = {
-            username: '_test1', email: 'test1@test.com',
-            displayName: 1, password: 'test'
-        }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
-
-        newUser = {
-            username: '_test1', email: 'test1@test.com',
-            displayName: 'test', password: 1
-        }
-        response = await request(newUser)
-        expect(response.status).toBe(400)
-    })*/
 })
