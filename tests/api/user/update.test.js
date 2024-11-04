@@ -1,12 +1,12 @@
-import handler from '../../../api/user/updateProfile';
+import handler from '../../../api/user/update';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-describe('POST /api/user/updateProfile', () => {
+describe('POST /api/user/update', () => {
     const request = async (body) => {
         const req = {
-            method: 'PUT',
+            method: 'POST',
             body: body
         };
     

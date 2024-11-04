@@ -1,12 +1,12 @@
-import handler from '../../../api/user/deleteProfile';
+import handler from '../../../api/user/delete';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-describe('DELETE /api/user/deleteProfile', () => {
+describe('POST /api/user/delete', () => {
     const request = async (body) => {
         const req = {
-            method: 'DELETE',
+            method: 'POST',
             body: body
         };
     

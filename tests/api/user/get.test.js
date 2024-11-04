@@ -1,9 +1,9 @@
-import handler from '../../../api/user/getProfile';
+import handler from '../../../api/user/get';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-describe('POST /api/user/getProfile', () => {
+describe('POST /api/user/get', () => {
     const request = async (body) => {
         const req = {
             method: 'POST',

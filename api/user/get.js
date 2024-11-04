@@ -11,37 +11,43 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    if (req.method !== 'DELETE') {
+    if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-        const { id } = req.body;
+        const { id } = req.body
 
-        if (id == null) {
+        if(id == null){
             return res.status(400).json({
-            error:
-                'Missing argument (requires id)'
+                error: 'Input must contain an id input'
             })
         }
 
-        let checker = await prisma.account.findFirst({
-            where: {id: id}
+        if (
+            (id && typeof id !== 'string')
+        ) {
+            return res.status(400).json({
+            error: 'Entered id must be a string'
+            })
+        }
+
+        let user = await prisma.account.findFirst({
+            where: {
+            ...(id ? { id } : {})
+            }
         })
 
-        if(checker == null){
+        if (user == null) {
             return res.status(409).json({ error: 'Account not found' })
         }
-        
-        await prisma.account.delete({
-            where: {id: id}
-        })
-    
-        let ret = {  error: '' }
+
+        let ret = { email: user.email, name: user.name, username: user.username, 
+            image: user.image, desc: user.desc, error: ''};
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {
-        console.error('Error during signup:', error);
+        console.error('Error during getProfile:', error);
         res.setHeader('Content-Type', 'application/json');
         return res.status(500).json({ error: error.message });
     } finally {
