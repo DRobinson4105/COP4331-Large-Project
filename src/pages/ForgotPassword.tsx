@@ -28,6 +28,7 @@ const ForgotPasswordPage = () =>
     return(
         <div className="accentColumn">
             <div className="center" style={{marginTop: "25px"}}>
+                <br></br>
                 <Branding />
             </div>
             <h2 className="center">Forgot Password?</h2>
