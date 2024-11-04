@@ -25,7 +25,7 @@ describe('POST /api/recipe/create', () => {
 
     beforeAll(async() => {
         await prisma.$connect();
-        
+        //Create new user to test
         try {
             await prisma.account.deleteMany({
                 where: {
