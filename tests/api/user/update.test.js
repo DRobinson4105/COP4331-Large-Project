@@ -62,7 +62,8 @@ describe('POST /api/user/update', () => {
         input = {
             id: testAccountId, username: '_test2',
             desc: 'test2', password: 'test2',
-            name: '_testnew', image: unencoded
+            name: '_testnew', image: unencoded,
+            email: '_test2@test.com'
         }
         response = await request(input)
 
@@ -70,7 +71,7 @@ describe('POST /api/user/update', () => {
     })
 
     it('check to see if input is actually changed', async () => {
-        let input, response, expected;
+        let input, response, expected, final;
 
         const testImage = './_testPhoto.jpg'
         const unencoded = btoa(testImage);
@@ -78,16 +79,21 @@ describe('POST /api/user/update', () => {
         input = {
             id: testAccountId, username: '_test3',
             desc: 'test3', password: 'test3',
-            name: '_testnew3', image: unencoded
+            name: '_testnew3', image: unencoded,
+            email: '_test3@test.com'
         }
         response = await request(input)
 
-        expected = await prisma.account.findFirst({
+        final = await prisma.account.findFirst({
             where: {id: testAccountId}
         })
 
+        expected = { id: final.id, email: final.email, 
+        name: final.name, username: final.username, 
+        image: final.image, desc: final.desc, password: final.password};
+
         expect(response.status).toBe(200)
-        expect(expected.username).toEqual("_test3")
+        expect(input).toEqual(expected)
     })
 
     it('should fail and return a 400 error because id is missing', async () => {
