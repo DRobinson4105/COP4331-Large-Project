@@ -133,6 +133,34 @@ describe('POST /api/user/updateProfile', () => {
 
         expect(response.status).toBe(200)
     })
+
+    it('should fail/return 409 due to account not existing', async() =>{
+        let account, response, expected;
+
+        testAccountId = await prisma.account.create({
+            data: {
+                name: "_test1",
+                desc: "testing desc",
+                email: "_test1@test.com",
+                username: "_testuser",
+                password: "password",
+            }
+        })
+        account = testAccountId.id
+    
+        await prisma.account.delete({
+            where: {id: account}
+        })
+
+        let input = {
+            id: account, username: '_test3',
+        }
+
+        response = await request(input)
+        
+        expect(response.status).toBe(409)
+    })
+
     /*
     it('should fail and return a 400 because of missing arguments', async () => {
         let newUser, response;

@@ -74,9 +74,9 @@ paths:
     post:
       tags:
       - account
-      summary: Gets all of the information of the account whose id is entered and returns the information
+      summary: Gets most of the information of the account whose id is entered and returns the information
       operationId: doGetProfile
-      description: Matches input with existing account and returns all information about it\
+      description: Matches input with existing account and returns all information about it
       consumes:
       - application/json
       produces:
@@ -100,6 +100,69 @@ paths:
           description: Account not found error
         500:
           description: Server Error
+
+  /user/updateProfile:
+    post:
+      tags:
+      - account
+      summary: Can update most of the information of an account whose ID is given
+      operationId: doUpdateProfile
+      description: Matches input with existing account and alters its information
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: updateProfileItem
+        description: updateProfile
+        schema:
+          $ref: '#definitions/UpdateProfile'
+      responses:
+        200:
+          description: Found and updated the account object whose ID was given with the other given information
+        204:
+          description: No content
+        400:
+          description: Invalid input (missing id or other inputs were not strings)
+        404:
+          description: URL not found
+        409:
+          description: Account not found error
+        500:
+          description: Server Error
+
+  /user/deleteProfile:
+    post:
+      tags:
+      - account
+      summary: Deletes the account whose ID was given
+      operationId: doDeleteProfile
+      description: Matches input with existing account and deletes it
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: deleteProfileItem
+        description: deleteProfile
+        schema:
+          $ref: '#definitions/DeleteProfile'
+      responses:
+        200:
+          description: Found and deleted the account whose ID was recieved
+        204:
+          description: No content
+        400:
+          description: Invalid input (missing id)
+        404:
+          description: URL not found
+        409:
+          description: Account not found error
+        500:
+          description: Server Error
+
 
   /recipe:
     post:
@@ -243,7 +306,45 @@ definitions:
     required:
     - id
     properties:
-    accountId:
+    id:
+      type: string
+      example: "67257d85a43154e1fb7cd14b"
+
+  UpdateProfile:
+    type: object
+    required:
+    - id
+    - username
+    - name
+    - image
+    - desc
+    - password
+    properties:
+    id:
+      type: string
+      example: "67257d85a43154e1fb7cd14b"
+    username:
+      type: string
+      example: "biguser"
+    name:
+      type: string
+      example: "Billy Jobs"
+    image:
+      type: string
+      example: "L1VzZXJzL2ZyZWRyaWNrYm91bG91dGUvRG9jdW1lbnRzL0dpdEh1Yi9DT1A0MzMxLUxhcmdlLVByb2plY3Qvc3JjL19fdGVzdHNfXy9fdGVzdFBob3RvLmpwZw=="
+    desc:
+      type: string
+      example: "Guy who eats a lot"
+    password:
+      type: string
+      example: "secretpassword"
+    
+  DeleteProfile:
+    type: object
+    required:
+    - id
+    properties:
+    id:
       type: string
       example: "67257d85a43154e1fb7cd14b"
   
