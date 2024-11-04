@@ -86,14 +86,14 @@ paths:
         name: getProfileItem
         description: getProfile
         schema:
-          $ref: '#definitions/GetProfile'
+          $ref: '#/definitions/GetProfile'
       responses:
         200:
           description: Found and returned account object containing all of the account's information
         204:
           description: No content
         400:
-          description: Invalid input (missing id)\
+          description: Invalid input (missing id)
         404:
           description: URL not found
         409:
@@ -117,7 +117,7 @@ paths:
         name: updateProfileItem
         description: updateProfile
         schema:
-          $ref: '#definitions/UpdateProfile'
+          $ref: '#/definitions/UpdateProfile'
       responses:
         200:
           description: Found and updated the account object whose ID was given with the other given information
@@ -148,7 +148,7 @@ paths:
         name: deleteProfileItem
         description: deleteProfile
         schema:
-          $ref: '#definitions/DeleteProfile'
+          $ref: '#/definitions/DeleteProfile'
       responses:
         200:
           description: Found and deleted the account whose ID was recieved
@@ -253,6 +253,36 @@ paths:
           description: URL Not Found
         500:
           description: Server Error
+  
+  /tag/create:
+    post:
+      tags:
+      - tag
+      summary: Creates a tag using name & color and returns its id.
+      operationId: doCreateTag
+      description: Creates a tag using name & color and returns its id.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: createTagItem
+        description: createTag
+        schema:
+          $ref: '#/definitions/CreateTag'
+      responses:
+        200:
+          description: Created Tag
+        204:
+          description: No Content
+        400:
+          description: Invalid Input (Missing Inputs)
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+
 
 definitions:
   Login:
@@ -306,9 +336,9 @@ definitions:
     required:
     - id
     properties:
-    id:
-      type: string
-      example: "67257d85a43154e1fb7cd14b"
+      id:
+        type: string
+        example: "67257d85a43154e1fb7cd14b"
 
   UpdateProfile:
     type: object
@@ -320,40 +350,40 @@ definitions:
     - desc
     - password
     properties:
-    id:
-      type: string
-      example: "67257d85a43154e1fb7cd14b"
-    username:
-      type: string
-      example: "biguser"
-    name:
-      type: string
-      example: "Billy Jobs"
-    image:
-      type: string
-      example: "L1VzZXJzL2ZyZWRyaWNrYm91bG91dGUvRG9jdW1lbnRzL0dpdEh1Yi9DT1A0MzMxLUxhcmdlLVByb2plY3Qvc3JjL19fdGVzdHNfXy9fdGVzdFBob3RvLmpwZw=="
-    desc:
-      type: string
-      example: "Guy who eats a lot"
-    password:
-      type: string
-      example: "secretpassword"
-    
+      id:
+        type: string
+        example: "67257d85a43154e1fb7cd14b"
+      username:
+        type: string
+        example: "biguser"
+      name:
+        type: string
+        example: "Billy Jobs"
+      image:
+        type: string
+        example: "L1VzZXJzL2ZyZWRyaWNrYm91bG91dGUvRG9jdW1lbnRzL0dpdEh1Yi9DT1A0MzMxLUxhcmdlLVByb2plY3Qvc3JjL19fdGVzdHNfXy9fdGVzdFBob3RvLmpwZw=="
+      desc:
+        type: string
+        example: "Guy who eats a lot"
+      password:
+        type: string
+        example: "secretpassword"
+
   DeleteProfile:
     type: object
     required:
     - id
     properties:
-    id:
-      type: string
-      example: "67257d85a43154e1fb7cd14b"
+      id:
+        type: string
+        example: "67257d85a43154e1fb7cd14b"
   
   Recipe:
     type: object
     required:
     - id
     properties:
-      recipeId:
+      id:
         type: string
         example: "67252a9906b07a7478339fe9"
 
@@ -416,6 +446,20 @@ definitions:
         items:
           type: string
         example: ["67252a9906b07a7478339fe9"]
+
+  CreateTag:
+    type: object
+    required:
+    - name
+    - color
+    properties:
+      name:
+        type: string
+        example: "_test"
+      color:
+        type: string
+        example: "Black"
+      
 
 host: nomnom.network:3000
 basePath: /
