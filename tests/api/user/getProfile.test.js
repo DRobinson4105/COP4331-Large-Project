@@ -78,11 +78,14 @@ describe('POST /api/user/getProfile', () => {
     it('should take in an id and return the account', async() =>{
         let account, response, expected;
 
+        const testImage = './_testPhoto.jpg'
+        const unencoded = btoa(testImage);
+
         account = { id: testAccountId}
         response = await request(account)
-        expected = await prisma.account.findFirst({
-            where: {id : testAccountId}
-        })
+        expected = { id: testAccountId, email: '_test1@test.com', 
+            name: '_test1', username: 'testuser', 
+            image: unencoded, desc: 'testing desc', error: ''};
         expect(response.status).toBe(200)
         expect(response.body.id).toEqual(expected.id)
 
@@ -112,7 +115,7 @@ describe('POST /api/user/getProfile', () => {
 
     })
 
-    it('should fail/return 409 due to missing argument', async() =>{
+    it('should fail/return 409 due to account not existing', async() =>{
         let account, response, expected;
 
         account = {id: test1Id}

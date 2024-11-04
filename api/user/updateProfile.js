@@ -50,7 +50,7 @@ export default async function handler(req, res) {
                 ...(password ? { password } : {})
             }
         })
-        
+    
         let ret = {  error: '' }
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)

@@ -42,6 +42,8 @@ export default async function handler(req, res) {
             return res.status(409).json({ error: 'Account not found' })
         }
 
+        let ret = { id: user.id, email: user.email, name: user.name, username: user.username, 
+            image: user.image, desc: user.desc, error: ''};
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(user)
     } catch (error) {
