@@ -66,12 +66,12 @@ export default async function handler(req, res) {
             })
         }
 
-        return res.status(200).json(recipeList)
         res.setHeader('Content-Type', 'application/json');
+        return res.status(200).json(recipeList)
     } catch (error) {
         console.error('Error during signup:', error);
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).json({ error: error });
+        return res.status(500).json({ error: error.message });
     } finally {
         await prisma.$disconnect();
     }
