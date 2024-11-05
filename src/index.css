@@ -164,6 +164,17 @@ body, .landing-title {
   display: inline-block;
 }
 
+.tag {
+  border: 1px solid black;
+  padding: 0px 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: normal;
+  display: inline-block;
+}
+
 @media (max-width: 800px) {
   .filter {
     width: 100%;

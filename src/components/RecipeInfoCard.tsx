@@ -8,6 +8,13 @@ function RecipeInfoCard()
             <div style={{display: "inline-block"}}>
                 <h3>Homemade Stew</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut lab</p>
+                <div style={{overflowX: "scroll"}}>
+                    <a className="tag">Vegan</a>
+                    <a className="tag">Meal Prep</a>
+                    <a className="tag">Low Calorie</a>
+                    <a className="tag">Family Meal</a>
+                    <a className="tag">Short Prep Time</a>
+            </div>
             </div>
         </div>
    );
