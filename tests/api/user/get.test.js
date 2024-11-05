@@ -21,7 +21,7 @@ describe('POST /api/user/get', () => {
         return {status: res.status.mock.calls[0][0], body: res.json.mock.calls[0][0]};
     }
 
-    let test1Id, test2Id, testAccountId;
+    let test1Id, test2Id, testAccountId, recipeTestId, testAccountId2;
 
     beforeAll(async() => {
         await prisma.$connect();
@@ -52,19 +52,48 @@ describe('POST /api/user/get', () => {
             })
             testAccountId = testAccountId.id
 
+            testAccountId2 = await prisma.account.create({
+                data: {
+                    name: "_test1",
+                    desc: "testing desc",
+                    image: unencoded,
+                    email: "_test1@test.com",
+                    username: "testuser",
+                    password: "password",
+                }
+            })
+            testAccountId2 = testAccountId2.id
+            
             test1Id = await prisma.recipe.create({
                 data: {
                     name: "_test1",
                     desc: "testing desc",
                     image: unencoded,
-                    macroTrack: [1.0, 2.0, 3.0, 4.0],//Needs Four 
-                    authorId: testAccountId,
+                    calories: 1,
+                    fat: 1,
+                    carbs: 1,
+                    protein: 1,
+                    authorId: testAccountId2,
                     instructions: ["testInstructions"],
                     ingredients: ["testing"],
                     tagId: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
                 }
             })
             test1Id = test1Id.id
+
+            recipeTestId = await prisma.recipe.create({
+                data: {
+                    name: "_testrec",
+                    desc: "recipe description",
+                    image: unencoded,
+                    calories: 1,
+                    fat: 1,
+                    carbs: 1,
+                    protein: 1,
+                    authorId: testAccountId
+                }
+            })
+            recipeTestId = recipeTestId.id
             
         } catch (error) {
             console.error('Error Deleting Test Entries:', error)
@@ -81,11 +110,19 @@ describe('POST /api/user/get', () => {
         const testImage = './_testPhoto.jpg'
         const unencoded = btoa(testImage);
 
+        let recipe = [{
+            id: recipeTestId,
+            name: "_testrec",
+            desc: "recipe description",
+            image: unencoded,
+            tagId: []
+        }]
+
         account = { id: testAccountId}
         response = await request(account)
         expected = { email: '_test1@test.com', 
             name: '_test1', username: 'testuser', 
-            image: unencoded, desc: 'testing desc', error: ''};
+            image: unencoded, desc: 'testing desc', recipes: recipe, error: ''};
         expect(response.status).toBe(200)
         expect(response.body).toEqual(expected)
 
