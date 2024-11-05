@@ -11,7 +11,7 @@ model recipe {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   desc     String
-  image    Bytes
+  image    String
   calories  Float
   fat       Float
   carbs     Float
