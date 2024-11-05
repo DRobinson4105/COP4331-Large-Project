@@ -12,7 +12,10 @@ model recipe {
   name     String
   desc     String
   image    Bytes
-  macroTrack   Float[]
+  calories  Float
+  fat       Float
+  carbs     Float
+  protein   Float
   authorId String    @db.ObjectId
   instructions String[]
   ingredients String[]

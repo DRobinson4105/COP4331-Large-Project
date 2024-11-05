@@ -42,8 +42,13 @@ export default async function handler(req, res) {
             return res.status(409).json({ error: 'Account not found' })
         }
 
+        let recipes = await prisma.recipe.findMany({
+            where: {authorId: user.id},
+            select: {id: true, name: true, image: true, desc: true, tagId: true}
+        })
+
         let ret = { email: user.email, name: user.name, username: user.username, 
-            image: user.image, desc: user.desc, error: ''};
+            image: user.image, desc: user.desc, recipes: recipes, error: ''};
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {
