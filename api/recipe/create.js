@@ -41,23 +41,23 @@ export default async function handler(req, res) {
             carbs == null ||
             protein == null ||
             authorId == null ||
-            ingredients == null ||
-            instructions == null
+            instructions == null ||
+            ingredients == null 
         ) {
             return res.status(400).json({
             error:
-                'Missing argument (requires name, desc, image, macroTrack, ingredients, instructions & authorId)'
+                'Missing argument (requires name, desc, image, macros, ingredients, instructions & authorId)'
             })
         }
-        
+
         if (
             (name && typeof name !== 'string') ||
             (desc && typeof desc !== 'string') ||
-            (image && typeof image !== 'string') || //arrays return object
+            (image && typeof image !== 'string') ||
             (calories && typeof calories !== 'number') ||
             (fat && typeof fat !== 'number') ||
             (carbs && typeof carbs !== 'number') ||
-            (protien && typeof protein !== 'number') ||
+            (protein && typeof protein !== 'number') ||
             (authorId && typeof authorId !== 'string')
         ) {
             return res.status(400).json({
@@ -65,17 +65,52 @@ export default async function handler(req, res) {
                 'Name, desc and authorId must be strings.\n Macros must be an array of floats.'
             })
         }
-        if(Array.isArray(instructions) && instructions.every(item => typeof item !== 'string')){
+        //Check Macros
+        if(typeof calories !== 'number'){
+            return res.status(400).json({
+                error:
+                    'Calories must be a number'
+                })
+        }
+        if(typeof fat !== 'number'){
+            return res.status(400).json({
+                error:
+                    'fat must be a number'
+                })
+        }
+        if(typeof carbs !== 'number'){
+            return res.status(400).json({
+                error:
+                    'Carbs must be a number'
+                })
+        }
+        if(typeof protein !== 'number'){
+            return res.status(400).json({
+                error:
+                    'Protein must be a number'
+                })
+        }
+
+
+        if(!(Array.isArray(instructions)) || instructions.every(item => typeof item !== 'string')){
             return res.status(400).json({
                 error:
                     'Instructions must be an array of strings'
                 })
         }
-        if(Array.isArray(ingredients) && ingredients.every(item => typeof item !== 'string')){
+        if(!(Array.isArray(ingredients)) || ingredients.every(item => typeof item !== 'string')){
             return res.status(400).json({
                 error:
                     'Ingredients must be an array of strings'
                 })
+        }
+        if(tagId != null){
+            if(!(Array.isArray(tagId)) || ingredients.every(item => typeof item !== 'string')){
+                return res.status(400).json({
+                    error:
+                        'tagId must be an array of strings'
+                    })
+            }
         }
        
 
@@ -109,7 +144,7 @@ export default async function handler(req, res) {
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {
-        console.error('Error during signup:', error);
+        console.error('Error during creating recipe:', error);
         res.setHeader('Content-Type', 'application/json');
         return res.status(500).json({ error: error.message });
     } finally {
