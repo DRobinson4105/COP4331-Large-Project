@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Branding from '../components/Branding.tsx';
 import "../index.css"
 import { useGoogleLogin } from '@react-oauth/google';
@@ -21,6 +21,11 @@ const SignUpPage = () =>
     const [confirmedPassword,setConfirmedPassword] = React.useState('');
     const [username,setUsername] = React.useState('');
     const [displayName,setDisplayName] = React.useState('');
+
+    useEffect(() => {
+        const root = document.documentElement;
+        root.style.setProperty('background-color', '#8ED081');
+    }, []);
 
     const login = useGoogleLogin({
             onSuccess: (codeResponse) => {

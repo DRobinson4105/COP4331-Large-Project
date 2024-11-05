@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Branding from '../components/Branding.tsx';
 import "../index.css"
 import { Link } from 'react-router-dom';
@@ -7,6 +7,11 @@ const ForgotPasswordPage = () =>
 {
     const [message,setMessage] = useState('');
     const [email,setEmail] = React.useState('');
+
+    useEffect(() => {
+        const root = document.documentElement;
+        root.style.setProperty('background-color', '#8ED081');
+    }, []);
 
     async function doRecovery(event:any) : Promise<void>
     {

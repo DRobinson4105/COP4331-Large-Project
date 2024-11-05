@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import VerifiedNavBar from '../components/VerifiedNavBar';
 import "../index.css";
 
 const ProfilePage: React.FC = () => {
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('background-color', '#FFFEEE');
+  }, []);
+
   return (
     <div>
       <VerifiedNavBar /> 

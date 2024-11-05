@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Branding from '../components/Branding.tsx';
 import "../index.css"
 import { Link } from 'react-router-dom';
@@ -15,6 +15,11 @@ export default () => {
     const [message, setMessage] = useState('');
     const [username, setUsername] = React.useState('');
     const [displayName, setDisplayName] = React.useState('');
+
+    useEffect(() => {
+        const root = document.documentElement;
+        root.style.setProperty('background-color', '#8ED081');
+    }, []);
 
     async function doSignUp(event:any) : Promise<void> {
         event.preventDefault();

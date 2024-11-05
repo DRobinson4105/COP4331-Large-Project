@@ -7,7 +7,7 @@
   
 
 :root {
-    background-color: #8ED081;
+    background-color: #FFFEEE;
 }
 
 .accentColumn {
@@ -148,10 +148,11 @@ body, .landing-title {
   margin: 10px;
   padding: 10px;
   overflow: hidden;
+  border: 1px solid black;
 }
 
 .recipes {
-  width: calc(70% - 40px);
+  width: calc(70% - 42px);
   display: inline-block;
 }
 
