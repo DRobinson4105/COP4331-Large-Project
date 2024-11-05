@@ -79,14 +79,13 @@ export default async function handler(req, res) {
         }
        
 
-
+        //Image code, unsure on which one to use
         let image64 = btoa(image);
         let imageBin = Binary.createFromBase64(image);
-
         let imageData = Binary.createFromBase64(image);
-
         let test = imageData.toJSON();
 
+        
         let recipe = await prisma.recipe.create({
             data: {
             name: name,

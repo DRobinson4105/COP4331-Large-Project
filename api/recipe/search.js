@@ -16,7 +16,7 @@ export default async function handler (req, res) {
   }
 
   try {
-    const { name, minMacroTrack, maxMacroTrack, tags } = req.body
+    const { name, min, tags } = req.body
     let recipeList = null;
 
     if (

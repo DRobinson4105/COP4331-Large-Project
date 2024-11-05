@@ -42,7 +42,6 @@ describe('POST /api/tag/search', () => {
 
     let newTag = {
         name: "_test",
-        color: "Yello"
     }
     
 
@@ -55,7 +54,6 @@ describe('POST /api/tag/search', () => {
 
         tag = {
             name: "_test", 
-            color: ""
         }
         response = await request(tag)
         
@@ -64,7 +62,6 @@ describe('POST /api/tag/search', () => {
 
         tag = {
             name: "_test", 
-            color: "Yellow"
         }
         response = await request(tag)
         
@@ -76,18 +73,10 @@ describe('POST /api/tag/search', () => {
 
         tagList = {
             name: 1, 
-            color: "Yellow" 
         }
         response = await request(tagList)
         expect(response.status).toBe(400)
 
-
-        tagList = {
-            name: "G", 
-            colors: 1
-        }
-        response = await request(tagList)
-        expect(response.status).toBe(400)
         
     })
 
@@ -95,15 +84,9 @@ describe('POST /api/tag/search', () => {
         let tagList, response;
 
         tagList = {
-            name: "G"
+
         }
         
-        response = await request(tagList)
-        expect(response.status).toBe(400)
-
-        tagList = {
-            color: "Yellow"
-        }
         response = await request(tagList)
         expect(response.status).toBe(400)
        

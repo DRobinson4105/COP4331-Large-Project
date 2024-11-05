@@ -289,9 +289,9 @@ paths:
     post:
       tags:
       - tag
-      summary: Creates a tag using name & color and returns its id.
+      summary: Creates a tag using name and returns its id.
       operationId: doCreateTag
-      description: Creates a tag using name & color and returns its id.
+      description: Creates a tag using name and returns its id.
       consumes:
       - application/json
       produces:
@@ -501,14 +501,10 @@ definitions:
     type: object
     required:
     - name
-    - color
     properties:
       name:
         type: string
         example: "_test"
-      color:
-        type: string
-        example: "Black"
 
 
       

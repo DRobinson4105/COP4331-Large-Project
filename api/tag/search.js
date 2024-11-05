@@ -18,18 +18,17 @@ export default async function handler (req, res) {
   try {
     const { name, color} = req.body
 
-    if ( name == null ||color == null) 
+    if ( name == null) 
     {
       return res.status(400).json({
-        error: 'Missing argument (requires name & color)'
+        error: 'Missing argument (requires name)'
       })
     }
 
-    if (name && typeof name != 'string'
-        || color && typeof  color != 'string'
-    ) {
+    if (name && typeof name != 'string')
+    {
         return res.status(400).json({
-          error: 'name & color must be a string'
+          error: 'name must be a string'
         })
       
     }
@@ -38,8 +37,7 @@ export default async function handler (req, res) {
     //Change to different macros and search using that
     let tagList = await prisma.tag.findMany({
         where: {
-            name: { contains: name },
-            color: {contains: color}
+            name: { contains: name }
         },
       })
     
