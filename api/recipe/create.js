@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { Binary } from 'mongodb';
 
 const prisma = new PrismaClient();
 
@@ -20,7 +21,10 @@ export default async function handler(req, res) {
             name,
             desc,
             image,
-            macroTrack,
+            calories,
+			fat,
+			carbs,
+			protein,
             authorId,
             instructions,
             ingredients,
@@ -32,12 +36,17 @@ export default async function handler(req, res) {
             name == null ||
             desc == null ||
             image == null ||
-            macroTrack == null ||
-            authorId == null
+            calories == null ||
+            fat == null ||
+            carbs == null ||
+            protein == null ||
+            authorId == null ||
+            ingredients == null ||
+            instructions == null
         ) {
             return res.status(400).json({
             error:
-                'Missing argument (requires name, desc, image, macroTrack & authorId)'
+                'Missing argument (requires name, desc, image, macroTrack, ingredients, instructions & authorId)'
             })
         }
         
@@ -45,70 +54,58 @@ export default async function handler(req, res) {
             (name && typeof name !== 'string') ||
             (desc && typeof desc !== 'string') ||
             (image && typeof image !== 'string') || //arrays return object
-            (macroTrack && typeof macroTrack != 'object') ||
-            (authorId && typeof authorId !== 'string') ||
-            (macroTrack[0] && typeof macroTrack[0] != 'number') //instructions/ingredients/tagId not necessary
+            (calories && typeof calories !== 'number') ||
+            (fat && typeof fat !== 'number') ||
+            (carbs && typeof carbs !== 'number') ||
+            (protien && typeof protein !== 'number') ||
+            (authorId && typeof authorId !== 'string')
         ) {
             return res.status(400).json({
             error:
-                'Name, desc and authorId must be strings.\n MacroTrack must be an array of floats.'
+                'Name, desc and authorId must be strings.\n Macros must be an array of floats.'
             })
         }
-        if (
-            (tagId && typeof tagId != 'object') ||
-            (ingredients[0] && typeof ingredients[0] != 'string') ||
-            (tagId[0] && typeof tagId[0] != 'string')
-        ) {
-        }
-        if (instructions != null) {
-            if (
-            (instructions && typeof instructions != 'object') ||
-            (instructions[0] && typeof instructions[0] != 'string')
-            ) {
+        if(Array.isArray(instructions) && instructions.every(item => typeof item !== 'string')){
             return res.status(400).json({
-                error: 'Instructions must be an array of strings'
-            })
-            }
+                error:
+                    'Instructions must be an array of strings'
+                })
         }
-        if (ingredients != null) {
-            if (
-            (ingredients && typeof ingredients != 'object') ||
-            (ingredients[0] && typeof ingredients[0] != 'string')
-            ) {
+        if(Array.isArray(ingredients) && ingredients.every(item => typeof item !== 'string')){
             return res.status(400).json({
-                error: 'Ingredients must be an array of strings'
-            })
-            }
+                error:
+                    'Ingredients must be an array of strings'
+                })
         }
-        if (tagId != null) {
-            if (
-            (tagId && typeof tagId != 'object') ||
-            (tagId[0] && typeof tagId[0] != 'string')
-            ) {
-            return res.status(400).json({
-                error: 'tagId must be an array of strings'
-            })
-            }
-        }
-        
-        if (macroTrack.length != 4) {
-            return res.status(400).json({
-            error: 'Marco Array missing parameter [Must Be 4 Floats]'
-            })
-        }
+       
+
+
+        let image64 = btoa(image);
+        let imageBin = Binary.createFromBase64(image);
+
+        let imageData = Binary.createFromBase64(image);
+
+        let test = imageData.toJSON();
+
         let recipe = await prisma.recipe.create({
             data: {
             name: name,
             desc: desc,
-            image: image,
-            macroTrack: macroTrack,
+            image: test,
+            calories: calories,
+            fat: fat,
+            carbs: carbs,
+            protein: protein,
             authorId: authorId,
-            ...(instructions ? { instructions } : {}),
-            ...(ingredients ? { ingredients } : {}),
+            instructions: instructions,
+            ingredients: ingredients,
             ...(tagId ? { tagId } : {})
             }
         })
         
+  
+        
+
         let ret = { recipeId: recipe.id, error: '' }
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)

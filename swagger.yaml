@@ -229,7 +229,7 @@ paths:
     post:
       tags:
       - recipe
-      summary: Creates a recipe using (name, desc, image, macroTrack, authorId, instructions, ingredients, tagId) and returns the recipeId.
+      summary: Creates a recipe using (name, desc, image, macros, authorId, instructions, ingredients, tagId) and returns the recipeId.
       operationId: doCreateRecipe
       description: Creates a recipe using inputted info and returns the recipeId.
       consumes:
@@ -408,7 +408,10 @@ definitions:
     - name
     - desc
     - image
-    - macroTrack
+    - calories
+    - fat
+    - carbs
+    - protein
     - authorId
     - instructions
     - ingredients
@@ -423,11 +426,18 @@ definitions:
       image:
         type: string
         example: "L1VzZXJzL2ZyZWRyaWNrYm91bG91dGUvRG9jdW1lbnRzL0dpdEh1Yi9DT1A0MzMxLUxhcmdlLVByb2plY3Qvc3JjL19fdGVzdHNfXy9fdGVzdFBob3RvLmpwZw=="
-      macroTrack: 
-        type: array
-        items:
-          type: number
-        example: [120.0, 120.0, 120.0, 120.0]
+      calories: 
+        type: number
+        example: 200.0
+      fat: 
+        type: number
+        example: 200.0
+      carbs: 
+        type: number
+        example: 200.0
+      protein: 
+        type: number
+        example: 200.0
       authorId:
         type: string
         example: "67252a9906b07a7478339fe9"

@@ -35,6 +35,19 @@ describe('POST /api/recipe/search', () => {
 					name: { startsWith: '_test' }
 				}
 			})
+            await prisma.recipe.create({
+                newRecipe: {
+                    name: "_test",
+                    desc: "testing desc",
+                    image: "",
+                    macroTrack: [1.0, 2.0, 3.0, 4.0],
+                    authorId: test1Id,
+                    instructions: ["testInstructions"],
+                    ingredients: ["testing"],
+                    tagId: ["6724e84caf5041d082f98234"]
+                }
+            
+            })
         } catch (error) {
             console.error('Error Deleting Test Entries:', error)
         }
