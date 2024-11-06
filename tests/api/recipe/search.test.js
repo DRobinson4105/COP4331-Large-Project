@@ -36,12 +36,15 @@ describe('POST /api/recipe/search', () => {
 				}
 			})
             await prisma.recipe.create({
-                newRecipe: {
+                data : {
                     name: "_test",
                     desc: "testing desc",
                     image: "",
-                    macroTrack: [1.0, 2.0, 3.0, 4.0],
-                    authorId: test1Id,
+                    calories: 100,
+                    fat: 200,
+                    carbs: 300,
+                    protein: 1000,
+                    authorId: "6724e84caf5041d082f98234",
                     instructions: ["testInstructions"],
                     ingredients: ["testing"],
                     tagId: ["6724e84caf5041d082f98234"]
@@ -60,13 +63,39 @@ describe('POST /api/recipe/search', () => {
     it('should take in name/filters and return an array of recipes', async() =>{
         let recipeList, response;
 
+        // recipeList = {
+        //     name: "_test", 
+        //     minCalories: 0,
+        //     maxCalories: 200,
+        //     minFat: 0,
+        //     maxFat: 300,
+        //     minCarbs: 200,
+        //     maxCarbs: 500,
+        //     minProtein: 100,
+        //     maxProtein: 1200,
+        //     tagId: [""]
+        // }
+        // response = await request(recipeList)
+        // expect(response.status).toBe(200)
+
         recipeList = {
             name: "_test", 
-            filters: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
         }
         response = await request(recipeList)
-        
+        console.log(response)
         expect(response.status).toBe(200)
+
+
+
     })
 
     it('should fail/return 400 due to invalid input', async() => {
@@ -74,25 +103,278 @@ describe('POST /api/recipe/search', () => {
 
         recipeList = {
             name: 1, 
-            filters: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
         }
         response = await request(recipeList)
         expect(response.status).toBe(400)
-
 
         recipeList = {
-            name: "G", 
-            filters: 1//Make tags before recipes to attach
+            name: "_test", 
+            minCalories: "hi",
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
         }
         response = await request(recipeList)
         expect(response.status).toBe(400)
-        
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: "hi",
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: "hi",
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: "hi",
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: "hi",
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: "hi",
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: "hi",
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: "hi",
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 100,
+            tagId: 1
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
     })
 
     it('should fail/return 400 due to missing inputs', async() => {
         let recipeList, response;
 
         recipeList = {
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"]
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            maxProtein: 1200
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(400)
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
         }
         response = await request(recipeList)
         expect(response.status).toBe(400)

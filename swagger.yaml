@@ -422,16 +422,48 @@ definitions:
     type: object
     required:
     - name
-    - filters
+    - minCalories
+    - maxCalories
+    - minFat
+    - maxFat
+    - minCarbs
+    - maxCarbs
+    - minProtein
+    - maxProtein
+    - tagId
     properties:
       name:
         type: string
         example: "Green"
-      filters:
+      minCalories:
+        type: number
+        example: 100
+      maxCalories:
+        type: number
+        example: 1000
+      minFat:
+        type: number
+        example: 100
+      maxFat:
+        type: number
+        example: 1000
+      minCarbs:
+        type: number
+        example: 100
+      maxCarbs:
+        type: number
+        example: 1000
+      minProtein:
+        type: number
+        example: 100
+      maxProtein:
+        type: number
+        example: 1000
+      tagId:
         type: array
         items:
           type: string
-        example: ["6724e84caf5041d082f98234"]
+          example: "67252a9906b07a7478339fe9"
   
   CreateRecipe:
     type: object
@@ -481,18 +513,18 @@ definitions:
         type: array
         items:
           type: string
-        example: ["Eggs"]
+        example: "Eggs"
       tagId: 
         type: array
         items:
           type: string
-        example: ["67252a9906b07a7478339fe9"]
+        example: "67252a9906b07a7478339fe9"
 
   DeleteRecipe:
     type: object
     required:
     - id
-    properties
+    properties:
       id:
         type: string
         example: "6723f006ba10f4fd6307a8e9"
