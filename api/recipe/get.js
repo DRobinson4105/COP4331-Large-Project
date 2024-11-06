@@ -39,13 +39,13 @@ export default async function handler(req, res) {
             return res.status(409).json({ error: 'Recipe not found' })
         }
         if(recipe.image != ""){
-            let ret = {name: recipe.name, desc: recipe.desc, image: recipe.image, 
+            var ret = {name: recipe.name, desc: recipe.desc, image: recipe.image, 
                 macroTrack: recipe.macroTrack, authorId: recipe.authorId, 
                 instructions: recipe.instructions, ingredients: recipe.ingredients, tagId: recipe.tagId    
             }
         }
         else{
-            let ret = {name: recipe.name, desc: recipe.desc, image: "", 
+            var ret = {name: recipe.name, desc: recipe.desc, image: "", 
                 macroTrack: recipe.macroTrack, authorId: recipe.authorId, 
                 instructions: recipe.instructions, ingredients: recipe.ingredients, tagId: recipe.tagId    
             }
