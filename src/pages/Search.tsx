@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import RecipeInfoCard from '../components/RecipeInfoCard'
 import "../index.css";
 import Filter from '../components/Filter';
 
 const SearchPage: React.FC = () => {
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('background-color', '#FFFEEE');
+  }, []);
+
   return (
     <div>
         <NavBar />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Branding from '../components/Branding.tsx';
 import "../index.css"
 import { Link } from 'react-router-dom';
@@ -8,6 +8,11 @@ const ResetPasswordPage = () =>
     const [message,setMessage] = useState('');
     const [newPassword,setNewPassword] = React.useState('');
     const [verifyPassword,setVerifyPassword] = React.useState('');
+
+    useEffect(() => {
+      const root = document.documentElement;
+      root.style.setProperty('background-color', '#8ED081');
+    }, []);
 
     async function doReset(event:any) : Promise<void>
     {

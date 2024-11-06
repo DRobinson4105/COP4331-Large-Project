@@ -229,7 +229,7 @@ paths:
     post:
       tags:
       - recipe
-      summary: Creates a recipe using (name, desc, image, macroTrack, authorId, instructions, ingredients, tagId) and returns the recipeId.
+      summary: Creates a recipe using (name, desc, image, macros, authorId, instructions, ingredients, tagId) and returns the recipeId.
       operationId: doCreateRecipe
       description: Creates a recipe using inputted info and returns the recipeId.
       consumes:
@@ -253,14 +253,45 @@ paths:
           description: URL Not Found
         500:
           description: Server Error
+
+  /recipe/delete:
+    post:
+      tags:
+      - recipe
+      summary: Deletes the recipe given an id
+      operationId: doDeleteRecipe
+      description: Matches input with existing recipe and deletes it
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: deleteRecipeItem
+        description: deleteRecipe
+        schema:
+          $ref: '#/definitions/DeleteRecipe'
+      responses:
+        200:
+          description: Found and deleted the recipe whose ID was recieved
+        204:
+          description: No content
+        400:
+          description: Invalid input (missing id)
+        404:
+          description: URL not found
+        409:
+          description: Recipe not found error
+        500:
+          description: Server Error
   
   /tag/create:
     post:
       tags:
       - tag
-      summary: Creates a tag using name & color and returns its id.
+      summary: Creates a tag using name and returns its id.
       operationId: doCreateTag
-      description: Creates a tag using name & color and returns its id.
+      description: Creates a tag using name and returns its id.
       consumes:
       - application/json
       produces:
@@ -408,7 +439,10 @@ definitions:
     - name
     - desc
     - image
-    - macroTrack
+    - calories
+    - fat
+    - carbs
+    - protein
     - authorId
     - instructions
     - ingredients
@@ -423,11 +457,18 @@ definitions:
       image:
         type: string
         example: "L1VzZXJzL2ZyZWRyaWNrYm91bG91dGUvRG9jdW1lbnRzL0dpdEh1Yi9DT1A0MzMxLUxhcmdlLVByb2plY3Qvc3JjL19fdGVzdHNfXy9fdGVzdFBob3RvLmpwZw=="
-      macroTrack: 
-        type: array
-        items:
-          type: number
-        example: [120.0, 120.0, 120.0, 120.0]
+      calories: 
+        type: number
+        example: 200.0
+      fat: 
+        type: number
+        example: 200.0
+      carbs: 
+        type: number
+        example: 200.0
+      protein: 
+        type: number
+        example: 200.0
       authorId:
         type: string
         example: "67252a9906b07a7478339fe9"
@@ -447,18 +488,25 @@ definitions:
           type: string
         example: ["67252a9906b07a7478339fe9"]
 
+  DeleteRecipe:
+    type: object
+    required:
+    - id
+    properties
+      id:
+        type: string
+        example: "6723f006ba10f4fd6307a8e9"
+
   CreateTag:
     type: object
     required:
     - name
-    - color
     properties:
       name:
         type: string
         example: "_test"
-      color:
-        type: string
-        example: "Black"
+
+
       
 
 host: nomnom.network:3000

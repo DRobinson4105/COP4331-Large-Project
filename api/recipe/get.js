@@ -38,9 +38,14 @@ export default async function handler(req, res) {
         if (recipe == null) {
             return res.status(409).json({ error: 'Recipe not found' })
         }
+
+        let ret = {name: recipe.name, desc: recipe.desc, image: recipe.image, 
+            macroTrack: recipe.macroTrack, authorId: recipe.authorId, 
+            instructions: recipe.instructions, ingredients: recipe.ingredients, tagId: recipe.tagId    
+        }
         
         res.setHeader('Content-Type', 'application/json');
-        return res.status(200).json(recipe)
+        return res.status(200).json(ret)
     } catch (error) {
         console.error('Error during signup:', error);
         res.setHeader('Content-Type', 'application/json');

@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import "../index.css";
 
 const LandingPage: React.FC = () => {
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('background-color', '#FFFEEE');
+  }, []);
+
   return (
     <div className="landing-page-bg">
       <NavBar />

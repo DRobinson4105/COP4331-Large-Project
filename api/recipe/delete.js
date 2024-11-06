@@ -16,43 +16,32 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { id } = req.body
+        const { id } = req.body;
 
-        if(id == null){
+        if (id == null) {
             return res.status(400).json({
-                error: 'Input must contain an id input'
+            error:
+                'Missing argument (requires id)'
             })
         }
 
-        if (
-            (id && typeof id !== 'string')
-        ) {
-            return res.status(400).json({
-            error: 'Entered id must be a string'
-            })
-        }
-
-        let user = await prisma.account.findFirst({
-            where: {
-            ...(id ? { id } : {})
-            }
+        let checker = await prisma.recipe.findFirst({
+            where: {id: id}
         })
 
-        if (user == null) {
-            return res.status(409).json({ error: 'Account not found' })
+        if(checker == null){
+            return res.status(409).json({ error: 'Recipe not found' })
         }
-
-        let recipes = await prisma.recipe.findMany({
-            where: {authorId: user.id},
-            select: {id: true, name: true, image: true, desc: true, tagId: true}
+        
+        await prisma.recipe.delete({
+            where: {id: id}
         })
-
-        let ret = { email: user.email, name: user.name, username: user.username, 
-            image: user.image, desc: user.desc, recipes: recipes, error: ''};
+    
+        let ret = {  error: '' }
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {
-        console.error('Error during getProfile:', error);
+        console.error('Error during signup:', error);
         res.setHeader('Content-Type', 'application/json');
         return res.status(500).json({ error: error.message });
     } finally {

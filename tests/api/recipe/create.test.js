@@ -69,12 +69,16 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: "testing desc",
 			image: unencoded,
-			macroTrack: [1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test1Id,
 			instructions: ["testInstructions"],
 			ingredients: ["testing"],
 			tagId: ["6724e84caf5041d082f98234"]
 		}
+
 
 		response = await request(newRecipe)
         expected = await prisma.recipe.findFirst({
@@ -84,12 +88,16 @@ describe('POST /api/recipe/create', () => {
 
 		expect(response.status).toBe(200)
 		expect(response.body.recipeId).toEqual(expected.id)
+		
 
 		newRecipe = {
 			name: "_test2",
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 10,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -114,7 +122,10 @@ describe('POST /api/recipe/create', () => {
 			name: 1,
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -127,7 +138,10 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: 1,
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -140,7 +154,10 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: "testing desc2",
 			image: 1,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -154,7 +171,10 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack: 1,
+			calories: "",
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -167,7 +187,58 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: "",
+			carbs: 300,
+			protein: 1000,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach"
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+	
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: "",
+			protein: 1000,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach"
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+		
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: "",
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach"
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+			name: "_test",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: 1,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -180,7 +251,10 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:1,
 			ingredients:["_testing"],
@@ -193,7 +267,10 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:1,
@@ -206,7 +283,10 @@ describe('POST /api/recipe/create', () => {
 			name: "_test",
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -225,7 +305,10 @@ describe('POST /api/recipe/create', () => {
 		newRecipe = {
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -237,7 +320,10 @@ describe('POST /api/recipe/create', () => {
 		newRecipe = {
             name: "_test2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -249,19 +335,10 @@ describe('POST /api/recipe/create', () => {
 		newRecipe = {
             name: "_test2",
 			desc: "testing desc2",
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
-			authorId: test2Id,
-			instructions:["_test Instructions"],
-			ingredients:["_testing"],
-			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
-		}
-		response = await request(newRecipe)
-        expect(response.status).toBe(400)
-
-		newRecipe = {
-            name: "_test2",
-			desc: "testing desc2",
-			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
@@ -274,12 +351,106 @@ describe('POST /api/recipe/create', () => {
             name: "_test2",
 			desc: "testing desc2",
 			image: unencoded,
-			macroTrack:[1.0, 2.0, 3.0, 4.0],
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
+			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],
 			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
 		}
 		response = await request(newRecipe)
         expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			carbs: 300,
+			protein: 1000,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			protein: 1000,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
+			instructions:["_test Instructions"],
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
+			authorId: test2Id,
+			ingredients:["_testing"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+
+		newRecipe = {
+            name: "_test2",
+			desc: "testing desc2",
+			image: unencoded,
+			calories: 100,
+			fat: 200,
+			carbs: 300,
+			protein: 1000,
+			authorId: test2Id,
+			instructions:["_test Instructions"],
+			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+		}
+		response = await request(newRecipe)
+        expect(response.status).toBe(400)
+
 	})
 })

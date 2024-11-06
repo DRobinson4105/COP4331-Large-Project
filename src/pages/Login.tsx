@@ -57,6 +57,11 @@ const LoginPage = () => {
         [ profile ]
     );
 
+    useEffect(() => {
+        const root = document.documentElement;
+        root.style.setProperty('background-color', '#8ED081');
+    }, []);
+
     function googleLogin() {
         setLoginName(profile.email);
         setGoogleId(profile.id);
