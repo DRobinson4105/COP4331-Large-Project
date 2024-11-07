@@ -60,7 +60,13 @@ export default async function handler (req, res) {
     }
 
     if (image) {
-      var imageBuffer = Buffer.from(image, 'base64')
+      try{
+        var imageBuffer = Buffer.from(image, 'base64')
+      } catch (error){
+        return res.status(400).json({
+          error: 'Error occured with image processing. Not valid image.'
+        })
+      }
     }
 
     if (

@@ -42,9 +42,14 @@ export default async function handler(req, res) {
         const { name, desc, image, calories, fat, carbs, protein, authorId, instructions, ingredients, tagId } = recipe
 
         if (image) {
-            const base64Image = image.toString('base64')
-            const mimeType = 'image/jpeg'
-            var img = `data:${mimeType};base64,${base64Image}`
+            try{
+                const base64Image = image.toString('base64')
+                const mimeType = 'image/jpeg'
+                var img = `data:${mimeType};base64,${base64Image}`
+            } catch (error){
+                return res.status(400).json(
+                    {error: 'Error occured in image processing. Invalid image.'})
+            }
         }
 
         let ret = {
