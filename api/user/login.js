@@ -41,20 +41,20 @@ export default async function handler(req, res) {
             return res.status(401).json({ error: 'Incorrect Username or Password' })
         }
         //If the the user's account exist, generate JWT
-        jwt.sign({user}, 'privatekey', { expiresIn: '1h' },(err, token) => {
-            if(err) { 
-                return res.status(403).json('Error generating JWT ', err)
-            }   
-            // res.send(token); 
-            let ret = {token: token, error: ''}
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(200).json(ret)
+        // jwt.sign({user}, 'privatekey', { expiresIn: '1h' },(err, token) => {
+        //     if(err) { 
+        //         return res.status(403).json('Error generating JWT ', err)
+        //     }   
+        //     // res.send(token); 
+        //     let ret = {token: token, error: ''}
+        //     res.setHeader('Content-Type', 'application/json');
+        //     return res.status(200).json(ret)
 
-        });
+        // });
 
-        //let ret = { userId: user.id, error: '' }
-        // res.setHeader('Content-Type', 'application/json');
-        // return res.status(200).json(token)
+        let ret = { userId: user.id, error: '' }
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(200).json(ret)
     } catch (error) {
         console.error('Error during signup:', error);
         res.setHeader('Content-Type', 'application/json');
