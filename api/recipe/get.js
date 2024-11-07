@@ -32,31 +32,30 @@ export default async function handler(req, res) {
         let recipe = await prisma.recipe.findFirst({
             where: {
             ...(id ? { id } : {})
-            }
+            },
         })
         
         if (recipe == null) {
             return res.status(409).json({ error: 'Recipe not found' })
         }
-        if(recipe.image != ""){
-            var ret = {name: recipe.name, desc: recipe.desc, image: recipe.image, 
-                macroTrack: recipe.macroTrack, authorId: recipe.authorId, 
-                instructions: recipe.instructions, ingredients: recipe.ingredients, tagId: recipe.tagId    
-            }
-        }
-        else{
-            var ret = {name: recipe.name, desc: recipe.desc, image: "", 
-                macroTrack: recipe.macroTrack, authorId: recipe.authorId, 
-                instructions: recipe.instructions, ingredients: recipe.ingredients, tagId: recipe.tagId    
-            }
+
+        const { name, desc, image, calories, fat, carbs, protein, authorId, instructions, ingredients, tagId } = recipe
+
+        if (image) {
+            const base64Image = image.toString('base64')
+            const mimeType = 'image/jpeg'
+            var img = `data:${mimeType};base64,${base64Image}`
         }
 
-        
+        let ret = {
+            name, desc, calories, fat, carbs, protein, authorId, instructions, ingredients, tagId,
+            ...(img ? { image: img } : {})
+        }
         
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {
-        console.error('Error during signup:', error);
+        console.error('Error during retrieving recipe:', error);
         res.setHeader('Content-Type', 'application/json');
         return res.status(500).json({ error: error.message });
     } finally {

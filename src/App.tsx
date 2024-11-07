@@ -10,6 +10,7 @@ import CompleteProfilePage from './pages/CompleteProfile'
 import ProfilePage from './pages/ProfilePage'
 import SearchPage from './pages/Search'
 import Recipe from './pages/Recipe'
+import Test from './pages/Test'
 
 const App: React.FC = () => {
   return (
@@ -22,7 +23,8 @@ const App: React.FC = () => {
         <Route path="/resetpassword" element={<ResetPasswordPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/completeprofile" element={<CompleteProfilePage />} />
-        <Route path="/Search" element={<SearchPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/test" element={<Test />} />
         <Route path="/:username" element={<ProfilePage />} />
         <Route path="/:username/:id" element={<Recipe />}/>
         <Route path="*" element={<Navigate to="/" />} />

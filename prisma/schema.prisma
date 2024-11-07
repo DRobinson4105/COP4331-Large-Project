@@ -11,7 +11,7 @@ model recipe {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   desc     String
-  image    String
+  image     Bytes?
   calories  Float
   fat       Float
   carbs     Float
@@ -27,7 +27,7 @@ model account {
   email   String   @unique
   name    String
   username String  @unique
-  image    String?
+  image    Bytes?
   desc    String?
   filterId String[]  @db.ObjectId
   password String?

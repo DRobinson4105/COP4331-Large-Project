@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Binary } from 'mongodb';
+import fs from 'fs'
+import path, { parse } from 'path'
 
 const prisma = new PrismaClient();
 
@@ -35,7 +37,6 @@ export default async function handler(req, res) {
         if (
             name == null ||
             desc == null ||
-            image == null ||
             calories == null ||
             fat == null ||
             carbs == null ||
@@ -46,14 +47,17 @@ export default async function handler(req, res) {
         ) {
             return res.status(400).json({
             error:
-                'Missing argument (requires name, desc, image, macros, ingredients, instructions & authorId)'
+                'Missing argument (requires name, desc, macros, ingredients, instructions & authorId)'
             })
+        }
+
+        if (image) {
+            var imageBuffer = Buffer.from(image, 'base64')
         }
 
         if (
             (name && typeof name !== 'string') ||
             (desc && typeof desc !== 'string') ||
-            (image && typeof image !== 'string') ||
             (calories && typeof calories !== 'number') ||
             (fat && typeof fat !== 'number') ||
             (carbs && typeof carbs !== 'number') ||
@@ -62,35 +66,9 @@ export default async function handler(req, res) {
         ) {
             return res.status(400).json({
             error:
-                'Name, desc and authorId must be strings.\n Macros must be an array of floats.'
+                'Name, desc and authorId must be strings.\n Macros must be numbers.'
             })
         }
-        //Check Macros
-        if(typeof calories !== 'number'){
-            return res.status(400).json({
-                error:
-                    'Calories must be a number'
-                })
-        }
-        if(typeof fat !== 'number'){
-            return res.status(400).json({
-                error:
-                    'fat must be a number'
-                })
-        }
-        if(typeof carbs !== 'number'){
-            return res.status(400).json({
-                error:
-                    'Carbs must be a number'
-                })
-        }
-        if(typeof protein !== 'number'){
-            return res.status(400).json({
-                error:
-                    'Protein must be a number'
-                })
-        }
-
 
         if(!(Array.isArray(instructions)) || instructions.every(item => typeof item !== 'string')){
             return res.status(400).json({
@@ -112,35 +90,24 @@ export default async function handler(req, res) {
                     })
             }
         }
-       
-
-        //Image code, unsure on which one to use
-        let image64 = btoa(image);
-        let imageBin = Binary.createFromBase64(image);
-        let imageData = Binary.createFromBase64(image);
-        let test = imageData.toJSON();
-
         
         let recipe = await prisma.recipe.create({
             data: {
-            name: name,
-            desc: desc,
-            image: test,
-            calories: calories,
-            fat: fat,
-            carbs: carbs,
-            protein: protein,
-            authorId: authorId,
-            instructions: instructions,
-            ingredients: ingredients,
-            ...(tagId ? { tagId } : {})
+                name,
+                desc,
+                ...(imageBuffer ? { image: imageBuffer } : {}),
+                calories,
+                fat,
+                carbs,
+                protein,
+                authorId,
+                instructions,
+                ingredients,
+                ...(tagId ? { tagId } : {})
             }
         })
-        
-  
-        
 
-        let ret = { recipeId: recipe.id, error: '' }
+        let ret = { id: recipe.id, error: '' }
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {
