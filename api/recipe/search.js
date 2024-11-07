@@ -17,6 +17,7 @@ export default async function handler (req, res) {
 
   try {
     const { name, 
+      firstidx, lastidx,
       minCalories, maxCalories,
       minFat, maxFat,
       minCarbs, maxCarbs,

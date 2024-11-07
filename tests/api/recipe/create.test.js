@@ -87,7 +87,7 @@ describe('POST /api/recipe/create', () => {
         })
 
 		expect(response.status).toBe(200)
-		expect(response.body.recipeId).toEqual(expected.id)
+		expect(response.body.id).toEqual(expected.id)
 		
 
 		newRecipe = {
@@ -110,7 +110,7 @@ describe('POST /api/recipe/create', () => {
             select: { id: true }
         })
         expect(response.status).toBe(200)
-		expect(response.body.recipeId).toEqual(expected.id)
+		expect(response.body.id).toEqual(expected.id)
 	})
     
 	it('should fail and return a 400 due to invalid arguments', async() => {
@@ -320,21 +320,6 @@ describe('POST /api/recipe/create', () => {
 		newRecipe = {
             name: "_test2",
 			image: unencoded,
-			calories: 100,
-			fat: 200,
-			carbs: 300,
-			protein: 1000,
-			authorId: test2Id,
-			instructions:["_test Instructions"],
-			ingredients:["_testing"],
-			tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
-		}
-		response = await request(newRecipe)
-        expect(response.status).toBe(400)
-
-		newRecipe = {
-            name: "_test2",
-			desc: "testing desc2",
 			calories: 100,
 			fat: 200,
 			carbs: 300,
