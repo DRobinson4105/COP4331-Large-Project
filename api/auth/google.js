@@ -5,18 +5,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
-
     try {
         const { access_token } = req.body
 
@@ -43,7 +31,7 @@ export default async function handler(req, res) {
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json({ email: result.data.email, id: result.data.id, name: result.data.name })
     } catch (error) {
-        console.error('Error during signup:', error);
+        console.error('Error:', error);
         res.setHeader('Content-Type', 'application/json');
         return res.status(500).json({ error: error.message });
     } finally {

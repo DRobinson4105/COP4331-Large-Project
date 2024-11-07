@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "start": "npx vercel dev",
+    "start": "node api/server.js",
     "preview": "vite preview",
     "test": "jest --runInBand",
     "start:all": "npm test && npm run build && concurrently \"npm start\" \"npm run preview\"",
