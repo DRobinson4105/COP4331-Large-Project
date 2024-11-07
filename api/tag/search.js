@@ -16,7 +16,7 @@ export default async function handler (req, res) {
   }
 
   try {
-    const { name, color} = req.body
+    const { name } = req.body
 
     if ( name == null) 
     {

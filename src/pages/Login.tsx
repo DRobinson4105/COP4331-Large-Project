@@ -3,7 +3,6 @@ import Branding from '../components/Branding.tsx';
 import "../index.css"
 import { useGoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const LoginPage = () => {
     const baseUrl = process.env.NODE_ENV === 'production' 
@@ -14,7 +13,6 @@ const LoginPage = () => {
         return baseUrl + "/api/" + route;
     }
 
-    const [user, setUser] = useState({access_token: "0"});
     const [profile, setProfile] = useState({id: "", email: "", name: ""});
     const [message,setMessage] = useState('');
     const [loginName,setLoginName] = React.useState('');
@@ -23,30 +21,18 @@ const LoginPage = () => {
     const [loginPassword,setPassword] = React.useState('');
 
     const login = useGoogleLogin({
-        onSuccess: (codeResponse) => {
-            setUser(codeResponse);
+        onSuccess: async (codeResponse) => {
+            var response = await fetch(
+                buildPath('auth/google'),
+                {method:'POST',body:JSON.stringify({ access_token: codeResponse.access_token }), headers:{'Content-Type': 'application/json'}}
+            );
+
+            var res = JSON.parse(await response.text());
+
+            setProfile({id: res.id, email: res.email, name: res.name })
         },
         onError: (error) => console.log('Login Failed:', error)
     });
-
-    useEffect(
-        () => {
-            if (user) {
-                axios
-                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                        headers: {
-                            Authorization: `Bearer ${user.access_token}`,
-                            Accept: 'application/json'
-                        }
-                    })
-                    .then((res) => {
-                        setProfile(res.data);
-                    })
-                    .catch((err) => console.log(err));
-            }
-        },
-        [ user ]
-    );
 
     useEffect(
         () => {

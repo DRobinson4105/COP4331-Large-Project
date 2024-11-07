@@ -34,8 +34,7 @@ export default async function handler(req, res) {
             (googleId == null && password == null)
         ) {
             return res.status(400).json({
-            error:
-                'Missing argument (requires either username or email, and either googleId or password)'
+                error: 'Missing argument (requires either username or email, and either googleId or password)'
             })
         }
 

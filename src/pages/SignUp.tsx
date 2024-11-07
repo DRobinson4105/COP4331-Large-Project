@@ -3,10 +3,8 @@ import Branding from '../components/Branding.tsx';
 import "../index.css"
 import { useGoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
-const SignUpPage = () =>
-{
+const SignUpPage = () => {
     const baseUrl = process.env.NODE_ENV === 'production' 
         ? import.meta.env.VITE_API_URL
         : 'http://localhost:3000';
@@ -28,21 +26,16 @@ const SignUpPage = () =>
     }, []);
 
     const login = useGoogleLogin({
-            onSuccess: (codeResponse) => {
-                axios
-                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${codeResponse.access_token}`, {
-                        headers: {
-                            Authorization: `Bearer ${codeResponse.access_token}`,
-                            Accept: 'application/json'
-                        }
-                    })
-                    .then((res) => {
-                        finishGoogleLogin(res.data.email, res.data.id)
-                    })
-                    .catch((err) => console.log(err));
+            onSuccess: async (codeResponse) => {
+                var response = await fetch(
+                    buildPath('auth/google'),
+                    {method:'POST',body:JSON.stringify({ access_token: codeResponse.access_token }), headers:{'Content-Type': 'application/json'}}
+                );
 
+                var res = JSON.parse(await response.text());
+                finishGoogleLogin(res.email, res.id)
             },
-            onError: (error) => console.log('Login Failed:', error)
+            onError: (error) => console.log('Sign Up Failed:', error)
         });
 
     async function finishGoogleLogin(email: string, googleId: string) {
@@ -51,7 +44,7 @@ const SignUpPage = () =>
         try {
             var response = await fetch(
                 buildPath('user/verifyemail'),
-                {method:'POST',body:JSON.stringify({ email }),headers:{'Content-Type': 'application/json'}}
+                {method:'POST',body:JSON.stringify({ email }), headers:{'Content-Type': 'application/json'}}
             );
         } catch (error: any) {
             setMessage('Cannot complete action at this time');
