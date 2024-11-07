@@ -21,7 +21,7 @@ describe('POST /api/recipe/get', () => {
         return {status: res.status.mock.calls[0][0], body: res.json.mock.calls[0][0]};
     }
 
-    let test1Id, test2Id, testRecipeId;
+    let test1Id, test2Id, testRecipeId, testRecipe;
 
     beforeAll(async() => {
         await prisma.$connect();
@@ -54,19 +54,23 @@ describe('POST /api/recipe/get', () => {
                 }
             })
             test2Id = test2Id.id
-            testRecipeId = await prisma.recipe.create({
+            testRecipe = await prisma.recipe.create({
                 data: {
-                    name: "_test1",
-                    desc: "testing desc",
-                    image: unencoded,
-                    macroTrack: [1.0, 2.0, 3.0, 4.0],//Needs Four 
-                    authorId: test1Id,
-                    instructions: ["testInstructions"],
-                    ingredients: ["testing"],
-                    tagId: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+                    name: "_test2",
+                    desc: "testing desc2",
+                    calories: 100,
+                    fat: 200,
+                    carbs: 300,
+                    protein: 10,
+                    authorId: test2Id,
+                    instructions:["_test Instructions"],
+                    ingredients:["_testing"],
+                    tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
                 }
             })
-            testRecipeId = testRecipeId.id
+            testRecipeId = testRecipe.id
+
+
         } catch (error) {
             console.error('Error Deleting Test Entries:', error)
         }
@@ -85,7 +89,7 @@ describe('POST /api/recipe/get', () => {
             where: {id : testRecipeId}
         })
         expect(response.status).toBe(200)
-        expect(response.body.id).toEqual(expected.id)
+        expect(response.body.name).toEqual(expected.name)//Changed to use name as it does not return an id
 
     })
 
