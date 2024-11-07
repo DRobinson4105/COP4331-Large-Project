@@ -14,12 +14,21 @@ export default async function handler (req, res) {
 
 		if (
 			name == null || desc == null || authorId == null || instructions == null ||
-			ingredients == null || calories == null || fat == null || carbs == null ||
-			protein == null || tagId
+			ingredients == null || tagId == null
 		) {
 			return res.status(400).json({
 				error:
-				'Missing argument (requires name, desc, ingredients, instructions, authorId, calories, fat, carbs, protein, and tagId)'
+				'Missing argument (requires name, desc, ingredients, instructions, authorId, and tagId)'
+			})
+		}
+
+    if(
+      calories == null || fat == null || carbs == null ||
+			protein == null
+    ){
+			return res.status(400).json({
+				error:
+				'Missing argument ( calories, fat, carbs, protein)'
 			})
 		}
 

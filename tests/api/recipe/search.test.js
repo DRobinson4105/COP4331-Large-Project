@@ -88,7 +88,9 @@ describe('POST /api/recipe/search', () => {
             maxCarbs: 500,
             minProtein: 100,
             maxProtein: 1200,
-            tagId: ["6724e84caf5041d082f98234"]
+            tagId: ["6724e84caf5041d082f98234"],
+            firstidx: 0,
+            lastidx: 10
         }
         response = await request(recipeList)
         console.log(response)

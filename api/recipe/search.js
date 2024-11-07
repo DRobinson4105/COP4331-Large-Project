@@ -106,30 +106,61 @@ export default async function handler (req, res) {
 
 
 
-		let recipeList = await prisma.recipe.findMany({
-			where: {
-				name: { contains: name },
-				tagId: {
-				equals: tagId
-				},
-				calories: {
-					lte: maxCalories, 
-					gte: minCalories
-				},
-				fat: {
-					lte: maxCalories, 
-					gte: minCalories
-				},
-				carbs: {
-					lte: maxCalories, 
-					gte: minCalories
-				},
-				protein: {
-					lte: maxCalories, 
-					gte: minCalories
-				}
-			}
-		})
+    //Change to different macros and search using that
+    recipeList = await prisma.recipe.findMany({
+        where: {
+            name: { contains: name },
+            tagId: {
+              equals: tagId
+            },
+            calories: {
+                lte: maxCalories, 
+                gte: minCalories
+            },
+            fat: {
+              lte: maxCalories, 
+              gte: minCalories
+            },
+            carbs: {
+              lte: maxCalories, 
+              gte: minCalories
+            },
+            protein: {
+              lte: maxCalories, 
+              gte: minCalories
+            }
+        },
+        select:{
+          name: true,
+          desc: true,
+          image: true,
+          calories: true,
+          fat: true,
+          protein: true,
+          authorId: true,
+          instructions: true,
+          ingredients: true,
+          tagId: true
+        },
+      //   if (image) {
+      //     try{
+      //         const base64Image = image.toString('base64')
+      //         const mimeType = 'image/jpeg'
+      //         var img = `data:${mimeType};base64,${base64Image}`
+      //     } catch (error){
+      //         return res.status(400).json(
+      //             {error: 'Error occured in image processing. Invalid image.'})
+      //     }
+      // }
+      })
+
+      
+
+    let ret = {
+      name, desc, calories, fat, carbs, protein, authorId, instructions, ingredients, tagId,
+      ...(img ? { image: img } : {})
+    }
+    
 
 		res.setHeader('Content-Type', 'application/json')
 		return res.status(200).json(recipeList)
