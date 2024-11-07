@@ -287,12 +287,157 @@ body, .landing-title {
 
 .description {
   font-size: 16px;
-  color: #555;
+  color: black;
   margin-top: 10px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #A7D3A8;
   text-align: center;
+  height: 53%;
   max-width: 80%;
+  overflow-y: auto;
+}
+
+.profile-settings-page {
+  font-family: 'Fira Code', monospace;
+  background-color: #fdf6e3;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* Left panel */
+.left-panel {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Profile picture and user info */
+.profile-picture-section, .user-info-section {
+  background-color: #fff;
+  padding: 20px; 
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile picture styles */
+.avatar-placeholder {
+  width: 150px;
+  height: 150px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.upload-button {
+  margin-top: 10px;
+  width: 50%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-picture-button{
+  margin-top: 10px;
+  width: 50%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-picture-button {
+  margin-top: 10px;
+  width: 50%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-picture-button {
+  background-color: #8bc34a;
+  color: white;
+}
+
+.upload-button {
+  background-color: #fff;
+  color: black;
+}
+
+.remove-picture-button {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Right panel with scrollable content */
+.right-panel {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px); /* Adjust height based on viewport */
+  padding-right: 10px;
+}
+
+/* Section headings */
+h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.settings-input, .settings-textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.settings-textarea {
+  height: 60px;
+  resize: none;
+}
+
+.char-counter {
+  font-size: 12px;
+  color: #999;
+  float: right;
+}
+
+/* Buttons */
+.save-changes-button, .verify-email-button, .update-password-button {
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.save-changes-button, .verify-email-button, .update-password-button {
+  background-color: #8bc34a;
+  color: white;
+}
+
+.save-confirmation {
+  color: #8bc34a;
+  font-size: 14px;
+  margin-top: 10px;
 }

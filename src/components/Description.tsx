@@ -1,10 +1,15 @@
+// Description.tsx
 import React from 'react';
 import "../index.css";
 
-const Description: React.FC = () => {
+interface DescriptionProps {
+  description: string;
+}
+
+const Description: React.FC<DescriptionProps> = ({ description }) => {
   return (
     <div className="description">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      {description}
     </div>
   );
 };
