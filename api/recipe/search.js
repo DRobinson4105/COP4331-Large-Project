@@ -222,7 +222,7 @@ export default async function handler (req, res) {
 					const base64Image = Buffer.toString(recipeList.at(i).image, 'Base64')
 					recipeList.at(i).image = base64Image;
 				} catch (error){
-					return res.status(400).json(
+					return res.status(500).json(
 						{error: 'Error occured in image processing. Invalid image.'})
 				}
 			}
