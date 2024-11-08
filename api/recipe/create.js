@@ -28,7 +28,7 @@ export default async function handler (req, res) {
     ){
 			return res.status(400).json({
 				error:
-				'Missing argument ( calories, fat, carbs, protein)'
+				'Missing argument (calories, fat, carbs, protein)'
 			})
 		}
 

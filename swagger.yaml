@@ -164,12 +164,12 @@ paths:
           description: Server Error
 
 
-  /recipe:
+  /recipe/get:
     post:
       tags:
       - recipe
       summary: Take in recipeId and return its details.
-      operationId: doRecipe
+      operationId: doGetRecipe
       description: Take in recipeId and return its details.
       consumes:
       - application/json
@@ -177,10 +177,10 @@ paths:
       - application/json
       parameters:
       - in: body
-        name: recipeItem
+        name: getRecipeItem
         description: Take in recipeId and return its details.
         schema:
-          $ref: '#/definitions/Recipe'
+          $ref: '#/definitions/GetRecipe'
       responses:
         200:
           description: Found Recipe
@@ -251,6 +251,37 @@ paths:
           description: Invalid Input (Missing Inputs)
         404:
           description: URL Not Found
+        500:
+          description: Server Error
+
+  /recipe/update:
+    post:
+      tags:
+      - recipe
+      summary: Updates the recipe given an id
+      operationId: doUpdateRecipe
+      description: Matches input with existing recipe and updates it
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: updateRecipeItem
+        description: updateRecipe
+        schema:
+          $ref: '#/definitions/UpdateRecipe'
+      responses:
+        200:
+          description: Found and updated the recipe whose ID was recieved
+        204:
+          description: No content
+        400:
+          description: Invalid input (missing id)
+        404:
+          description: URL not found
+        409:
+          description: Recipe not found error
         500:
           description: Server Error
 
@@ -409,7 +440,7 @@ definitions:
         type: string
         example: "67257d85a43154e1fb7cd14b"
   
-  Recipe:
+  GetRecipe:
     type: object
     required:
     - id
@@ -464,18 +495,23 @@ definitions:
         items:
           type: string
           example: "67252a9906b07a7478339fe9"
+      firstidx:
+        type: number
+        example: 0
+      lastidx:
+        type: number
+        example: 10
   
   CreateRecipe:
     type: object
     required:
     - name
     - desc
-    - image
+     - authorId
     - calories
     - fat
     - carbs
     - protein
-    - authorId
     - instructions
     - ingredients
     - tagId
@@ -528,6 +564,49 @@ definitions:
       id:
         type: string
         example: "6723f006ba10f4fd6307a8e9"
+  
+  UpdateRecipe:
+    type: object
+    required:
+    - id
+    properties:
+      id:
+        type: string
+        example: "6723f006ba10f4fd6307a8e9"
+      name:
+        type: string
+        example: "_testUpdated"
+      image:
+        type: string
+        example: "L1VzZXJzL2ZyZWRyaWNrYm91bG91dGUvRG9jdW1lbnRzL0dpdEh1Yi9DT1A0MzMxLUxhcmdlLVByb2plY3Qvc3JjL19fdGVzdHNfXy9fdGVzdFBob3RvLmpwZw=="
+      calories:
+        type: number
+        example: 10
+      fat:
+        type: number
+        example: 10
+      carbs:
+        type: number
+        example: 10
+      protein:
+        type: number
+        example: 10
+      instructions:
+        type: array
+        items:
+          type: string
+        example: "Sample Instructions"
+      ingredients:
+        type: array
+        items:
+          type: string
+        example: "Sample Ingredients"
+      tagId:
+        type: array
+        items:
+          type: string
+        example: "67252a9906b07a7478339fe9"
+
 
   CreateTag:
     type: object

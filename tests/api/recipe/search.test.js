@@ -63,6 +63,7 @@ describe('POST /api/recipe/search', () => {
     it('should take in name/filters and return an array of recipes', async() =>{
         let recipeList, response;
 
+        //Without TagId
         recipeList = {
             name: "_test", 
             minCalories: 0,
@@ -77,9 +78,9 @@ describe('POST /api/recipe/search', () => {
             lastidx: 10
         }
         response = await request(recipeList)
-        console.log(response)
         expect(response.status).toBe(200)
 
+        //With tagId
         recipeList = {
             name: "_test", 
             minCalories: 0,
@@ -95,7 +96,6 @@ describe('POST /api/recipe/search', () => {
             lastidx: 10
         }
         response = await request(recipeList)
-        console.log(response)
         expect(response.status).toBe(200)
 
 
