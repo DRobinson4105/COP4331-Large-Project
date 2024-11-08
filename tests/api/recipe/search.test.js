@@ -63,7 +63,7 @@ describe('POST /api/recipe/search', () => {
     it('should take in name/filters and return an array of recipes', async() =>{
         let recipeList, response;
 
-        //Without TagId
+        //With empty TagId
         recipeList = {
             name: "_test", 
             minCalories: 0,

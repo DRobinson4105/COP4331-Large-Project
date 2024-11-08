@@ -19,50 +19,87 @@ export default async function handler (req, res) {
 			})
 		}
 		
-
-		if(minCalories == null){
-			var nminCalories = 0;
-		}
-		else {
+		if (minCalories == null) {
+			var nminCalories = 0
+		  } else {
+			if (typeof minCalories != 'number') {
+			  return res.status(400).json({
+			  error: 'minCalories must be a number'
+			  })
+			}
 			var nminCalories = minCalories
 		}
-		if(maxCalories == null){
+		if (maxCalories == null) {
 			var nmaxCalories = Number.MAX_VALUE
-		}
-		else {
+		  } else {
+			if (typeof maxCalories != 'number') {
+			  return res.status(400).json({
+			  error: 'maxCalories must be a number'
+			  })
+			}
 			var nmaxCalories = maxCalories
 		}
-		if(minFat == null){
-			var nminFat = 0;
-		}
-		else {
+
+		if (minFat == null) {
+			var nminFat = 0
+		  } else {
+			if (typeof minFat != 'number') {
+			  return res.status(400).json({
+			  error: 'minFat must be a number'
+			  })
+			}
 			var nminFat = minFat
 		}
-		if(maxFat == null){
+		if (maxFat == null) {
 			var nmaxFat = Number.MAX_VALUE
+		  } else {
+			if (typeof maxFat != 'number') {
+			  return res.status(400).json({
+			  error: 'maxFat must be a number'
+			  })
+			}
+			var nmaxFat = maxFat
 		}
-		if(minCarbs == null){
-			var nminCarbs = 0;
-		}
-		else {
+
+		if (minCarbs == null) {
+			var nminCarbs = 0
+		  } else {
+			if (typeof minCarbs != 'number') {
+			  return res.status(400).json({
+			  error: 'minCarbs must be a number'
+			  })
+			}
 			var nminCarbs = minCarbs
 		}
-		if(maxCarbs == null){
+		if (maxCarbs == null) {
 			var nmaxCarbs = Number.MAX_VALUE
-		}
-		else{
+		  } else {
+			if (typeof maxCarbs != 'number') {
+			  return res.status(400).json({
+			  error: 'maxCarbs must be a number'
+			  })
+			}
 			var nmaxCarbs = maxCarbs
 		}
-		if(minProtein == null){
-			var nminProtein = 0;
-		}
-		else {
+		
+		if (minProtein == null) {
+			var nminProtein = 0
+		  } else {
+			if (typeof minProtein != 'number') {
+			  return res.status(400).json({
+			  error: 'minProtein must be a number'
+			  })
+			}
 			var nminProtein = minProtein
 		}
-		if(maxProtein == null){
+		if (maxProtein == null) {
 			var nmaxProtein = Number.MAX_VALUE
-		}
-		else{
+		  } else {
+			if (typeof maxProtein != 'number') {
+			  return res.status(400).json({
+			  error: 'maxProtein must be a number'
+			  })
+			}
 			var nmaxProtein = maxProtein
 		}
 
@@ -72,53 +109,8 @@ export default async function handler (req, res) {
 			})
 		}
 
-		if(minCalories && typeof minCalories != 'number'){
-		return res.status(400).json({
-			error: 'minCalories must be a number'
-		})
-		}
-		if(maxCalories && typeof maxCalories != 'number'){
-		return res.status(400).json({
-			error: 'maxCalories must be a number'
-		})
-		}
-
-		if(minFat && typeof minFat != 'number'){
-		return res.status(400).json({
-			error: 'minFat must be a number'
-		})
-		}
-		if(maxFat && typeof maxFat != 'number'){
-		return res.status(400).json({
-			error: 'maxCalories must be a number'
-		})
-		}
-
-		if(minCarbs && typeof minCarbs != 'number'){
-		return res.status(400).json({
-			error: 'minCarbs must be a number'
-		})
-		}
-		if(maxCarbs && typeof maxCarbs != 'number'){
-		return res.status(400).json({
-			error: 'maxCarbs must be a number'
-		})
-		}
-
-		if(minProtein && typeof minProtein != 'number'){
-		return res.status(400).json({
-			error: 'minProtein must be a number'
-		})
-		}
-		if(maxProtein && typeof maxProtein != 'number'){
-		return res.status(400).json({
-			error: 'maxProtein must be a number'
-		})
-		}
-
-
 		if (tagId && tagId != null) {
-		if (
+			if (
 			!Array.isArray(tagId) ||
 			tagId.every(item => typeof item !== 'string')
 		) {
@@ -136,23 +128,23 @@ export default async function handler (req, res) {
         where: {
             name: { contains: name },
             tagId: {
-              equals: tagId
+              hasEvery: tagId
             },
             calories: {
                 lte: nmaxCalories, 
                 gte: nminCalories
             },
             fat: {
-              lte: nmaxCalories, 
-              gte: nminCalories
+              lte: nmaxFat, 
+              gte: nminFat
             },
             carbs: {
-              lte: nmaxCalories, 
-              gte: nminCalories
+              lte: nmaxCarbs, 
+              gte: nminCarbs
             },
             protein: {
-              lte: nmaxCalories, 
-              gte: nminCalories
+              lte: nmaxProtein, 
+              gte: nminProtein
             }
         },
         select:{
