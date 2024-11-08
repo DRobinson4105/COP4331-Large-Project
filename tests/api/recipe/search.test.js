@@ -63,20 +63,22 @@ describe('POST /api/recipe/search', () => {
     it('should take in name/filters and return an array of recipes', async() =>{
         let recipeList, response;
 
-        // recipeList = {
-        //     name: "_test", 
-        //     minCalories: 0,
-        //     maxCalories: 200,
-        //     minFat: 0,
-        //     maxFat: 300,
-        //     minCarbs: 200,
-        //     maxCarbs: 500,
-        //     minProtein: 100,
-        //     maxProtein: 1200,
-        //     tagId: [""]
-        // }
-        // response = await request(recipeList)
-        // expect(response.status).toBe(200)
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            firstidx: 0,
+            lastidx: 10
+        }
+        response = await request(recipeList)
+        console.log(response)
+        expect(response.status).toBe(200)
 
         recipeList = {
             name: "_test", 

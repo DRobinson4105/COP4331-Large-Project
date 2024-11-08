@@ -13,11 +13,12 @@ export default async function handler (req, res) {
 			tagId
 		} = req.body
 
-		if (name == null || tagId == null) {
+		if (name == null ) {
 			return res.status(400).json({
-				error: 'Missing argument (requires name & tagId)'
+				error: 'Missing argument (requires name)'
 			})
 		}
+		
 
 		if(minCalories == null){
 			var nminCalories = 0;
@@ -119,7 +120,7 @@ export default async function handler (req, res) {
 		}
 
 
-		if (tagId != null) {
+		if (tagId && tagId != null) {
 		if (
 			!Array.isArray(tagId) ||
 			tagId.every(item => typeof item !== 'string')
@@ -133,7 +134,8 @@ export default async function handler (req, res) {
 
 
     //Change to different macros and search using that
-    let recipeList = await prisma.recipe.findMany({
+	if(tagId){
+    var recipeList = await prisma.recipe.findMany({
         where: {
             name: { contains: name },
             tagId: {
@@ -180,13 +182,48 @@ export default async function handler (req, res) {
 
       	// }
       })
+	}else{
+		var recipeList = await prisma.recipe.findMany({
+			where: {
+				name: { contains: name },
+				calories: {
+					lte: nmaxCalories, 
+					gte: nminCalories
+				},
+				fat: {
+				  lte: nmaxCalories, 
+				  gte: nminCalories
+				},
+				carbs: {
+				  lte: nmaxCalories, 
+				  gte: nminCalories
+				},
+				protein: {
+				  lte: nmaxCalories, 
+				  gte: nminCalories
+				}
+			},
+			select:{
+			  name: true,
+			  desc: true,
+			  image: true,
+			  calories: true,
+			  fat: true,
+			  protein: true,
+			  authorId: true,
+			  instructions: true,
+			  ingredients: true,
+			  tagId: true
+			}
+		})
+	}
 
 	  	for(let i=0; i < recipeList.length;i++){
 
 			if (recipeList.at(i).image) {
 				try{
 					const base64Image = Buffer.toString(recipeList.at(i).image, 'Base64')
-					recipeList.at(i) = base64Image;
+					recipeList.at(i).image = base64Image;
 				} catch (error){
 					return res.status(400).json(
 						{error: 'Error occured in image processing. Invalid image.'})
@@ -195,7 +232,7 @@ export default async function handler (req, res) {
 		}
 
     
-	  	console.log(recipeList)
+
 
 		res.setHeader('Content-Type', 'application/json')
 		return res.status(200).json(recipeList)
