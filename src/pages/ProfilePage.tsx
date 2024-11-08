@@ -41,7 +41,7 @@ const ProfilePage: React.FC = () => {
     const fetchUserData = async () => {
       const userId = JSON.parse(localStorage.getItem('user_data') || '{}').id;
 
-      console.log('Retrieved userId from local storage:', userId);
+      //console.log('Retrieved userId from local storage:', userId);
 
       if (!userId) {
         console.error('No user ID found in local storage');
