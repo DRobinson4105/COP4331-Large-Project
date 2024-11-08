@@ -35,8 +35,33 @@ export default async function handler(req, res) {
             select: {id: true, name: true, image: true, desc: true, tagId: true}
         })
 
+        if (user.image) {
+            try{
+                const base64Image = user.image.toString('base64')
+                const mimeType = 'image/jpeg'
+                var img = `data:${mimeType};base64,${base64Image}`
+            } catch (error){
+                return res.status(400).json(
+                    {error: 'Error occured in image processing. Invalid image.'})
+            }
+        }
+
+        for(let i=0; i < recipes.length;++i){
+
+            if (recipes.at(i).image) {
+                try{
+                    const base64Image = recipes.at(i).image.toString('base64')
+                    const mimeType = 'image/jpeg'
+                    recipes.at(i).image = `data:${mimeType};base64,${base64Image}`
+                } catch (error){
+                    return res.status(400).json(
+                        {error: 'Error occured in image processing. Invalid image.'})
+                }
+            }
+        }
+
         let ret = { email: user.email, name: user.name, username: user.username, 
-            image: user.image, desc: user.desc, recipes: recipes, error: ''};
+            ...(img ? { image: img } : {}), desc: user.desc, recipes: recipes, error: ''};
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {

@@ -62,11 +62,12 @@ describe('POST /api/user/update', () => {
         input = {
             id: testAccountId, username: '_test2',
             desc: 'test2', password: 'test2',
-            name: '_testnew', image: unencoded,
+            name: '_testnew', image: testImage,
             email: '_test2@test.com'
         }
         response = await request(input)
 
+        console.log(response.body)
         expect(response.status).toBe(200)
     })
 
@@ -79,7 +80,7 @@ describe('POST /api/user/update', () => {
         input = {
             id: testAccountId, username: '_test3',
             desc: 'test3', password: 'test3',
-            name: '_testnew3', image: unencoded,
+            name: '_testnew3', image: testImage,
             email: '_test3@test.com'
         }
         response = await request(input)
@@ -92,6 +93,7 @@ describe('POST /api/user/update', () => {
         name: final.name, username: final.username, 
         image: final.image, desc: final.desc, password: final.password};
 
+        console.log(response.body)
         expect(response.status).toBe(200)
         expect(input).toEqual(expected)
     })

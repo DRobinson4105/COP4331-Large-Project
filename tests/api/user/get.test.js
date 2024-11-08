@@ -44,7 +44,6 @@ describe('POST /api/user/get', () => {
                 data: {
                     name: "_test1",
                     desc: "testing desc",
-                    image: unencoded,
                     email: "_test1@test.com",
                     username: "testuser",
                     password: "password",
@@ -56,7 +55,6 @@ describe('POST /api/user/get', () => {
                 data: {
                     name: "_test1",
                     desc: "testing desc",
-                    image: unencoded,
                     email: "_test1@test.com",
                     username: "testuser",
                     password: "password",
@@ -68,7 +66,6 @@ describe('POST /api/user/get', () => {
                 data: {
                     name: "_test1",
                     desc: "testing desc",
-                    image: unencoded,
                     calories: 1,
                     fat: 1,
                     carbs: 1,
@@ -85,7 +82,6 @@ describe('POST /api/user/get', () => {
                 data: {
                     name: "_testrec",
                     desc: "recipe description",
-                    image: unencoded,
                     calories: 1,
                     fat: 1,
                     carbs: 1,
@@ -113,8 +109,8 @@ describe('POST /api/user/get', () => {
         let recipe = [{
             id: recipeTestId,
             name: "_testrec",
+            image: null,
             desc: "recipe description",
-            image: unencoded,
             tagId: []
         }]
 
@@ -122,7 +118,7 @@ describe('POST /api/user/get', () => {
         response = await request(account)
         expected = { email: '_test1@test.com', 
             name: '_test1', username: 'testuser', 
-            image: unencoded, desc: 'testing desc', recipes: recipe, error: ''};
+            desc: 'testing desc', recipes: recipe, error: ''};
         expect(response.status).toBe(200)
         expect(response.body).toEqual(expected)
 

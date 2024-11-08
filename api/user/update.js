@@ -25,6 +25,7 @@ export default async function handler(req, res) {
             return res.status(400).json({
             error: 'Each argument must be a string or empty'
             })
+
         }
 
         let checker = await prisma.account.findFirst({
@@ -34,6 +35,21 @@ export default async function handler(req, res) {
         if(checker == null){
             return res.status(409).json({ error: 'Account not found' })
         }
+
+        if (image) {
+			if (typeof image !== 'string') {
+				return res.status(400).json({
+					error: 'image must be a string'
+				})
+			}
+			try {
+				image = Buffer.from(image, 'base64')
+			} catch (error){
+				return res.status(400).json({
+					error: 'Error occurred with image processing. Not valid image.'
+				})
+			}
+		}
 
         if(checker.googleId != null && password != null){
             return res.status(409).json({ error: 'Cannot input a password to an object with a googleId'})
