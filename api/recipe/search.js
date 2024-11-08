@@ -13,7 +13,7 @@ export default async function handler (req, res) {
 			tagId
 		} = req.body
 
-		if (name == null ) {
+		if (name == null) {
 			return res.status(400).json({
 				error: 'Missing argument (requires name)'
 			})
@@ -65,14 +65,11 @@ export default async function handler (req, res) {
 		else{
 			var nmaxProtein = maxProtein
 		}
-		
 
-		if (name != null) {
-		if (name && typeof name != 'string') {
+		if (typeof name != 'string') {
 			return res.status(400).json({
 			error: 'Name must be a string'
 			})
-		}
 		}
 
 		if(minCalories && typeof minCalories != 'number'){
