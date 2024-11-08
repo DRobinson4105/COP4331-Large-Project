@@ -47,37 +47,37 @@ export default async function handler (req, res) {
         error: 'Each argument must be a string or empty'
       })
     }
-    if (typeof calories !== 'number') {
+    if (calories && typeof calories !== 'number') {
       return res.status(400).json({
         error: 'Macros must be numbers.'
       })
     }
-    if (typeof fat !== 'number') {
+    if (fat && typeof fat !== 'number') {
       return res.status(400).json({
         error: 'Macros must be numbers.'
       })
     }
-    if (typeof carbs !== 'number') {
+    if (carbs && typeof carbs !== 'number') {
       return res.status(400).json({
         error: 'Macros must be numbers.'
       })
     }
-    if (typeof protein !== 'number') {
+    if (protein && typeof protein !== 'number') {
       return res.status(400).json({
         error: 'Macros must be numbers.'
       })
     }
     if (
-      !Array.isArray(instructions) ||
-      instructions.every(item => typeof item !== 'string')
+      instructions && (!Array.isArray(instructions) ||
+      instructions.every(item => typeof item !== 'string'))
     ) {
       return res.status(400).json({
         error: 'Instructions must be an array of strings'
       })
     }
     if (
-      !Array.isArray(ingredients) ||
-      ingredients.every(item => typeof item !== 'string')
+      ingredients && (!Array.isArray(ingredients) ||
+      ingredients.every(item => typeof item !== 'string'))
     ) {
       return res.status(400).json({
         error: 'Ingredients must be an array of strings'
@@ -85,8 +85,8 @@ export default async function handler (req, res) {
     }
     if (tagId != null) {
       if (
-        !Array.isArray(tagId) ||
-        ingredients.every(item => typeof item !== 'string')
+        tagId && (!Array.isArray(tagId) ||
+        ingredients.every(item => typeof item !== 'string'))
       ) {
         return res.status(400).json({
           error: 'tagId must be an array of strings'
@@ -118,7 +118,7 @@ export default async function handler (req, res) {
       },
       data: {
         ...(name ? { name } : {}),
-        ...(image ? { image } : {}),
+        ...(imageBuffer ? { image: imageBuffer } : {}),
         ...(desc ? { desc } : {}),
         ...(calories ? {calories} : {}),
         ...(fat ? { fat } : {}),

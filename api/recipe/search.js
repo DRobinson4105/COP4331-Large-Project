@@ -19,26 +19,52 @@ export default async function handler (req, res) {
 			})
 		}
 
-		if(minCalories == null || maxCalories == null){
-		return res.status(400).json({
-			error: 'Missing argument (requires min/max Calories)'
-		})
+		if(minCalories == null){
+			var nminCalories = 0;
 		}
-		if(minFat == null || maxFat == null){
-		return res.status(400).json({
-			error: 'Missing argument (requires min/max Fat)'
-		})
+		else {
+			var nminCalories = minCalories
 		}
-		if(minCarbs== null ||  maxCarbs == null){
-		return res.status(400).json({
-			error: 'Missing argument (requires min/max Carbs)'
-		})
+		if(maxCalories == null){
+			var nmaxCalories = Number.MAX_VALUE
 		}
-		if(minProtein == null ||  maxProtein == null){
-		return res.status(400).json({
-			error: 'Missing argument (requires min/max Protein)'
-		})
+		else {
+			var nmaxCalories = maxCalories
 		}
+		if(minFat == null){
+			var nminFat = 0;
+		}
+		else {
+			var nminFat = minFat
+		}
+		if(maxFat == null){
+			var nmaxFat = Number.MAX_VALUE
+		}
+		if(minCarbs == null){
+			var nminCarbs = 0;
+		}
+		else {
+			var nminCarbs = minCarbs
+		}
+		if(maxCarbs == null){
+			var nmaxCarbs = Number.MAX_VALUE
+		}
+		else{
+			var nmaxCarbs = maxCarbs
+		}
+		if(minProtein == null){
+			var nminProtein = 0;
+		}
+		else {
+			var nminProtein = minProtein
+		}
+		if(maxProtein == null){
+			var nmaxProtein = Number.MAX_VALUE
+		}
+		else{
+			var nmaxProtein = maxProtein
+		}
+		
 
 		if (name != null) {
 		if (name && typeof name != 'string') {
@@ -107,27 +133,27 @@ export default async function handler (req, res) {
 
 
     //Change to different macros and search using that
-    recipeList = await prisma.recipe.findMany({
+    let recipeList = await prisma.recipe.findMany({
         where: {
             name: { contains: name },
             tagId: {
               equals: tagId
             },
             calories: {
-                lte: maxCalories, 
-                gte: minCalories
+                lte: nmaxCalories, 
+                gte: nminCalories
             },
             fat: {
-              lte: maxCalories, 
-              gte: minCalories
+              lte: nmaxCalories, 
+              gte: nminCalories
             },
             carbs: {
-              lte: maxCalories, 
-              gte: minCalories
+              lte: nmaxCalories, 
+              gte: nminCalories
             },
             protein: {
-              lte: maxCalories, 
-              gte: minCalories
+              lte: nmaxCalories, 
+              gte: nminCalories
             }
         },
         select:{
@@ -141,26 +167,35 @@ export default async function handler (req, res) {
           instructions: true,
           ingredients: true,
           tagId: true
-        },
-      //   if (image) {
-      //     try{
-      //         const base64Image = image.toString('base64')
-      //         const mimeType = 'image/jpeg'
-      //         var img = `data:${mimeType};base64,${base64Image}`
-      //     } catch (error){
-      //         return res.status(400).json(
-      //             {error: 'Error occured in image processing. Invalid image.'})
-      //     }
-      // }
+        }
+        // if (image) {
+        //   try{
+        //       const base64Image = image.toString('base64')
+        //       const mimeType = 'image/jpeg'
+        //       var img = `data:${mimeType};base64,${base64Image}`
+        //   } catch (error){
+        //       return res.status(400).json(
+        //           {error: 'Error occured in image processing. Invalid image.'})
+        //   }
+
+      	// }
       })
 
-      
+	  	for(let i=0; i < recipeList.length;i++){
 
-    let ret = {
-      name, desc, calories, fat, carbs, protein, authorId, instructions, ingredients, tagId,
-      ...(img ? { image: img } : {})
-    }
+			if (recipeList.at(i).image) {
+				try{
+					const base64Image = Buffer.toString(recipeList.at(i).image, 'Base64')
+					recipeList.at(i) = base64Image;
+				} catch (error){
+					return res.status(400).json(
+						{error: 'Error occured in image processing. Invalid image.'})
+				}
+			}
+		}
+
     
+	  	console.log(recipeList)
 
 		res.setHeader('Content-Type', 'application/json')
 		return res.status(200).json(recipeList)
