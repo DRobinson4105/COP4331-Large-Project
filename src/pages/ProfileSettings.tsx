@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import VerifiedNavBar from '../components/VerifiedNavBar';
 import "../index.css";
 
@@ -14,6 +15,8 @@ const ProfileSettings: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch user data (test data for now)
@@ -48,6 +51,12 @@ const ProfileSettings: React.FC = () => {
 
   const handleRemovePicture = () => {
     setProfilePicture('noPFP.png');
+  };
+
+  // Navigate back to ProfilePage
+  const handleSaveAndExit = () => {
+    handleSaveSettings();
+    navigate('/ProfilePage');
   };
 
   return (
@@ -151,6 +160,24 @@ const ProfileSettings: React.FC = () => {
               Update Password
             </button>
           </div>
+        </div>
+
+        {/* Save and Exit Button */}
+        <div className="save-exit-section" style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={handleSaveAndExit}
+            className="save-exit-button"
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#4CAF50',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Save and Exit
+          </button>
         </div>
       </div>
     </div>
