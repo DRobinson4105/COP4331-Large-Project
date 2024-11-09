@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import VerifiedNavBar from '../components/VerifiedNavBar';
 import "../index.css";
 
@@ -8,25 +9,32 @@ const ProfileSettings: React.FC = () => {
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
   const [settingsSaved, setSettingsSaved] = useState(false);
+  const [profilePicture, setProfilePicture] = useState<string>('noPFP.png');
   
   // Password state variables
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // test data
+    // Fetch user data (test data for now)
     const fetchUserData = async () => {
       const data = {
         displayName: 'Display Name',
         userName: 'John Doe',
         email: 'johndoe@example.com',
         bio: 'mmmmmm food',
+        profilePicture: '', // Example: No picture URL provided
       };
       setDisplayName(data.displayName);
       setUserName(data.userName);
       setEmail(data.email);
       setBio(data.bio);
+
+      // Set profile picture (default if not provided)
+      setProfilePicture(data.profilePicture || 'noPFP.png');
     };
 
     fetchUserData();
@@ -41,19 +49,34 @@ const ProfileSettings: React.FC = () => {
     console.log("Password updated");
   };
 
+  const handleRemovePicture = () => {
+    setProfilePicture('noPFP.png');
+  };
+
+  // Navigate back to ProfilePage
+  const handleSaveAndExit = () => {
+    handleSaveSettings();
+    navigate('/ProfilePage');
+  };
+
   return (
     <div className="profile-settings-page">
       <VerifiedNavBar />
 
       <div className="settings-container">
-        
         {/* Left Side: Profile Picture and User Information */}
         <div className="left-panel">
           <div className="profile-picture-section">
-            <div className="avatar-placeholder"></div>
+            <img
+              src={profilePicture}
+              alt="Profile"
+              className="avatar-placeholder"
+            />
             <button className="upload-button">Upload Photo</button>
             <button className="save-picture-button">Save Picture</button>
-            <button className="remove-picture-button">Remove Picture</button>
+            <button className="remove-picture-button" onClick={handleRemovePicture}>
+              Remove Picture
+            </button>
           </div>
 
           <div className="user-info-section">
@@ -107,9 +130,7 @@ const ProfileSettings: React.FC = () => {
                 className="settings-input"
               />
             </label>
-            <button className="verify-email-button">
-              Verify Email
-            </button>
+            <button className="verify-email-button">Verify Email</button>
           </div>
 
           <div className="password-update-section">
@@ -139,8 +160,24 @@ const ProfileSettings: React.FC = () => {
               Update Password
             </button>
           </div>
+        </div>
 
-          
+        {/* Save and Exit Button */}
+        <div className="save-exit-section" style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={handleSaveAndExit}
+            className="save-exit-button"
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#4CAF50',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Save and Exit
+          </button>
         </div>
       </div>
     </div>

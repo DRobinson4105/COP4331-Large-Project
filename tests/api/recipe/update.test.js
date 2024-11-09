@@ -82,27 +82,28 @@ describe('POST /api/recipe/update', () => {
 
         const testImage = './_testPhoto.jpg'
         const unencoded = btoa(testImage);
-
+        
         input = {
             id: testRecipeId, name: '_test3',
             desc: 'test3', image: unencoded,
-            calories: 0, fat: 0, carbs: 0, protein: 0,
-            instructions: ["Yo"], ingredients: ["Yo"],
+            calories: 10, fat: 10, carbs: 10, protein: 10,
+            instructions: ["Yo3"], ingredients: ["Yo"],
             tagId: ["6724e84caf5041d082f98234"]
         }
 
-        // console.log("TestRecipeId ",testRecipeId)
-
         response = await request(input)
+
         final = await prisma.recipe.findFirst({
             where: {id: testRecipeId}
         })
-        // console.log(final);
 
-        expected = { id: final.id, email: final.email, 
-        name: final.name, username: final.username, 
-        image: final.image, desc: final.desc, password: final.password};
-        var unBufferedimage = Buffer.toString(expected.image)
+        expected = { id: final.id,  
+        name: final.name, image: final.image, desc: final.desc,
+        calories: final.calories, fat: final.fat, carbs: final.carbs,
+        protein: final.protein, tagId: final.tagId,
+        instructions: final.instructions, ingredients: final.ingredients};
+
+        var unBufferedimage = expected.image.toString('base64')
         expected.image = unBufferedimage
 
         expect(response.status).toBe(200)
@@ -118,7 +119,7 @@ describe('POST /api/recipe/update', () => {
         input = {
             name: '_test3',
             desc: 'test3', image: unencoded,
-            calories: 0, fat: 0, carbs: 0, protein: 0,
+            calories: 10, fat: 10, carbs: 10, protein: 10,
             instructions: ["Yo"], ingredients: ["Yo"],
             tagId: ["6724e84caf5041d082f98234"]
         }
@@ -135,7 +136,7 @@ describe('POST /api/recipe/update', () => {
         input = {
             id: 1, name: '_test3',
             desc: 'test3', image: unencoded,
-            calories: 0, fat: 0, carbs: 0, protein: 0,
+            calories: 10, fat: 10, carbs: 10, protein: 10,
             instructions: ["Yo"], ingredients: ["Yo"],
             tagId: ["6724e84caf5041d082f98234"]
         }

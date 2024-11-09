@@ -202,7 +202,7 @@ body, .landing-title {
 .profile-container {
   display: flex;
   width: 100%;
-  max-width: 1200px;
+  /*max-width: 1200px;*/
   padding: 20px;
 }
 
@@ -232,10 +232,11 @@ body, .landing-title {
   font-size: 18px;
   margin-top: 10%;
   text-align: center;
+  width: 30vh;
 }
 
 .recipes-section {
-  width: 140%;
+  width: 70vw;
   background-color: #A7D3A8;
   padding: 20px;
   border-radius: 10px;
@@ -335,9 +336,10 @@ body, .landing-title {
 .avatar-placeholder {
   width: 150px;
   height: 150px;
-  background-color: #ccc;
   border-radius: 50%;
-  margin-bottom: 10px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .upload-button {
