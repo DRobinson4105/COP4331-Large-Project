@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         if(checker == null){
             return res.status(409).json({ error: 'Account not found' })
         }
-
+        let bufferImage
         if (image) {
 			if (typeof image !== 'string') {
 				return res.status(400).json({
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 				})
 			}
 			try {
-				image = Buffer.from(image, 'base64')
+				bufferImage = Buffer.from(image, 'base64')
 			} catch (error){
 				return res.status(400).json({
 					error: 'Error occurred with image processing. Not valid image.'
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
             data: {
                 ...(username ? { username } : {}),
                 ...(name ? { name } : {}),
-                ...(image ? { image } : {}),
+                ...(image ? { bufferImage } : {}),
                 ...(desc ? { desc } : {}),
                 ...(email ? { email } : {}),
                 ...(password ? { password } : {})

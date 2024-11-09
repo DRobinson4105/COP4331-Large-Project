@@ -80,7 +80,7 @@ describe('POST /api/user/update', () => {
         input = {
             id: testAccountId, username: '_test3',
             desc: 'test3', password: 'test3',
-            name: '_testnew3', image: testImage,
+            name: '_testnew3', image: unencoded,
             email: '_test3@test.com'
         }
         response = await request(input)
