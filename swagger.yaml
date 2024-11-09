@@ -70,7 +70,7 @@ paths:
         500:
           description: Server Error
 
-  /user/getProfile:
+  /user/get:
     post:
       tags:
       - account
@@ -101,7 +101,7 @@ paths:
         500:
           description: Server Error
 
-  /user/updateProfile:
+  /user/update:
     post:
       tags:
       - account
@@ -132,7 +132,7 @@ paths:
         500:
           description: Server Error
 
-  /user/deleteProfile:
+  /user/delete:
     post:
       tags:
       - account
@@ -162,7 +162,6 @@ paths:
           description: Account not found error
         500:
           description: Server Error
-
 
   /recipe/get:
     post:
@@ -223,7 +222,6 @@ paths:
           description: URL Not Found
         500:
           description: Server Error
-      
 
   /recipe/create:
     post:
@@ -344,7 +342,6 @@ paths:
           description: URL Not Found
         500:
           description: Server Error
-
 
 definitions:
   Login:
@@ -549,12 +546,12 @@ definitions:
         type: array
         items:
           type: string
-        example: "Eggs"
+        example: ["Eggs"]
       tagId: 
         type: array
         items:
           type: string
-        example: "67252a9906b07a7478339fe9"
+        example: ["67252a9906b07a7478339fe9"]
 
   DeleteRecipe:
     type: object
@@ -595,18 +592,17 @@ definitions:
         type: array
         items:
           type: string
-        example: "Sample Instructions"
+        example: ["Sample Instructions"]
       ingredients:
         type: array
         items:
           type: string
-        example: "Sample Ingredients"
+        example: ["Sample Ingredients"]
       tagId:
         type: array
         items:
           type: string
-        example: "67252a9906b07a7478339fe9"
-
+        example: ["67252a9906b07a7478339fe9"]
 
   CreateTag:
     type: object
@@ -616,11 +612,11 @@ definitions:
       name:
         type: string
         example: "_test"
-
-
-      
+      color:
+        type: string
+        example: "green"
 
 host: nomnom.network:3000
-basePath: /
+basePath: /api/
 schemes:
 - http
