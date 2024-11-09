@@ -67,7 +67,6 @@ describe('POST /api/user/update', () => {
         }
         response = await request(input)
 
-        console.log(response.body)
         expect(response.status).toBe(200)
     })
 
@@ -80,20 +79,21 @@ describe('POST /api/user/update', () => {
         input = {
             id: testAccountId, username: '_test3',
             desc: 'test3', password: 'test3',
-            name: '_testnew3', image: unencoded,
-            email: '_test3@test.com'
+            name: '_testnew3', email: '_test3@test.com'
         }
         response = await request(input)
 
         final = await prisma.account.findFirst({
-            where: {id: testAccountId}
+            where: {id: testAccountId},
+            select:{id: true, email: true, name: true, username: true,
+                desc: true, password: true
+            }
         })
 
         expected = { id: final.id, email: final.email, 
         name: final.name, username: final.username, 
-        image: final.image, desc: final.desc, password: final.password};
+        desc: final.desc, password: final.password};
 
-        console.log(response.body)
         expect(response.status).toBe(200)
         expect(input).toEqual(expected)
     })

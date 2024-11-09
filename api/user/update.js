@@ -62,7 +62,7 @@ export default async function handler(req, res) {
             data: {
                 ...(username ? { username } : {}),
                 ...(name ? { name } : {}),
-                ...(image ? { bufferImage } : {}),
+                ...(image ? { image: bufferImage } : {}),
                 ...(desc ? { desc } : {}),
                 ...(email ? { email } : {}),
                 ...(password ? { password } : {})
