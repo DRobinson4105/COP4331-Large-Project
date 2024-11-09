@@ -169,6 +169,7 @@ body, .landing-title {
   border: 1px solid black;
   background-color: #FFFFFF;
   margin: 10px;
+  padding-left: 10px;
 }
 
 .tag {
