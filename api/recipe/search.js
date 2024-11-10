@@ -209,20 +209,11 @@ export default async function handler (req, res) {
 	}
 
 	  	for(let i=0; i < recipeList.length;i++){
-
 			if (recipeList.at(i).image) {
 				try{
-					console.log("RecipeName" ,recipeList.at(i).name)
-					const buf = recipeList.at(i).image
-					// console.log("Buf ", buf)
-					const change = buf.toString('base64')
-					// console.log("Change ", change)
-					const atobChange = atob(change)
-					console.log("ATOB ", atobChange)
-					// const base64Image = Buffer.toString(recipeList.at(i).image, 'base64')
-					// recipeList.at(i).image = base64Image;
-					// console.log("Base64 ", base64Image)
-					recipeList.at(i).image = atobChange
+					const base64Image = recipeList[i].image.toString('base64')
+					const mimeType = 'image/jpeg'
+					recipeList[i].image = `data:${mimeType};base64,${base64Image}`
 				} catch (error){
 					return res.status(500).json(
 						{error: 'Error occured in image processing. Invalid image.'})

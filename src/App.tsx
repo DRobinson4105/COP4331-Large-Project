@@ -11,6 +11,7 @@ import ProfilePage from './pages/ProfilePage'
 import SearchPage from './pages/Search'
 import Recipe from './pages/Recipe'
 import ProfileSettings from './pages/ProfileSettings'
+import Test from './pages/Test'
 
 const App: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const App: React.FC = () => {
         <Route path="/completeprofile" element={<CompleteProfilePage />} />
         <Route path="/Search" element={<SearchPage />} />
         <Route path="/ProfileSettings" element={<ProfileSettings />} />
+        <Route path="/Test" element={<Test />} />
         <Route path="/:username" element={<ProfilePage />} />
         <Route path="/:username/:id" element={<Recipe />}/>
         <Route path="*" element={<Navigate to="/" />} />
