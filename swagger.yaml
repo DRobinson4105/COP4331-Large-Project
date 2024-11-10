@@ -343,12 +343,12 @@ paths:
         500:
           description: Server Error
 
-  /tag/get:
+  /tag/search:
     post:
       tags:
       - tag
       summary: Retrieves tag using its id.
-      operationId: doGetTag
+      operationId: doSearchTag
       description: Retrievs a tag using id and returns its info.
       consumes:
       - application/json
@@ -356,10 +356,10 @@ paths:
       - application/json
       parameters:
       - in: body
-        name: getTagItem
-        description: getTag
+        name: searchTagItem
+        description: searchTag
         schema:
-          $ref: '#/definitions/GetTag'
+          $ref: '#/definitions/SearchTag'
       responses:
         200:
           description: Tag Retrived 
@@ -647,7 +647,7 @@ definitions:
         type: string
         example: "green"
 
-  GetTag:
+  SearchTag:
     type: object
     required:
     - id 
