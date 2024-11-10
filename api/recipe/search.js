@@ -112,12 +112,13 @@ export default async function handler (req, res) {
 		if (tagId && tagId != null) {
 			if (
 			!Array.isArray(tagId) ||
-			tagId.every(item => typeof item !== 'string')
-		) {
-			return res.status(400).json({
-			error: 'tagId must be an array of strings'
-			})
-		}
+			(tagId.every(item => typeof item !== 'string') &&
+			tagId.length > 0)
+			) {
+				return res.status(400).json({
+				error: 'tagId must be an array of strings'
+				})
+			}
 		}
 
 
@@ -211,13 +212,23 @@ export default async function handler (req, res) {
 
 			if (recipeList.at(i).image) {
 				try{
-					const base64Image = Buffer.toString(recipeList.at(i).image, 'Base64')
-					recipeList.at(i).image = base64Image;
+					console.log("RecipeName" ,recipeList.at(i).name)
+					const buf = recipeList.at(i).image
+					// console.log("Buf ", buf)
+					const change = buf.toString('base64')
+					// console.log("Change ", change)
+					const atobChange = atob(change)
+					console.log("ATOB ", atobChange)
+					// const base64Image = Buffer.toString(recipeList.at(i).image, 'base64')
+					// recipeList.at(i).image = base64Image;
+					// console.log("Base64 ", base64Image)
+					recipeList.at(i).image = atobChange
 				} catch (error){
 					return res.status(500).json(
 						{error: 'Error occured in image processing. Invalid image.'})
 				}
 			}
+			
 		}
 
     

@@ -97,7 +97,7 @@ describe('POST /api/recipe/create', () => {
 			calories: 100,
 			fat: 200,
 			carbs: 300,
-			protein: 10,
+			protein: 100,
 			authorId: test2Id,
 			instructions:["_test Instructions"],
 			ingredients:["_testing"],

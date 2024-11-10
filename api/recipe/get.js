@@ -17,12 +17,14 @@ export default async function handler(req, res) {
             error: 'id must be string'
             })
         }
-        
+      
         let recipe = await prisma.recipe.findFirst({
             where: {
                 ...(id ? { id } : {})
-            },
+            }
         })
+       
+        
         
         if (recipe == null) {
             return res.status(409).json({ error: 'Recipe not found' })

@@ -343,6 +343,37 @@ paths:
         500:
           description: Server Error
 
+  /tag/get:
+    post:
+      tags:
+      - tag
+      summary: Retrieves tag using its id.
+      operationId: doGetTag
+      description: Retrievs a tag using id and returns its info.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: getTagItem
+        description: getTag
+        schema:
+          $ref: '#/definitions/GetTag'
+      responses:
+        200:
+          description: Tag Retrived 
+        204:
+          description: No Content
+        400:
+          description: Invalid Input (Missing Inputs)
+        404:
+          description: URL Not Found
+        409:
+          description: No Tag Found
+        500:
+          description: Server Error
+
 definitions:
   Login:
     type: object
@@ -615,6 +646,15 @@ definitions:
       color:
         type: string
         example: "green"
+
+  GetTag:
+    type: object
+    required:
+    - id 
+    properties:
+      id:
+        type: string
+        example: "67300876503277933d18fb74"
 
 host: nomnom.network:3000
 basePath: /api/
