@@ -30,7 +30,7 @@ function buildPath(route: string) : string {
             const base64Image = reader.result?.split(',')[1];
             const formData = {
                 'image': base64Image,
-                'name': 'Test',
+                'name': 'Test1',
                 'desc': 'Test',
                 'calories': 1,
                 'fat': 1,
@@ -38,7 +38,8 @@ function buildPath(route: string) : string {
                 'protein': 1,
                 'authorId': "6724e84caf5041d082f98234",
                 'instructions': ["1"],
-                'ingredients': ["1"]
+                'ingredients': ["1"],
+                'tagId': []
             }
         
             try {
@@ -49,16 +50,17 @@ function buildPath(route: string) : string {
                 alert('Image uploaded successfully');
         
                 var res = JSON.parse(await response.text())
+                console.log(res)
         
                 var response2 = await fetch(
-                    buildPath('recipe/get'),
-                    {method:'POST',body:JSON.stringify({ id: res.id}),headers:{'Content-Type': 'application/json'}}
+                    buildPath('recipe/search'),
+                    {method:'POST',body:JSON.stringify({ 'name': "Test1" }),headers:{'Content-Type': 'application/json'}}
                 );
         
                 var res2 = JSON.parse(await response2.text())
                 console.log(res2)
             
-            setUploadedImage(res2.image); 
+            setUploadedImage(res2[0].image); 
             } catch (error) {
             console.error('Error uploading image:', error);
             alert('Failed to upload image');

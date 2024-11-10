@@ -1,4 +1,4 @@
-import { useState, Component } from 'react';
+import { useState } from 'react';
 import DeleteIcon from "../assets/DeleteIcon.png"
 
 function Filter()

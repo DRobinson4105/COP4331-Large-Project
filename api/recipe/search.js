@@ -112,12 +112,13 @@ export default async function handler (req, res) {
 		if (tagId && tagId != null) {
 			if (
 			!Array.isArray(tagId) ||
-			tagId.every(item => typeof item !== 'string')
-		) {
-			return res.status(400).json({
-			error: 'tagId must be an array of strings'
-			})
-		}
+			(tagId.every(item => typeof item !== 'string') &&
+			tagId.length > 0)
+			) {
+				return res.status(400).json({
+				error: 'tagId must be an array of strings'
+				})
+			}
 		}
 
 
@@ -208,16 +209,17 @@ export default async function handler (req, res) {
 	}
 
 	  	for(let i=0; i < recipeList.length;i++){
-
 			if (recipeList.at(i).image) {
 				try{
-					const base64Image = Buffer.toString(recipeList.at(i).image, 'Base64')
-					recipeList.at(i).image = base64Image;
+					const base64Image = recipeList[i].image.toString('base64')
+					const mimeType = 'image/jpeg'
+					recipeList[i].image = `data:${mimeType};base64,${base64Image}`
 				} catch (error){
 					return res.status(500).json(
 						{error: 'Error occured in image processing. Invalid image.'})
 				}
 			}
+			
 		}
 
     
