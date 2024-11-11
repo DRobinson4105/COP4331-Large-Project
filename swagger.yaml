@@ -163,6 +163,37 @@ paths:
         500:
           description: Server Error
 
+  /user/passwordReset:
+    post:
+      tags:
+      - account
+      summary: Emails the user's email address if they have an account and resets their password if they use one
+      operationId: doUpdateProfile
+      description: Emails user and changes their password
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: resetPasswordItem
+        description: resetPassword
+        schema:
+          $ref: '#/definitions/ResetPassword'
+      responses:
+        200:
+          description: Found a user and emailed them; changed their password if they had a password
+        204:
+          description: No content
+        400:
+          description: Invalid input (either email was not a string or no account was attached to it)
+        404:
+          description: URL not found
+        409:
+          description: Account not found error
+        500:
+          description: Server Error
+
   /recipe/get:
     post:
       tags:
@@ -467,6 +498,15 @@ definitions:
       id:
         type: string
         example: "67257d85a43154e1fb7cd14b"
+    
+  UpdateProfile:
+    type: object
+    required:
+    - email
+    properties:
+      email:
+        type: string
+        example: "test@test.com"
   
   GetRecipe:
     type: object
