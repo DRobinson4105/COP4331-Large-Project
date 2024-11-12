@@ -1,9 +1,13 @@
-import { useState} from 'react';
-import DeleteIcon from "../assets/DeleteIcon.png"
+import TagFilter from './TagFilter';
+
+interface Tag {
+	name: string,
+	id: string
+}
 
 interface Props {
-    addedTags: JSX.Element[];
-    setAddedTags: (addedTags:JSX.Element[]) => void;
+    addedTags: string[];
+    setAddedTags: (addedTags:string[]) => void;
     setMinCalories: (minCalories:number) => void;
     setMaxCalories: (maxCalories:number) => void;
     setMinProtein: (minProtein:number) => void;
@@ -13,82 +17,11 @@ interface Props {
     setMinCarbs: (minCarbs:number) => void;
     setMaxCarbs: (maxCarbs:number) => void;
     searchRecipes: () => Promise<void>;
+    tags: Tag[];
 }
 
 const Filter = (props: Props) =>
 {
-    const baseUrl = process.env.NODE_ENV === 'production' 
-        ? import.meta.env.VITE_API_URL
-        : 'http://localhost:3000';
-
-    function buildPath(route: string) : string {  
-        return baseUrl + "/api/" + route;
-    }
-
-    const [tagSearchResults,setTagResults] = useState([<li style={{display: "none"}} key="-1"></li>]);
-
-    async function removeTag(id:string) {
-        let currentTags = props.addedTags;
-
-        for(let i = 0; i < currentTags.length; i++) {
-            if(id == currentTags[i].key)  {
-                currentTags.splice(i, 1);
-                props.setAddedTags(currentTags);
-                return;
-            }
-        }
-    }
-
-    async function addTag(id:string, name:string) : Promise<void> {
-        let currentTags = props.addedTags;
-
-        for(let i = 0; i < currentTags.length; i++) {
-            if(id == currentTags[i].key)  {
-                return;
-            }
-        }
-
-        currentTags.push(<div key={id} style={{display: "inline-block", width: "calc(90% + 15px)"}}>
-                            <p style={{float: "left", margin: 0}}>{name}</p>
-                            <img src={DeleteIcon} onClick={() => removeTag(id)} style={{width: "1.2em", height: "1.2em", float: "right", margin: 0}} alt="Delete Icon"/>
-                        </div>);
-        props.setAddedTags(currentTags);
-    };   
-
-    async function searchTag(e:any) : Promise<void>
-    {
-        e.preventDefault();
-
-        if(String(e.target.value).length == 0) {
-            setTagResults([]);
-            return;
-        }
-        
-        let obj = {name:e.target.value};
-        let js = JSON.stringify(obj);
-
-        try
-        {
-            const response = await fetch(buildPath("tag/search"),
-            {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-
-            let txt = await response.text();
-            let newTagList = [{"id": "", "name": ""}];
-            newTagList = JSON.parse(txt);
-            let currTagList;
-
-            currTagList = newTagList.map((tag) => {
-                return <input type='button' value={tag.name} key={tag.id} style={{display: "block", width: "calc(90% + 20px)", textAlign: "left", marginTop: 0, border: "1px solid black"}} onClick={() => addTag(tag.id, tag.name)}></input>
-            });
-
-            setTagResults(currTagList);
-        }
-        catch(error:any)
-        {
-            console.log('SearchTag Failed:', error)
-        }
-    };
-
     function handleSetMinCalories(e:any) : void {
         props.setMinCalories(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
     }
@@ -144,10 +77,7 @@ const Filter = (props: Props) =>
                 <input className="shortinput" type="text" id="minCarbs" placeholder = "Min" onChange={handleSetMaxCarbs} style={{marginRight: "10px"}} />
                 <input className="shortinput" type="text" id="maxCarbs" placeholder = "Max" onChange={handleSetMinCarbs} />
             </div>
-            <a style={{display: "block"}}>Tags</a>
-            <input className="shortinput" type="text" id="searchTags" placeholder = "Search Tags" onChange={searchTag} style={{width: "calc(90% + 15px)", marginBottom: "5px"}}/>
-            <ul style={{padding: 0, margin: 0, display: "block"}}>{tagSearchResults}</ul>
-            <div style={{display: "block"}}>{props.addedTags}</div>
+            <TagFilter tags={props.tags} setSelectedTags={props.setAddedTags} />
             <input className="shortinput darkgreen button" type="button" id="applyFilter" value = "Apply Filter" onClick={props.searchRecipes} style={{float: "right", marginRight: "20px"}}/>
         </div>
    );

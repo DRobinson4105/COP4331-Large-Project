@@ -15,7 +15,7 @@ const SearchPage: React.FC = () => {
 
   const [recipes,setRecipes] = useState([<RecipeInfoCard name="Loading Recipes..." description="" image="" id="" tags={[<div></div>]} />]);
   const [search, setSearch] = useState('');
-  const [addedTags,setAddedTags] = useState([<div key="-1"></div>]);
+  const [addedTags,setAddedTags] = useState<string[]>([]);
   const [minCalories, setMinCalories] = useState(0);
   const [maxCalories, setMaxCalories] = useState(1e6);
   const [minProtein, setMinProtein] = useState(0);
@@ -24,23 +24,29 @@ const SearchPage: React.FC = () => {
   const [maxFat, setMaxFat] = useState(1e6);
   const [minCarbs, setMinCarbs] = useState(0);
   const [maxCarbs, setMaxCarbs] = useState(1e6);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty('background-color', '#FFFEEE');
     searchRecipes();
+
+    const initializeTags = async () => {
+      var response = await fetch(
+        buildPath('tag/search'),
+        {method:'POST',body:JSON.stringify({ name: "" }),headers:{'Content-Type': 'application/json'}}
+      );
+
+      let res = JSON.parse(await response.text());
+
+      setTags(res)
+    }
+    
+    initializeTags();
   }, []);
 
   async function searchRecipes() : Promise<void> {
-      var tags = [];
-
-      for(let i = 0; i < addedTags.length; i++) {
-          if(addedTags[i].key != "-1") {
-            tags.push(addedTags[i].key);
-          }
-      }
-
-      var obj = {name:search, minCalories:minCalories, maxCalories:maxCalories, minProtein:minProtein, maxProtein:maxProtein, minFat:minFat, maxFat:maxFat, minCarbs:minCarbs, maxCarbs:maxCarbs, tags:tags};
+      var obj = {name:search, minCalories:minCalories, maxCalories:maxCalories, minProtein:minProtein, maxProtein:maxProtein, minFat:minFat, maxFat:maxFat, minCarbs:minCarbs, maxCarbs:maxCarbs, tagId:addedTags};
 
       try {
           var response = await fetch(
@@ -75,7 +81,7 @@ const SearchPage: React.FC = () => {
             <input className="input" type="text" id="searchTerm" placeholder="Search by keyword" onChange={handleSetSearch} style={{display: 'inline-block', marginLeft: "10px", width: "calc(80% - 40px)"}}/>
             <input className="shortinput darkgreen button" type="submit" id="searchButton" value = "Search" onClick={searchRecipes} style={{display: 'inline-block', marginRight: "10px", width: "20%"}} />
         </div>
-        <Filter addedTags={addedTags} setAddedTags={setAddedTags} setMinCalories={setMinCalories} setMaxCalories={setMaxCalories} setMinProtein={setMinProtein} setMaxProtein={setMaxProtein} setMinFat={setMinFat} setMaxFat={setMaxFat} setMinCarbs={setMinCarbs} setMaxCarbs={setMaxCarbs} searchRecipes={searchRecipes}/>
+        <Filter addedTags={addedTags} setAddedTags={setAddedTags} setMinCalories={setMinCalories} setMaxCalories={setMaxCalories} setMinProtein={setMinProtein} setMaxProtein={setMaxProtein} setMinFat={setMinFat} setMaxFat={setMaxFat} setMinCarbs={setMinCarbs} setMaxCarbs={setMaxCarbs} searchRecipes={searchRecipes} tags={tags}/>
         <div className="recipeResults recipes" style={{verticalAlign: "top"}}>{recipes}</div>
     </div>
   );
