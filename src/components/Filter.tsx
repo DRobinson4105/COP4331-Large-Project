@@ -78,7 +78,7 @@ const Filter = (props: Props) =>
                 <input className="shortinput" type="text" id="maxCarbs" placeholder = "Max" onChange={handleSetMinCarbs} />
             </div>
             <TagFilter tags={props.tags} setSelectedTags={props.setAddedTags} />
-            <input className="shortinput darkgreen button" type="button" id="applyFilter" value = "Apply Filter" onClick={props.searchRecipes} style={{float: "right", marginRight: "20px"}}/>
+            <input className="shortinput darkgreen button" type="button" id="applyFilter" value = "Apply Filter" onClick={props.searchRecipes} style={{float: "right"}}/>
         </div>
    );
 };

@@ -6,7 +6,7 @@ interface Props {
     description: String;
     image: string;  // Specifically lower case for image source
     id: String;
-    tags: JSX.Element[];
+    tags: String[];
 }
 
 const RecipeInfoCard = (props: Props) =>
@@ -19,7 +19,11 @@ const RecipeInfoCard = (props: Props) =>
             <div style={{display: "inline-block"}}>
                 <Link to={"/" + props.id}><h3>{props.name}</h3></Link>
                 <p>{props.description}</p>
-                <div style={{overflowX: "scroll"}}>{props.tags}</div>
+                <div style={{overflowX: "scroll"}}>
+                    {props.tags.map((tag) => (
+                        <a className="tag">{tag}</a>
+                    ))}
+                </div>
             </div>
         </div>
    );

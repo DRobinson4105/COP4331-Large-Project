@@ -7,7 +7,7 @@ import VerifiedNavBar from '../components/VerifiedNavBar';
 const RecipePage: React.FC = () => {
     const { id } = useParams();
     const [title, setTitle] = useState('Title');
-    const [author, setAuthor] = useState('Author');
+    const [author, setAuthor] = useState('Anonymous');
     const [calories, setCalories] = useState(0);
     const [protein, setProtein] = useState(0);
     const [fat, setFat] = useState(0);
@@ -16,6 +16,7 @@ const RecipePage: React.FC = () => {
     const [ingredients, setIngredients] = useState('');
     const [instructions, setInstructions] = useState('');
     const [image, setImage] = useState(RecipeImage);
+    const [tags, setTags] = useState(['']);
 
     const baseUrl = process.env.NODE_ENV === 'production' 
         ? import.meta.env.VITE_API_URL
@@ -42,7 +43,6 @@ const RecipePage: React.FC = () => {
                 console.log(recipeInfo);
 
                 setTitle(recipeInfo.name);
-                setAuthor(recipeInfo.authorId);
                 setCalories(recipeInfo.calories);
                 setProtein(recipeInfo.protein);
                 setFat(recipeInfo.fat);
@@ -50,12 +50,25 @@ const RecipePage: React.FC = () => {
                 setDescription(recipeInfo.desc);
                 setIngredients(recipeInfo.ingredients);
                 setInstructions(recipeInfo.instructions);
+                setTags(recipeInfo.tagId);
 
-                if(recipeInfo.image != '') {
+                if(recipeInfo.image != undefined) {
                     setImage(recipeInfo.image);
                 }
+
+                obj = {id: recipeInfo.authorId}
+
+                response = await fetch(
+                    buildPath('user/get'),
+                    {method:'POST',body:JSON.stringify(obj),headers:{'Content-Type': 'application/json'}}
+                );
+
+                if(response.status != 409) {
+                    let author = JSON.parse(await response.text());
+                    setAuthor(author.name);
+                }
             } catch (error: any) {
-                window.location.href = '/ProfilePage';
+                window.location.href = '/Search';
             }
         };
 
@@ -82,6 +95,11 @@ const RecipePage: React.FC = () => {
                         <p style={{margin: "10px 0px"}}>Description:</p>
                         <p>{description}</p>
                     </div>
+                </div>
+                <div style={{display: "block", marginLeft: "10px"}}>
+                    {tags.map((tag) => (
+                        <a className="tag">{tag}</a>
+                    ))}
                 </div>
                 <div>
                     <div className="recipe-component" style={{display: "inline-block", verticalAlign: "top", width: "calc(50% - 32px)"}}>

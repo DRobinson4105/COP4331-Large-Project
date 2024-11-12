@@ -13,7 +13,7 @@ const SearchPage: React.FC = () => {
       return baseUrl + "/api/" + route;
   }
 
-  const [recipes,setRecipes] = useState([<RecipeInfoCard name="Loading Recipes..." description="" image="" id="" tags={[<div></div>]} />]);
+  const [recipes,setRecipes] = useState([<RecipeInfoCard name="Loading Recipes..." description="" image="" id="" tags={[]} />]);
   const [search, setSearch] = useState('');
   const [addedTags,setAddedTags] = useState<string[]>([]);
   const [minCalories, setMinCalories] = useState(0);
@@ -58,7 +58,7 @@ const SearchPage: React.FC = () => {
           let searchResults = [];
           
           for(let i = 0; i < newRecipes.length; i++) {
-             searchResults.push(<RecipeInfoCard name={newRecipes[i].name} description={newRecipes[i].desc} image={newRecipes[i].image} id={newRecipes[i].id} tags={newRecipes[i].tags}/>);
+             searchResults.push(<RecipeInfoCard name={newRecipes[i].name} description={newRecipes[i].desc} image={newRecipes[i].image} id={newRecipes[i].id} tags={newRecipes[i].tagId}/>);
           }
 
           setRecipes(searchResults);

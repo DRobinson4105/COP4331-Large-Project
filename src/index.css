@@ -34,7 +34,7 @@
 }
 
 .shortinput {
-    width: 45%;
+    width: calc(50% - 11px);
     height: 38px;
     font-size: large;
     margin-top: 10px;
