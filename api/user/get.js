@@ -62,7 +62,7 @@ export default async function handler(req, res) {
             }
         }
 
-        let ret = { email: user.email, name: user.name, username: user.username, 
+        let ret = { password: user.password, isGoogle: user.googleId != null, email: user.email, name: user.name, username: user.username, 
             ...(img ? { image: img } : {}), desc: user.desc, recipes: recipes, error: ''};
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)

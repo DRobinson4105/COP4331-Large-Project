@@ -116,7 +116,7 @@ describe('POST /api/user/get', () => {
 
         account = { id: testAccountId}
         response = await request(account)
-        expected = { email: '_test1@test.com', 
+        expected = { password: "password", isGoogle: false, email: '_test1@test.com', 
             name: '_test1', username: 'testuser', 
             desc: 'testing desc', recipes: recipe, error: ''};
         expect(response.status).toBe(200)
