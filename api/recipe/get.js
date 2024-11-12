@@ -17,6 +17,10 @@ export default async function handler(req, res) {
             error: 'id must be string'
             })
         }
+
+        if (!/^[a-fA-F0-9]{24}$/.test(id)) {
+            return res.status(404).json({ error: 'Recipe not found' })
+        }
       
         let recipe = await prisma.recipe.findFirst({
             where: {
@@ -27,7 +31,7 @@ export default async function handler(req, res) {
         
         
         if (recipe == null) {
-            return res.status(409).json({ error: 'Recipe not found' })
+            return res.status(404).json({ error: 'Recipe not found' })
         }
 
         const { name, desc, image, calories, fat, carbs, protein, authorId, instructions, ingredients, tagId } = recipe
