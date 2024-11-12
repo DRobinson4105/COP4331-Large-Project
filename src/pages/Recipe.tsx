@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import NavBar from '../components/NavBar';
 import "../index.css";
 import RecipeImage from '../assets/Default Recipe Picture.png'
 import { useParams } from 'react-router-dom';
+import VerifiedNavBar from '../components/VerifiedNavBar';
 
 const RecipePage: React.FC = () => {
     const { id } = useParams();
@@ -64,7 +64,7 @@ const RecipePage: React.FC = () => {
 
     return (
         <div>
-            <NavBar />
+            <VerifiedNavBar />
             <div className="recipe-component">
                 <div style={{display: "flex"}}>
                     <img src={image} style={{width: 215, height: 215, display: "inline-block", verticalAlign: "middle", margin: "10px", border: "1px solid black"}} alt="Logo"/>
