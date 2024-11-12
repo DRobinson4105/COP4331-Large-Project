@@ -43,5 +43,4 @@ model filter {
 model tag {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     name String
-    color String
 }

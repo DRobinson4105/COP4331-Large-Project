@@ -7,28 +7,25 @@ export default async function handler (req, res) {
 		const{name, color} = req.body;
 		
 		if(
-			(name == null ) ||
-			(color == null)
+			name == null
 		){
 			return res.status(400).json({
-				error: 'Missing argument (requires name & color)'
+				error: 'Missing name argument'
 			})
 		}
 
 		if(
-			(name && typeof name !== 'string')||
-			(color && typeof color !== 'string')
+			(name && typeof name !== 'string')
 			
 		){
 		return res.status(400).json({
-			error: 'Each argument must be a string'
+			error: 'name argument must be a string'
 		})
 		}
 
 		let newTag = await prisma.tag.create({
 			data:{
-				name: name,
-				color: color
+				name: name
 			}
 		})
 		
