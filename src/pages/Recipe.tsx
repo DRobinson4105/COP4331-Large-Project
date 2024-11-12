@@ -15,6 +15,7 @@ const RecipePage: React.FC = () => {
     const [description, setDescription] = useState('');
     const [ingredients, setIngredients] = useState('');
     const [instructions, setInstructions] = useState('');
+    const [image, setImage] = useState(RecipeImage);
 
     const baseUrl = process.env.NODE_ENV === 'production' 
         ? import.meta.env.VITE_API_URL
@@ -27,33 +28,46 @@ const RecipePage: React.FC = () => {
     useEffect(() => {
         const root = document.documentElement;
         root.style.setProperty('background-color', '#FFFEEE');
+
+        const fetchRecipe = async() => {
+            var obj = {id: id};
+
+            try {
+                var response = await fetch(
+                    buildPath('recipe/get'),
+                    {method:'POST',body:JSON.stringify(obj),headers:{'Content-Type': 'application/json'}}
+                );
+                
+                let recipeInfo = JSON.parse(await response.text());
+                console.log(recipeInfo);
+
+                setTitle(recipeInfo.name);
+                setAuthor(recipeInfo.authorId);
+                setCalories(recipeInfo.calories);
+                setProtein(recipeInfo.protein);
+                setFat(recipeInfo.fat);
+                setCarbs(recipeInfo.carbs);
+                setDescription(recipeInfo.desc);
+                setIngredients(recipeInfo.ingredients);
+                setInstructions(recipeInfo.instructions);
+
+                if(recipeInfo.image != '') {
+                    setImage(recipeInfo.image);
+                }
+            } catch (error: any) {
+                window.location.href = '/ProfilePage';
+            }
+        };
+
+        fetchRecipe();
     }, []);
-
-    useEffect(() => {
-        loadRecipe;
-    })
-
-    async function loadRecipe(e:any) : Promise<void> {
-        var obj = {id: id};
-
-        try {
-            var response = await fetch(
-                buildPath('recipe/search'),
-                {method:'POST',body:JSON.stringify(obj),headers:{'Content-Type': 'application/json'}}
-            );
-            
-            let recipeInfo = JSON.parse(await response.text());
-        } catch (error: any) {
-            window.location.href = '/home';
-        }
-    }
 
     return (
         <div>
             <NavBar />
             <div className="recipe-component">
                 <div style={{display: "flex"}}>
-                    <img src={RecipeImage} style={{width: 215, height: 215, display: "inline-block", verticalAlign: "middle", margin: "10px", border: "1px solid black"}} alt="Logo"/>
+                    <img src={image} style={{width: 215, height: 215, display: "inline-block", verticalAlign: "middle", margin: "10px", border: "1px solid black"}} alt="Logo"/>
                     <div style={{display: "inline-block", verticalAlign: "middle", marginRight: "10px", width: "calc((100% - 244px) / 2)"}}>
                         <p className="recipe-component">{title}</p>
                         <p className="recipe-component">By {author}</p>

@@ -13,7 +13,7 @@ const SearchPage: React.FC = () => {
       return baseUrl + "/api/" + route;
   }
 
-  const [recipes,setRecipes] = useState([<RecipeInfoCard name="Loading Recipes..." description="" image=""/>]);
+  const [recipes,setRecipes] = useState([<RecipeInfoCard name="Loading Recipes..." description="" image="" id="" tags={[<div></div>]} />]);
   const [search, setSearch] = useState('');
   const [addedTags,setAddedTags] = useState([<div key="-1"></div>]);
   const [minCalories, setMinCalories] = useState(0);
@@ -28,14 +28,19 @@ const SearchPage: React.FC = () => {
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty('background-color', '#FFFEEE');
+    searchRecipes();
   }, []);
 
-  useEffect(() => {
-    searchRecipes();
-  }, [])
-
   async function searchRecipes() : Promise<void> {
-      var obj = {name:search, minCalories:minCalories, maxCalories:maxCalories, minProtein:minProtein, maxProtein:maxProtein, minFat:minFat, maxFat:maxFat, minCarbs:minCarbs, maxCarbs:maxCarbs};
+      var tags = [];
+
+      for(let i = 0; i < addedTags.length; i++) {
+          if(addedTags[i].key != "-1") {
+            tags.push(addedTags[i].key);
+          }
+      }
+
+      var obj = {name:search, minCalories:minCalories, maxCalories:maxCalories, minProtein:minProtein, maxProtein:maxProtein, minFat:minFat, maxFat:maxFat, minCarbs:minCarbs, maxCarbs:maxCarbs, tags:tags};
 
       try {
           var response = await fetch(
@@ -47,7 +52,7 @@ const SearchPage: React.FC = () => {
           let searchResults = [];
           
           for(let i = 0; i < newRecipes.length; i++) {
-             searchResults.push(<RecipeInfoCard name={newRecipes[i].name} description={newRecipes[i].desc} image={newRecipes[i].image}/>);
+             searchResults.push(<RecipeInfoCard name={newRecipes[i].name} description={newRecipes[i].desc} image={newRecipes[i].image} id={newRecipes[i].id} tags={newRecipes[i].tags}/>);
           }
 
           setRecipes(searchResults);

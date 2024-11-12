@@ -115,7 +115,7 @@ const SignUpPage = () => {
             localStorage.setItem('user_data', JSON.stringify(user));
 
             setMessage('');
-            window.location.href = '/home';
+            window.location.href = '/ProfilePage';
         }
     }
 
