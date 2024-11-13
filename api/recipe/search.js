@@ -124,7 +124,7 @@ export default async function handler (req, res) {
 
 
     //Change to different macros and search using that
-	if(tagId){
+	if(tagId && tagId.length > 0){
     var recipeList = await prisma.recipe.findMany({
         where: {
             name: { contains: name },
@@ -221,8 +221,38 @@ export default async function handler (req, res) {
 						{error: 'Error occured in image processing. Invalid image.'})
 				}
 			}
+
+			if(!recipeList[i].tagId){
+				//Do Nothing
+			}
+			/*if(recipeList[i].tagId[0].length > 0)*/
+			else{
+				console.log(recipeList.at(i).tagId.length)
+				for(let j = 0; j < recipeList.at(i).tagId.length; j++){
+					
+					let nTagId = recipeList[i].tagId[j]
+					console.log("nTag: ", nTagId)
+					try{
+						let currentTag = await prisma.tag.findFirst({
+							where: {
+								id : {equals: nTagId}
+								//...(nTagId ? {id} : {})
+							},
+						})
+						if(currentTag == null){
+
+							//return res.status(404).json({error: 'Tag does not exist'})
+						}
+						recipeList[i].tagId[j] = currentTag.name;
+					} catch (error){
+						return res.status(500).json({error: 'Error occured finding tag'})
+					}
+				}
+			}
 			
 		}
+
+		
 
     
 

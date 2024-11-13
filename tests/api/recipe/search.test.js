@@ -47,7 +47,7 @@ describe('POST /api/recipe/search', () => {
                     authorId: "6724e84caf5041d082f98234",
                     instructions: ["testInstructions"],
                     ingredients: ["testing"],
-                    tagId: ["6724e84caf5041d082f98234"]
+                    tagId: ["6733f6acc187e3f268c80350"]
                 }
             
             })
@@ -273,5 +273,26 @@ describe('POST /api/recipe/search', () => {
         response = await request(recipeList)
         expect(response.status).toBe(400)
  
+    })
+
+    it('shoudl fail/return 404 due to tag not existing', async() => {
+        let recipeList, response;
+
+        recipeList = {
+            name: "_test", 
+            minCalories: 0,
+            maxCalories: 200,
+            minFat: 0,
+            maxFat: 300,
+            minCarbs: 200,
+            maxCarbs: 500,
+            minProtein: 100,
+            maxProtein: 1200,
+            tagId: ["6724e84caf5041d082f98234"],
+            firstidx: 0,
+            lastidx: 10
+        }
+        response = await request(recipeList)
+        expect(response.status).toBe(200)
     })
 })

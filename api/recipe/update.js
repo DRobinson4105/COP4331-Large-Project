@@ -73,8 +73,8 @@ export default async function handler (req, res) {
     }
     if (tagId != null) {
       if (
-        tagId && (!Array.isArray(tagId) ||
-        ingredients.every(item => typeof item !== 'string'))
+        tagId && (tagId.length != 0) && (!Array.isArray(tagId) ||
+        tagId.every(item => typeof item !== 'string'))
       ) {
         return res.status(400).json({
           error: 'tagId must be an array of strings'
@@ -128,7 +128,7 @@ export default async function handler (req, res) {
     return res.status(200).json(ret)
   } catch (error) {
     
-    console.error('Error during signup:', error)
+    console.error('Error during update Recipe:', error)
     res.setHeader('Content-Type', 'application/json')
     return res.status(500).json({ error: error.message })
   } finally {
