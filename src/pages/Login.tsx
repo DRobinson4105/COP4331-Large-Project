@@ -16,8 +16,7 @@ const LoginPage = () => {
     const [profile, setProfile] = useState({id: "", email: "", name: ""});
     const [message,setMessage] = useState('');
     const [loginName,setLoginName] = React.useState('');
-    const [email,setEmail] = React.useState('');
-    const [googleId,setGoogleId] = React.useState('');
+    const [currEmail,setCurrEmail] = React.useState('');
     const [loginPassword,setPassword] = React.useState('');
 
     const login = useGoogleLogin({
@@ -49,15 +48,14 @@ const LoginPage = () => {
     }, []);
 
     function googleLogin() {
-        setLoginName(profile.email);
-        setGoogleId(profile.id);
-        doLogin();
+        doLogin(profile.email, profile.id);
     }
 
-    async function doLogin() : Promise<void> {
+    async function doLogin(email: string, googleId?: string) : Promise<void> {
         setMessage('');
 
         const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
         if(regex.test(email)) {
             var obj = {username:"",email:email,password:loginPassword,googleId:googleId};
         }
@@ -95,13 +93,13 @@ const LoginPage = () => {
     async function handleLogin(event:any) : Promise<void>
     {
         event.preventDefault();
-        doLogin();
+        doLogin(currEmail);
     };
 
     function handleSetNameOrEmail( e: any ) : void
     {
       setLoginName( e.target.value );
-      setEmail( e.target.value );
+      setCurrEmail( e.target.value );
     }
 
     function handleSetPassword( e: any ) : void

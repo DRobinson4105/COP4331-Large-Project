@@ -5,11 +5,9 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-dotenv.config('../../.env')
-
 export default async function handler(req, res) {
   try {
-      const { email, e } = req.body
+      const { email } = req.body
 
       if(email == null){
         return res.status(400).json({
@@ -27,7 +25,7 @@ export default async function handler(req, res) {
 
       let user = await prisma.account.findFirst({
         where: {
-			email:email
+			    email:email
         }
       })
 
@@ -65,8 +63,8 @@ export default async function handler(req, res) {
       var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: "PLEASE FIX THIS USERNAME",
-          pass: "PLEASE FIX THIS PASSWORD"
+          user: process.env.NODEMAILER_USER,
+          pass: process.env.NODEMAILER_PASS
         }
       });
       
@@ -80,8 +78,6 @@ export default async function handler(req, res) {
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
         }
       });
 
