@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/screens/LogIn.dart';
 
 class ProfilePage extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -15,6 +17,14 @@ class ProfilePage extends StatelessWidget {
               ),
               Text("Description"),
             ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return LogIn();
+              }));
+            },
+            child: Text('Log Out'),
           ),
         ],
       ),

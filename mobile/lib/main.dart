@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.green,
         ),
 
-        scaffoldBackgroundColor: Color(0xFFFFFEEE),
+        scaffoldBackgroundColor: const Color(0xFFFFFEEE),
       ),
       home: LogIn(),
     );
