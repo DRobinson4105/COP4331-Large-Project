@@ -227,11 +227,10 @@ export default async function handler (req, res) {
 			}
 			/*if(recipeList[i].tagId[0].length > 0)*/
 			else{
-				console.log(recipeList.at(i).tagId.length)
 				for(let j = 0; j < recipeList.at(i).tagId.length; j++){
 					
+					let newList = []
 					let nTagId = recipeList[i].tagId[j]
-					console.log("nTag: ", nTagId)
 					try{
 						let currentTag = await prisma.tag.findFirst({
 							where: {
@@ -239,12 +238,14 @@ export default async function handler (req, res) {
 								//...(nTagId ? {id} : {})
 							},
 						})
-						if(currentTag == null){
 
-							//return res.status(404).json({error: 'Tag does not exist'})
+						if(currentTag != null){
+							newList.push(currentTag.name)
 						}
-						recipeList[i].tagId[j] = currentTag.name;
+
+						recipeList[i].tagId = newList
 					} catch (error){
+						console.log(error)
 						return res.status(500).json({error: 'Error occured finding tag'})
 					}
 				}

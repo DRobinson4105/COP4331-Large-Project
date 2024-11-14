@@ -4,12 +4,22 @@ import VerifiedNavBar from '../components/VerifiedNavBar';
 import "../index.css";
 
 const ProfileSettings: React.FC = () => {
+  const baseUrl = process.env.NODE_ENV === 'production' 
+        ? import.meta.env.VITE_API_URL
+        : 'http://localhost:3000';
+
+    function buildPath(route: string) : string {  
+        return baseUrl + "/api/" + route;
+    }
+    
   const [displayName, setDisplayName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
   const [settingsSaved, setSettingsSaved] = useState(false);
   const [profilePicture, setProfilePicture] = useState<string>('noPFP.png');
+  const [userId, setUserId] = useState('');
+  const [message, setMessage] = useState('');
   
   // Password state variables
   const [currentPassword, setCurrentPassword] = useState('');
@@ -21,26 +31,50 @@ const ProfileSettings: React.FC = () => {
   useEffect(() => {
     // Fetch user data (test data for now)
     const fetchUserData = async () => {
-      const data = {
-        displayName: 'Display Name',
-        userName: 'John Doe',
-        email: 'johndoe@example.com',
-        bio: 'mmmmmm food',
-        profilePicture: '', // Example: No picture URL provided
-      };
-      setDisplayName(data.displayName);
-      setUserName(data.userName);
-      setEmail(data.email);
-      setBio(data.bio);
+      const id = JSON.parse(localStorage.getItem('user_data') || '{}').id;
+
+      if (!id) {
+          console.error('No user ID found in local storage');
+          return;
+      }
+
+      setUserId(id)
+
+      const response = await fetch(buildPath('user/get'), {
+        method: 'POST',
+        body: JSON.stringify({ id: id }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const res = await response.json();
+      console.log(res)
+      
+      setDisplayName(res.name);
+      setUserName(res.username);
+      setEmail(res.email);
+      setBio(res.desc || '');
 
       // Set profile picture (default if not provided)
-      setProfilePicture(data.profilePicture || 'noPFP.png');
+      setProfilePicture(res.image || 'noPFP.png');
+      await new Promise(r => setTimeout(r, 1000));
     };
 
     fetchUserData();
   }, []);
 
-  const handleSaveSettings = () => {
+  const handleSaveSettings = async () => {
+    try {
+      var response = await fetch(
+          buildPath('user/update'),
+          {method:'POST',body:JSON.stringify({ id: userId, name: displayName, username: userName, desc: bio}),headers:{'Content-Type': 'application/json'}}
+      );
+
+      let res = await response.json()
+      var error = res.error
+      setMessage(error)
+    } catch (error) {
+      console.log(error)
+      return;
+    }
     setSettingsSaved(true);
     setTimeout(() => setSettingsSaved(false), 2000);
   };
@@ -104,7 +138,7 @@ const ProfileSettings: React.FC = () => {
             <button onClick={handleSaveSettings} className="save-changes-button">
               Save Changes
             </button>
-            {settingsSaved && <p className="save-confirmation">Settings saved successfully!</p>}
+            {settingsSaved && <p className="save-confirmation">{message}</p>}
           </div>
         </div>
 

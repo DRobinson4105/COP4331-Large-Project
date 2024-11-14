@@ -73,7 +73,7 @@ export default async function handler(req, res) {
             return res.status(409).json({ error: 'Account not found' })
         }
     
-        let ret = {  error: '' }
+        let ret = {  error: 'Settings saved successfully!' }
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {

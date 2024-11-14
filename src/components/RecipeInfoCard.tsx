@@ -12,6 +12,7 @@ interface Props {
 const RecipeInfoCard = (props: Props) =>
 {
     const image = props.image || RecipeImage;
+    console.log(props.tags)
 
     return(
         <div className="recipe-info-card" style={{display: "flex"}}>
