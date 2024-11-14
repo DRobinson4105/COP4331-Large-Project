@@ -47,12 +47,21 @@ export default async function handler(req, res) {
         if (user != null) {
             return res.status(409).json({ error: 'Account with email exists' })
         }
+
+        let acceptableCharacters = 'abcdefghijklmnopqrstuvwxyz1234567890';
+		let varifyCode = '';
+    	for (let i = 12; i > 0; i--) 
+		{
+        	varifyCode += acceptableCharacters[(Math.floor(Math.random() * acceptableCharacters.length))];
+		}
         
         user = await prisma.account.create({
             data: {
                 username: username,
                 name: displayName,
                 email: email,
+                varified: 0,
+                varifyCode: varifyCode,
                 ...(password ? { password } : {}),
                 ...(googleId ? { googleId } : {})
             }
