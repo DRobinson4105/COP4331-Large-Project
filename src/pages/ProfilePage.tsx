@@ -4,9 +4,9 @@ import VerifiedNavBar from '../components/VerifiedNavBar';
 import Description from '../components/Description';
 import "../index.css";
 
-const baseUrl = process.env.NODE_ENV === 'production' 
-        ? import.meta.env.VITE_API_URL
-        : 'http://nomnom.network:3000';
+const baseUrl = process.env.NODE_ENV === 'production'
+    ? import.meta.env.VITE_API_URL
+    : 'http://nomnom.network:3000';
 
 function buildPath(route: string): string {
     return baseUrl + "/api/" + route;
@@ -49,8 +49,8 @@ const ProfilePage: React.FC = () => {
                 return;
             }
 
-            let obj = { id: userId };
-            let js = JSON.stringify(obj);
+            const obj = { id: userId };
+            const js = JSON.stringify(obj);
 
             try {
                 const response = await fetch(buildPath('user/get'), {
@@ -65,7 +65,7 @@ const ProfilePage: React.FC = () => {
                     setUserData({
                         name: data.name || 'No Name Provided',
                         description: data.desc || 'No Description Available',
-                        image: data.image || 'default_image_path',
+                        image: data.image || '', 
                         recipes: data.recipes || []
                     });
                 } else {
@@ -79,7 +79,7 @@ const ProfilePage: React.FC = () => {
         fetchUserData();
     }, []);
 
-    // navigating to ProfileSettings
+    // Function to navigate to ProfileSettings
     const goToProfileSettings = () => {
         navigate('/ProfileSettings');
     };
@@ -92,7 +92,11 @@ const ProfilePage: React.FC = () => {
                 {/* Sidebar Section */}
                 <div className="sidebar">
                     <div className="avatar-placeholder">
-                        <img src={userData.image} alt={`${userData.name}'s avatar`} />
+                        <img
+                            src={userData.image || '/noPFP.png'}
+                            alt={`${userData.name}'s avatar`}
+                            className="profile-avatar"
+                        />
                     </div>
                     <div className="display-name">{userData.name}</div>
                     <Description description={userData.description} />

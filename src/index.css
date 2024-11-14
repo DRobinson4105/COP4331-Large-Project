@@ -221,15 +221,6 @@ body, .landing-title {
   gap: 10px;
 }
 
-.avatar-placeholder {
-  margin-top: 15%;
-  width: 200px;
-  height: 200px;
-  background-color: #ccc;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
 .display-name {
   font-size: 18px;
   text-align: center;
@@ -341,13 +332,26 @@ body, .landing-title {
 
 /* Profile picture styles */
 .avatar-placeholder {
+  margin-top: 15%;
   width: 150px;
   height: 150px;
+  background-color: #ccc;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 2px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  border-radius: 50%; 
+}
+
 
 .upload-button {
   margin-top: 10px;
@@ -401,7 +405,7 @@ body, .landing-title {
   flex-direction: column;
   gap: 20px;
   overflow-y: auto;
-  max-height: calc(100vh - 100px); /* Adjust height based on viewport */
+  max-height: calc(100vh - 100px);
   padding-right: 10px;
 }
 
