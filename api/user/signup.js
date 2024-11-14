@@ -60,7 +60,7 @@ export default async function handler(req, res) {
                 username: username,
                 name: displayName,
                 email: email,
-                varified: 0,
+                varified: false,
                 varifyCode: varifyCode,
                 ...(password ? { password } : {}),
                 ...(googleId ? { googleId } : {})
