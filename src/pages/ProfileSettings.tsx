@@ -49,10 +49,6 @@ const ProfileSettings: React.FC = () => {
     console.log("Password updated");
   };
 
-  const handleRemovePicture = () => {
-    setProfilePicture('noPFP.png');
-  };
-
   // Navigate back to ProfilePage
   const handleSaveAndExit = () => {
     handleSaveSettings();
@@ -73,12 +69,7 @@ const ProfileSettings: React.FC = () => {
               className="avatar-placeholder"
             />
             <button className="upload-button">Upload Photo</button>
-            <button className="save-picture-button">Save Picture</button>
-            <button className="remove-picture-button" onClick={handleRemovePicture}>
-              Remove Picture
-            </button>
           </div>
-
           <div className="user-info-section">
             <h2>User Information</h2>
             <label>
@@ -130,7 +121,6 @@ const ProfileSettings: React.FC = () => {
                 className="settings-input"
               />
             </label>
-            <button className="verify-email-button">Verify Email</button>
           </div>
 
           <div className="password-update-section">
