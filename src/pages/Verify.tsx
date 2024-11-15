@@ -25,12 +25,17 @@ const LoginPage = () => {
         setMessage('Processing verification')
 
         const apiCall = async () => {
-            var response = await fetch(
-                buildPath('user/verifyAccount'),
-                {method:'POST',body:JSON.stringify({ id, code }), headers:{'Content-Type': 'application/json'}}
-            );
-    
-            var res = await response.json();
+            try {
+                var response = await fetch(
+                    buildPath('user/verifyAccount'),
+                    {method:'POST',body:JSON.stringify({ id, code }), headers:{'Content-Type': 'application/json'}}
+                );
+        
+                var res = await response.json();
+            } catch (error: any) {
+                setMessage(error)
+            }
+            
 
             setMessage(res.error)
         }
