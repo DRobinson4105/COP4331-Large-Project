@@ -32,7 +32,9 @@ const LoginPage = () => {
                 );
         
                 var res = await response.json();
+                console.log(res)
             } catch (error: any) {
+                console.log(error)
                 setMessage(error)
             }
             
