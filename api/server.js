@@ -15,6 +15,7 @@ import signup from './user/signup.js';
 import updateUser from './user/update.js';
 import verifyEmail from './user/verifyemail.js';
 import passwordReset from './user/passwordReset.js'
+import verifyAccount from './user/verifyAccount.js'
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.use('/api/user/signup', signup);
 app.use('/api/user/update', updateUser);
 app.use('/api/user/verifyemail', verifyEmail);
 app.use('/api/user/passwordreset', passwordReset)
+app.use('/api/user/verifyAccount', verifyAccount);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
