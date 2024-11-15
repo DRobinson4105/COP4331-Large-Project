@@ -65,7 +65,7 @@ const ProfilePage: React.FC = () => {
                     setUserData({
                         name: data.name || 'No Name Provided',
                         description: data.desc || 'No Description Available',
-                        image: data.image || '', 
+                        image: data.image || '',
                         recipes: data.recipes || []
                     });
                 } else {
@@ -82,6 +82,11 @@ const ProfilePage: React.FC = () => {
     // Function to navigate to ProfileSettings
     const goToProfileSettings = () => {
         navigate('/ProfileSettings');
+    };
+
+    // Function to navigate to EditRecipe page
+    const goToEditRecipe = (recipe: Recipe) => {
+        navigate(`/edit-recipe/${recipe.id}`, { state: { recipe } });
     };
 
     return (
@@ -102,6 +107,7 @@ const ProfilePage: React.FC = () => {
                     <Description description={userData.description} />
                 </div>
 
+                {/* Main Content Section */}
                 <div className="main-content">
                     <div className="recipes-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h2 className="recipes-title">
@@ -142,6 +148,22 @@ const ProfilePage: React.FC = () => {
                                         <div className="nutrition">
                                             <p>{recipe.desc}</p>
                                         </div>
+                                        {/* Edit Recipe Button */}
+                                        <button
+                                            className="edit-recipe-button"
+                                            onClick={() => goToEditRecipe(recipe)}
+                                            style={{
+                                                padding: '5px 10px',
+                                                backgroundColor: '#007BFF',
+                                                color: '#fff',
+                                                border: 'none',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                                marginTop: '10px'
+                                            }}
+                                        >
+                                            Edit Recipe
+                                        </button>
                                     </div>
                                 </div>
                             ))}
