@@ -85,14 +85,10 @@ const ProfileSettings: React.FC = () => {
   const handleImageUpload = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log('1')
     if (file) {
-      console.log('2')
       const reader = new FileReader();
       reader.onloadend = async () => {
-        console.log('3')
         if (typeof reader.result === 'string') {
-          console.log('4')
           const base64Image = reader.result?.split(',')[1];
           var response = await fetch(
             buildPath('user/update'),
