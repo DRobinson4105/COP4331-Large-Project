@@ -19,7 +19,7 @@ const CreateRecipe: React.FC = () => {
   const [instructions, setInstructions] = useState<string>('');
   const [tagId, setTagId] = useState<string>(''); 
   const [error, setError] = useState<string | null>(null);
-
+  console.log(error);
   const baseUrl = process.env.NODE_ENV === 'production'
     ? import.meta.env.VITE_API_URL
     : 'http://localhost:3000';
