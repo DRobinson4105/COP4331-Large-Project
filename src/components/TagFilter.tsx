@@ -26,7 +26,7 @@ export default (props: Props) => {
             label="Tags"
           />
         )}
-		onChange={(event, value) => props.setSelectedTags(value.map(val => val.id))}
+		onChange={(_, value: Tag[]) => props.setSelectedTags(value.map((val: Tag) => val.id))}
       />
   );
 }

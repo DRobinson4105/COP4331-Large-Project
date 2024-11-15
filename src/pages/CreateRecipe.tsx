@@ -81,6 +81,7 @@ const CreateRecipe: React.FC = () => {
         const errorText = await response.text();
         console.error('Error Response:', errorText);
         setError(`Error: ${errorText}`);
+        console.log(error)
         return;
       }
   
