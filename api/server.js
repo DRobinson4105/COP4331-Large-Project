@@ -20,14 +20,14 @@ const app = express();
 
 app.use(express.json());
 
-const corsOptions = {
-  origin: (origin, callback) => callback(null, true),
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-};
+// const corsOptions = {
+//   origin: (origin, callback) => callback(null, true),
+//   methods: ['GET', 'POST', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
