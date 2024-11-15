@@ -9,6 +9,7 @@ import ProfilePage from './pages/ProfilePage'
 import SearchPage from './pages/Search'
 import Recipe from './pages/Recipe'
 import ProfileSettings from './pages/ProfileSettings'
+import CreateRecipe from './pages/CreateRecipe'
 import Test from './pages/Test'
 
 const App: React.FC = () => {
@@ -26,6 +27,7 @@ const App: React.FC = () => {
         <Route path="/ProfilePage" element={<ProfilePage />} />
         <Route path="/:id" element={<Recipe />}/>
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/CreateRecipe" element={<CreateRecipe />} />
       </Routes>
     </Router>
   );

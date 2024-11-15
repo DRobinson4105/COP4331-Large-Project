@@ -36,6 +36,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.options('', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', ''); // Allow all origins
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(200); // Respond with HTTP 200 OK
+});
+
 app.use('/api/auth/google', googleAuth);
 app.use('/api/recipe/create', createRecipe);
 app.use('/api/recipe/delete', deleteRecipe);
