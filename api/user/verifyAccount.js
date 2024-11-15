@@ -48,7 +48,7 @@ export default async function handler(req, res) {
             })
         }
 
-        let ret = { error: '' }
+        let ret = { error: 'Account validated' }
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(ret)
     } catch (error) {
