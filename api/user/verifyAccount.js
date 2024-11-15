@@ -27,6 +27,10 @@ export default async function handler(req, res) {
             select: { id: true, username: true, varifyCode: true }
         })
 
+        console.log(user)
+        console.log(code)
+        console.log(user.varifyCode)
+
         if (code != user.varifyCode) {
             return res.status(400).json({
                 error: 'Invalid account'
