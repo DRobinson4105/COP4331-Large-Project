@@ -12,6 +12,7 @@ import ProfileSettings from './pages/ProfileSettings'
 import CreateRecipe from './pages/CreateRecipe'
 import Test from './pages/Test'
 import Verify from './pages/Verify'
+import EditRecipe from './pages/EditRecipe'
 
 const App: React.FC = () => {
   return (
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/CreateRecipe" element={<CreateRecipe />} />
         <Route path="/verify" element={<Verify />} />
+        <Route path="/edit-recipe/:id" element={<EditRecipe />} />
       </Routes>
     </Router>
   );

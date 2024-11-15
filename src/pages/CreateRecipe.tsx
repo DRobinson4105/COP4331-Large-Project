@@ -94,7 +94,6 @@ const CreateRecipe: React.FC = () => {
       const data = await response.json();
   
       if (data && data.id) {
-        alert('Recipe saved successfully!');
         navigate('/search');
       } else {
         setError(data.error || 'An error occurred while saving the recipe.');
