@@ -1,7 +1,18 @@
 import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
-// const jwt = require('jsonwebtoken');
+import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 const prisma = new PrismaClient();
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS
+    }
+});
 
 export default async function handler(req, res) {
     try {
@@ -34,23 +45,29 @@ export default async function handler(req, res) {
             ...(password ? { password } : {}),
             ...(googleId ? { googleId } : {})
             },
-            select: { id: true }
+            select: { id: true, email: true, varifyCode: true, varified: true }
         })
         if (user == null) {
-            
             return res.status(401).json({ error: 'Incorrect Username or Password' })
         }
-        //If the the user's account exist, generate JWT
-        // jwt.sign({user}, 'privatekey', { expiresIn: '1h' },(err, token) => {
-        //     if(err) { 
-        //         return res.status(403).json('Error generating JWT ', err)
-        //     }   
-        //     // res.send(token); 
-        //     let ret = {token: token, error: ''}
-        //     res.setHeader('Content-Type', 'application/json');
-        //     return res.status(200).json(ret)
 
-        // });
+        if (!user.varified) {
+            var mailOptions = {
+                from: 'help.nomnomnetwork@gmail.com',
+                to: user.email,
+                subject: 'Nom Nom Network Account Verification',
+                text: `Proceed to http://nomnom.network/verify?id=${user.id}&code=${user.varifyCode} to verify your account.`
+            };
+            
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    return res.status(500).json({
+                        error: 'Error sending verification email'
+                    })
+                }
+            });
+            return res.status(401).json({ error: 'Verify your account before logging in. Another email has been sent.'})
+        }
 
         let ret = { userId: user.id, error: '' }
         res.setHeader('Content-Type', 'application/json');

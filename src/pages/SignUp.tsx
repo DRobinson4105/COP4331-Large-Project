@@ -114,8 +114,7 @@ const SignUpPage = () => {
             var user = {id:res.userId}
             localStorage.setItem('user_data', JSON.stringify(user));
 
-            setMessage('');
-            window.location.href = '/ProfilePage';
+            setMessage('Verify your account before logging in. An email has been sent.');
         }
     }
 

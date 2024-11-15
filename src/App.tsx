@@ -11,6 +11,7 @@ import Recipe from './pages/Recipe'
 import ProfileSettings from './pages/ProfileSettings'
 import CreateRecipe from './pages/CreateRecipe'
 import Test from './pages/Test'
+import Verify from './pages/Verify'
 
 const App: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
         <Route path="/:id" element={<Recipe />}/>
         <Route path="*" element={<Navigate to="/" />} />
         <Route path="/CreateRecipe" element={<CreateRecipe />} />
+        <Route path="/verify" element={<Verify />} />
       </Routes>
     </Router>
   );

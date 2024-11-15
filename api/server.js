@@ -20,28 +20,28 @@ const app = express();
 
 app.use(express.json());
 
-// const corsOptions = {
-//   origin: (origin, callback) => callback(null, true),
-//   methods: ['GET', 'POST', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   credentials: true
-// };
+const corsOptions = {
+  origin: (origin, callback) => callback(null, true),
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   next();
+// });
 
-app.options('', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', ''); // Allow all origins
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200); // Respond with HTTP 200 OK
-});
+// app.options('', (req, res) => {
+//   res.setHeader('Access-Control-Allow-Origin', ''); // Allow all origins
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   res.sendStatus(200); // Respond with HTTP 200 OK
+// });
 
 app.use('/api/auth/google', googleAuth);
 app.use('/api/recipe/create', createRecipe);
