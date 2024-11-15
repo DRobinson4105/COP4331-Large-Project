@@ -49,7 +49,14 @@ const CreateRecipe: React.FC = () => {
       ? instructions.split('\n').map(item => item.trim())
       : [];
   
-    const tagIds = tagId ? tagId.split(',').map(tag => tag.trim()) : [];
+    // Regex to check if a string is a valid ObjectID (24 hex characters)
+    const isValidObjectId = (id: string) => /^[a-f\d]{24}$/i.test(id);
+
+    // Filter and include only valid ObjectIDs
+    const tagIds = tagId
+      ? tagId.split(',').map(tag => tag.trim()).filter(isValidObjectId)
+      : [];
+
   
     const newRecipe = {
       name: title || '',
@@ -81,7 +88,6 @@ const CreateRecipe: React.FC = () => {
         const errorText = await response.text();
         console.error('Error Response:', errorText);
         setError(`Error: ${errorText}`);
-        console.log(error)
         return;
       }
   
