@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     try {
         const { id, code } = req.body
 	
-        if (email == null || code == null) {
+        if (id == null || code == null) {
             return res.status(400).json({
                 error: 'Invalid account'
             })
