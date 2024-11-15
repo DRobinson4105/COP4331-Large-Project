@@ -54,7 +54,7 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('Error during signup:', error);
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: 'Invalid account' });
     } finally {
         await prisma.$disconnect();
     }
