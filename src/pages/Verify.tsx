@@ -12,12 +12,11 @@ const LoginPage = () => {
     }
 
     const [message,setMessage] = useState('');
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         const root = document.documentElement;
         root.style.setProperty('background-color', '#8ED081');
-
-        const [searchParams] = useSearchParams();
 
         // Access query parameters
         const id = searchParams.get('id');
