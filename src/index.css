@@ -544,8 +544,7 @@ textarea {
 
 .edit-recipe-button {
   padding: 5px 10px;
-  background-color: #007BFF;
-  color: #fff;
+  background-color: #A7D3A8 !important;
   border: none;
   border-radius: 5px;
   cursor: pointer;
