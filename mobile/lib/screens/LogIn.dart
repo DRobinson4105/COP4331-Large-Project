@@ -35,7 +35,7 @@ void doLogIn(BuildContext context, String login, password) async {
 
     if(response.statusCode == 200) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ProfilePage();
+        return ProfilePage(jsonDecode(response.body)["userId"]);
       }));
     }
     print(response.body);

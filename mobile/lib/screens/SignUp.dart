@@ -46,7 +46,7 @@ void doSignUp(BuildContext context, String username, displayName, email, passwor
 
     if(response.statusCode == 200 || response.statusCode == 201) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ProfilePage();
+        return ProfilePage(response.body[0]);
       }));
     }
     print(response.body);
