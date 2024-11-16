@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import '../screens/Recipe.dart';
 
 class RecipeCard extends StatelessWidget {
   @override
@@ -14,7 +16,17 @@ class RecipeCard extends StatelessWidget {
             child: 
             Column(
               children: [
-                Text("Homemade Stew", style: TextStyle(fontWeight: FontWeight.bold)),
+                RichText(
+                  text: TextSpan(
+                    text: 'Homemade Stew',
+                    style: const TextStyle(color: Color(0xFF000000), fontWeight: FontWeight.bold),
+                    recognizer: TapGestureRecognizer()
+                    ..onTap = () => 
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return RecipePage();
+                      })),
+                  ),
+                ),
                 Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut lab", ),
               ],
             ),
