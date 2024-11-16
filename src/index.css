@@ -566,3 +566,13 @@ textarea {
   cursor: pointer;
   margin-top: 20px;
 }
+
+.delete-recipe-button {
+  padding: 5px 10px;
+  background-color: red !important; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin: 10px;
+}

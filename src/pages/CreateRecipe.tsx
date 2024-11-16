@@ -110,7 +110,6 @@ const CreateRecipe: React.FC = () => {
         <img src={image || 'placeholder.jpg'} alt="Recipe" className="recipe-image" />
         <input type="file" accept="image/*" onChange={handleImageUpload} className="file-input" />
         <div className="button-group">
-          <button className="edit-button">Edit</button>
           <button className="save-button" onClick={handleSaveRecipe}>Save Recipe</button>
         </div>
       </div>
