@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/LogIn.dart';
-import '../widgets/RecipeCard.dart';
+import '../widgets/RecipeDisplay.dart';
+import '../widgets/NavigationBar.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void getProfilePage(BuildContext context, String id) async {
   if(id.isEmpty){
@@ -9,9 +11,8 @@ void getProfilePage(BuildContext context, String id) async {
     return;
   }
 
-
   try{
-    http.Response response = await htttp.get(
+    http.Response response = await http.post(
       Uri.parse('http://nomnom.network:3000/api/user/get'),
       headers: <String, String>{
         'Content-Type': 'application/json',
@@ -27,9 +28,8 @@ void getProfilePage(BuildContext context, String id) async {
       }));
     }
     print(response.body);
-    return response;
   } catch(e){
-    print("Error occured retriving Profile")
+    print("Error occured retriving Profile");
   }
 }
 
@@ -37,7 +37,8 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
+        shrinkWrap: true,
         children: [
           Container(
             margin: EdgeInsets.all(10),
@@ -56,18 +57,8 @@ class ProfilePage extends StatelessWidget {
                 ],
               ),
           ),
-          Text("My Recipes", style: TextStyle(fontSize: 20)),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            color: const Color(0xFF8ED081),
-            child: Column(
-              children: [
-                RecipeCard(),
-                RecipeCard(),
-                RecipeCard(),
-              ],
-            ),
-          ),
+          Text("My Recipes", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          RecipeDisplay(),
           ElevatedButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -78,6 +69,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: NavBar(),
     );
   }
 }
