@@ -40,6 +40,8 @@ describe('POST /api/user/delete', () => {
                     email: "_test1@test.com",
                     username: "_testuser",
                     password: "password",
+                    varified: true,
+                    varifyCode: 'test'
                 }
             })
             testAccountId = testAccountId.id
@@ -73,6 +75,8 @@ describe('POST /api/user/delete', () => {
                 email: "_test1@test.com",
                 username: "_testuser",
                 password: "password",
+                varified: true,
+                varifyCode: 'test'
             }
         })
         testAccountId = testAccountId.id
