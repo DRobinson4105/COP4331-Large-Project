@@ -33,15 +33,15 @@ describe('POST /api/user/login', () => {
             await prisma.account.create({
                 data: {
                     username: '_test1', email: 'test1@test.com',
-                    name: 'test', password: 'test', varified: true,
-                    varifyCode: 'test'
+                    name: 'test', password: 'test', verified: true,
+                    verifyCode: 'test'
                 }
             })
             await prisma.account.create({
                 data: {
                     username: '_test2', email: 'test2@test.com',
-                    name: 'test', googleId: 'test', varified: true,
-                    varifyCode: 'test'
+                    name: 'test', googleId: 'test', verified: true,
+                    verifyCode: 'test'
                 }
             })
         } catch (error) {

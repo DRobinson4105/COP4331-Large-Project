@@ -24,11 +24,9 @@ export default async function handler(req, res) {
       
         let recipe = await prisma.recipe.findFirst({
             where: {
-                ...(id ? { id } : {})
+                id
             }
         })
-       
-        
         
         if (recipe == null) {
             return res.status(404).json({ error: 'Recipe not found' })

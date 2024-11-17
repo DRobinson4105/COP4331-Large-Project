@@ -45,18 +45,18 @@ export default async function handler(req, res) {
             ...(password ? { password } : {}),
             ...(googleId ? { googleId } : {})
             },
-            select: { id: true, email: true, varifyCode: true, varified: true }
+            select: { id: true, email: true, verifyCode: true, verified: true }
         })
         if (user == null) {
             return res.status(401).json({ error: 'Incorrect Username or Password' })
         }
 
-        if (!user.varified) {
+        if (!user.verified) {
             var mailOptions = {
                 from: 'help.nomnomnetwork@gmail.com',
                 to: user.email,
                 subject: 'Nom Nom Network Account Verification',
-                text: `Proceed to http://nomnom.network/verify?id=${user.id}&code=${user.varifyCode} to verify your account.`
+                text: `Proceed to http://nomnom.network/verify?id=${user.id}&code=${user.verifyCode} to verify your account.`
             };
             
             transporter.sendMail(mailOptions, function(error, info){

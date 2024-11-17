@@ -24,10 +24,10 @@ export default async function handler(req, res) {
 
         let user = await prisma.account.findFirst({
             where: { id },
-            select: { id: true, username: true, varifyCode: true }
+            select: { id: true, username: true, verifyCode: true }
         })
 
-        if (code != user.varifyCode) {
+        if (code != user.verifyCode) {
             return res.status(400).json({
                 error: 'Invalid account'
             })
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
                 id: id
             },
             data: {
-                varified: true
+                verified: true
             }
         })
 

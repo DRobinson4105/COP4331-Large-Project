@@ -21,7 +21,7 @@ describe('POST /api/recipe/get', () => {
         return {status: res.status.mock.calls[0][0], body: res.json.mock.calls[0][0]};
     }
 
-    let test1Id, test2Id, testRecipeId, testRecipe;
+    let test1Id, test2Id, testRecipeId;
 
     beforeAll(async() => {
         await prisma.$connect();
@@ -43,18 +43,18 @@ describe('POST /api/recipe/get', () => {
             test1Id = await prisma.account.create({
                 data: {
                     username: '_test1', email: 'test1@test.com',
-                    name: 'test', password: 'test'
+                    name: 'test', password: 'test', verified: true, verifyCode: "test"
                 }
             })
             test1Id = test1Id.id
             test2Id = await prisma.account.create({
                 data: {
                     username: '_test2', email: 'test2@test.com',
-                    name: 'test', googleId: 'test'
+                    name: 'test', googleId: 'test', verified: true, verifyCode: "test"
                 }
             })
             test2Id = test2Id.id
-            testRecipe = await prisma.recipe.create({
+            testRecipeId = await prisma.recipe.create({
                 data: {
                     name: "_test2",
                     desc: "testing desc2",
@@ -64,11 +64,10 @@ describe('POST /api/recipe/get', () => {
                     protein: 10,
                     authorId: test2Id,
                     instructions:["_test Instructions"],
-                    ingredients:["_testing"],
-                    tagId:["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+                    ingredients:["_testing"]
                 }
             })
-            testRecipeId = testRecipe.id
+            testRecipeId = testRecipeId.id
 
 
         } catch (error) {
@@ -117,7 +116,7 @@ describe('POST /api/recipe/get', () => {
 
     })
 
-    it('should fail/return 409 due to missing argument', async() =>{
+    it('should fail/return 404 due to missing argument', async() =>{
         let recipe, response, expected;
 
         recipe = {id: test1Id}
@@ -125,6 +124,6 @@ describe('POST /api/recipe/get', () => {
         expected = await prisma.recipe.findFirst({
             where: {id : testRecipeId}
         })
-        expect(response.status).toBe(409)
+        expect(response.status).toBe(404)
     })
 })

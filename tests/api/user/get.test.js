@@ -21,13 +21,10 @@ describe('POST /api/user/get', () => {
         return {status: res.status.mock.calls[0][0], body: res.json.mock.calls[0][0]};
     }
 
-    let test1Id, test2Id, testAccountId, recipeTestId, testAccountId2;
+    let testId, testRecipeId;
 
     beforeAll(async() => {
         await prisma.$connect();
-        
-        const testImage = './_testPhoto.jpg'
-        const unencoded = btoa(testImage);
         
         try {
             await prisma.account.deleteMany({
@@ -40,33 +37,16 @@ describe('POST /api/user/get', () => {
 					name: { startsWith: '_test' }
 				}
 			})
-            testAccountId = await prisma.account.create({
-                data: {
-                    name: "_test1",
-                    desc: "testing desc",
-                    email: "_test1@test.com",
-                    username: "testuser",
-                    password: "password",
-                    varified: true,
-                    varifyCode: 'true'
-                }
-            })
-            testAccountId = testAccountId.id
-
-            testAccountId2 = await prisma.account.create({
-                data: {
-                    name: "_test1",
-                    desc: "testing desc",
-                    email: "_test1@test.com",
-                    username: "testuser",
-                    password: "password",
-                    varified: true,
-                    varifyCode: 'test'
-                }
-            })
-            testAccountId2 = testAccountId2.id
             
-            test1Id = await prisma.recipe.create({
+            testId = await prisma.account.create({
+                data: {
+                    username: '_test1', email: 'test1@test.com', desc: "testing desc",
+                    name: 'test', password: 'test', verified: true, verifyCode: "test"
+                }
+            })
+            testId = testId.id
+
+            testRecipeId = await prisma.recipe.create({
                 data: {
                     name: "_test1",
                     desc: "testing desc",
@@ -74,26 +54,13 @@ describe('POST /api/user/get', () => {
                     fat: 1,
                     carbs: 1,
                     protein: 1,
-                    authorId: testAccountId2,
+                    authorId: testId,
                     instructions: ["testInstructions"],
                     ingredients: ["testing"],
-                    tagId: ["6724e84caf5041d082f98234"]//Make tags before recipes to attach
+                    tagId: []
                 }
             })
-            test1Id = test1Id.id
-
-            recipeTestId = await prisma.recipe.create({
-                data: {
-                    name: "_testrec",
-                    desc: "recipe description",
-                    calories: 1,
-                    fat: 1,
-                    carbs: 1,
-                    protein: 1,
-                    authorId: testAccountId
-                }
-            })
-            recipeTestId = recipeTestId.id
+            testRecipeId = testRecipeId.id
             
         } catch (error) {
             console.error('Error Deleting Test Entries:', error)
@@ -105,61 +72,39 @@ describe('POST /api/user/get', () => {
     });
 
     it('should take in an id and return the account', async() =>{
-        let account, response, expected;
-
-        const testImage = './_testPhoto.jpg'
-        const unencoded = btoa(testImage);
-
         let recipe = [{
-            id: recipeTestId,
-            name: "_testrec",
-            image: null,
-            desc: "recipe description",
-            tagId: []
+            id: testRecipeId,
+            name: "_test1",
+            desc: "testing desc",
+            tagId: [],
+            image: null
         }]
 
-        account = { id: testAccountId}
-        response = await request(account)
-        expected = { password: "password", isGoogle: false, email: '_test1@test.com', 
-            name: '_test1', username: 'testuser', 
-            desc: 'testing desc', recipes: recipe, error: ''};
+        let response = await request({ id: testId })
+        let expected = {
+            password: "test", isGoogle: false, email: 'test1@test.com', name: 'test',
+            username: '_test1', desc: 'testing desc', recipes: recipe, error: ''
+        };
+
         expect(response.status).toBe(200)
         expect(response.body).toEqual(expected)
 
     })
 
-    it('should fail/return 400 due to invalid argument', async() =>{
-        let account, response, expected;
+    it('should fail/return 400 due to invalid or missing argument', async() =>{
+        let response = await request({ id: 1 })
 
-        account = { id: 1}
-        response = await request(account)
-        expected = await prisma.account.findFirst({
-            where: {id : testAccountId}
-        })
         expect(response.status).toBe(400)
 
-    })
+        response = await request({})
 
-    it('should fail/return 400 due to missing argument', async() =>{
-        let account, response, expected;
-
-        account = {}
-        response = await request(account)
-        expected = await prisma.account.findFirst({
-            where: {id : testAccountId}
-        })
         expect(response.status).toBe(400)
-
     })
 
     it('should fail/return 409 due to account not existing', async() =>{
-        let account, response, expected;
+        let account = { id: testRecipeId }
+        let response = await request(account)
 
-        account = {id: test1Id}
-        response = await request(account)
-        expected = await prisma.account.findFirst({
-            where: {id : testAccountId}
-        })
         expect(response.status).toBe(409)
     })
 })

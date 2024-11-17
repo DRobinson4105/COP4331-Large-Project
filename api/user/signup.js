@@ -62,10 +62,10 @@ export default async function handler(req, res) {
         }
 
         let acceptableCharacters = 'abcdefghijklmnopqrstuvwxyz1234567890';
-		let varifyCode = '';
+		let verifyCode = '';
     	for (let i = 12; i > 0; i--) 
 		{
-        	varifyCode += acceptableCharacters[(Math.floor(Math.random() * acceptableCharacters.length))];
+        	verifyCode += acceptableCharacters[(Math.floor(Math.random() * acceptableCharacters.length))];
 		}
         
         user = await prisma.account.create({
@@ -73,8 +73,8 @@ export default async function handler(req, res) {
                 username: username,
                 name: displayName,
                 email: email,
-                varified: false,
-                varifyCode: varifyCode,
+                verified: false,
+                verifyCode: verifyCode,
                 ...(password ? { password } : {}),
                 ...(googleId ? { googleId } : {})
             }
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
             from: 'help.nomnomnetwork@gmail.com',
             to: email,
             subject: 'Nom Nom Network Account Verification',
-            text: `Proceed to http://nomnom.network/verify?id=${user.id}&code=${varifyCode} to verify your account.`
+            text: `Proceed to http://nomnom.network/verify?id=${user.id}&code=${verifyCode} to verify your account.`
         };
         
         transporter.sendMail(mailOptions, function(error, info){

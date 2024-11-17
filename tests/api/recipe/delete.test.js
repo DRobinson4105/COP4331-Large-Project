@@ -21,19 +21,31 @@ describe('POST /api/recipe/delete', () => {
         return {status: res.status.mock.calls[0][0], body: res.json.mock.calls[0][0]};
     }
 
-    let testRecipe, savedId;
+    let testRecipeId;
 
     beforeAll(async() => {
         await prisma.$connect();
         
         try {
+            await prisma.account.deleteMany({
+                where: {
+                    username: { startsWith: '_test' }
+                }
+            })
             await prisma.recipe.deleteMany({
                 where: {
                     name: { startsWith: '_test' }
                 }
             })
 
-            testRecipe = await prisma.recipe.create({
+            let testUser = await prisma.account.create({
+                data: {
+                    username: '_test1', email: 'test1@test.com',
+                    name: 'test', password: 'test', verified: true, verifyCode: "test"
+                }
+            })
+
+            testRecipeId = await prisma.recipe.create({
                 data: {
                     name: "_test1",
                     desc: "testing desc",
@@ -42,14 +54,13 @@ describe('POST /api/recipe/delete', () => {
                     fat: 200,
                     carbs: 200,
                     protein: 20,
-                    authorId: "6723f006ba10f4fd6307a8e9",
+                    authorId: testUser.id,
                     instructions: [""],
                     ingredients: [""],
-                    tagId: ["6723f006ba10f4fd6307a8e9"]
                 }
             })
-            savedId = testRecipe.id;
-            
+
+            testRecipeId = testRecipeId.id;
 
         } catch (error) {
             console.error(`Error Deleting Test Entries: ${error}`)
@@ -61,39 +72,10 @@ describe('POST /api/recipe/delete', () => {
     });
 
     it('should delete an existing recipe with a given ID', async () => {
-        let input, response, expected;
-        let id = testRecipe.id;
-        input = {id: id}
-        response = await request(input)
+        let response = await request({id: testRecipeId})
 
-        expect(response.status).toBe(200)
-    })
-
-    it('check to see if input is actually deleted', async () => {
-        let input, response, expected;
-
-        testRecipe = await prisma.recipe.create({
-            data: {
-                name: "_test1",
-                desc: "testing desc",
-                image: "",
-                calories: 200,
-                fat: 200,
-                carbs: 200,
-                protein: 20,
-                authorId: "6723f006ba10f4fd6307a8e9",
-                instructions: ["Yo"],
-                ingredients: ["Yo"],
-                tagId: ["6723f006ba10f4fd6307a8e9"]
-            }
-        })
-        
-        let id = testRecipe.id;
-        input = { id: id}
-        response = await request(input)
-
-        expected = await prisma.recipe.findFirst({
-            where: {id: testRecipe.id}
+        let expected = await prisma.recipe.findFirst({
+            where: {id: testRecipeId}
         })
 
         expect(response.status).toBe(200)
@@ -101,18 +83,13 @@ describe('POST /api/recipe/delete', () => {
     })
 
     it('should fail and return a 400 error because id is missing', async () => {
-        let input, response;
+        let response = await request({})
 
-        input = {}
-        response = await request(input)
         expect(response.status).toBe(400)
     })
 
-    it('should fail/return 409 due to recipe not existing', async() =>{
-        let recipe, response, expected;
-    
-        recipe = {id: savedId}
-        response = await request(recipe)
+    it('should fail/return 409 due to recipe not existing', async() => {
+        let response = await request({id: testRecipeId})
         
         expect(response.status).toBe(409)
     })

@@ -29,9 +29,8 @@ model account {
   username String  @unique
   image    Bytes?
   desc    String?
-  varified Boolean
-  varifyCode String
-  filterId String[]  @db.ObjectId
+  verified Boolean
+  verifyCode String
   password String?
   googleId String?
 }

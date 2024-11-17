@@ -48,8 +48,7 @@ describe('POST /api/tag/create', () =>{
         let newTag, response, expected;
 
         newTag = {
-            name : "_test1",
-            color: "Yellow"
+            name : "_test1"
         }
 
         response = await request(newTag)
@@ -62,8 +61,7 @@ describe('POST /api/tag/create', () =>{
 		expect(response.body.id).toEqual(expected.id)
 
         newTag = {
-            name : "_test2",
-            color: "Blue"
+            name : "_test2"
         }
 
         response = await request(newTag)
@@ -77,40 +75,17 @@ describe('POST /api/tag/create', () =>{
     })
 
     it('should fail and return a 400 due to invalid arguments', async () => {
-        let newTag, response;
-
-        newTag = {
-            name: 1,
-            color: "Yellow"
+        let newTag = {
+            name: 1
         }
 
-        response = await request(newTag)
-        expect(response.status).toBe(400)
-
-        newTag = {
-            name: "_test",
-            color: 1
-        }
-
-        response = await request(newTag)
+        let response = await request(newTag)
         expect(response.status).toBe(400)
     })
 
     it('should fail and return a 400 due to missing arguments', async () => {
-        let newTag, response;
+        let response = await request({})
         
-        newTag = {
-            name: "_test1"
-        }
-
-        response = await request(newTag)
-        expect(response.status).toBe(400)
-
-        newTag = {
-            name: "_test2"
-        }
-
-        response = await request(newTag)
         expect(response.status).toBe(400)
     })
 })

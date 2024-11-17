@@ -33,8 +33,8 @@ describe('POST /api/user/verifyemail', () => {
             await prisma.account.create({
                 data: {
                     username: '_test1', email: 'test1@test.com',
-                    name: 'test', password: 'test', varified: true,
-                    varifyCode: 'test'
+                    name: 'test', password: 'test', verified: true,
+                    verifyCode: 'test'
                 }
             })
         } catch (error) {

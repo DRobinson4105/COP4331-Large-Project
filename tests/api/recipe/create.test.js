@@ -40,14 +40,14 @@ describe('POST /api/recipe/create', () => {
             test1Id = await prisma.account.create({
                 data: {
                     username: '_test1', email: 'test1@test.com',
-                    name: 'test', password: 'test'
+                    name: 'test', password: 'test', verified: true, verifyCode: "test"
                 }
             })
             test1Id = test1Id.id
             test2Id = await prisma.account.create({
                 data: {
                     username: '_test2', email: 'test2@test.com',
-                    name: 'test', googleId: 'test'
+                    name: 'test', googleId: 'test', verified: true, verifyCode: "test"
                 }
             })
             test2Id = test2Id.id

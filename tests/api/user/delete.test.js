@@ -21,7 +21,7 @@ describe('POST /api/user/delete', () => {
         return {status: res.status.mock.calls[0][0], body: res.json.mock.calls[0][0]};
     }
 
-    let testAccountId, savedId;
+    let testUserId;
 
     beforeAll(async() => {
         await prisma.$connect();
@@ -33,19 +33,18 @@ describe('POST /api/user/delete', () => {
                 }
             })
 
-            testAccountId = await prisma.account.create({
+            testUserId = await prisma.account.create({
                 data: {
                     name: "_test1",
                     desc: "testing desc",
                     email: "_test1@test.com",
                     username: "_testuser",
                     password: "password",
-                    varified: true,
-                    varifyCode: 'test'
+                    verified: true,
+                    verifyCode: 'test'
                 }
             })
-            testAccountId = testAccountId.id
-            savedId = testAccountId
+            testUserId = testUserId.id
 
         } catch (error) {
             console.error(`Error Deleting Test Entries: ${error}`)
@@ -57,35 +56,10 @@ describe('POST /api/user/delete', () => {
     });
 
     it('should delete an existing user with a given ID', async () => {
-        let input, response, expected;
+        let response = await request({id: testUserId})
 
-        input = {id: testAccountId}
-        response = await request(input)
-
-        expect(response.status).toBe(200)
-    })
-
-    it('check to see if input is actually deleted', async () => {
-        let input, response, expected;
-
-        testAccountId = await prisma.account.create({
-            data: {
-                name: "_test1",
-                desc: "testing desc",
-                email: "_test1@test.com",
-                username: "_testuser",
-                password: "password",
-                varified: true,
-                varifyCode: 'test'
-            }
-        })
-        testAccountId = testAccountId.id
-
-        input = { id: testAccountId }
-        response = await request(input)
-
-        expected = await prisma.account.findFirst({
-            where: {id: testAccountId}
+        let expected = await prisma.account.findFirst({
+            where: {id: testUserId}
         })
 
         expect(response.status).toBe(200)
@@ -101,10 +75,8 @@ describe('POST /api/user/delete', () => {
     })
 
     it('should fail/return 409 due to account not existing', async() =>{
-        let account, response, expected;
-    
-        account = {id: savedId}
-        response = await request(account)
+        let account = {id: testUserId}
+        let response = await request(account)
         
         expect(response.status).toBe(409)
     })
