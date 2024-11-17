@@ -182,16 +182,16 @@ export default async function handler (req, res) {
 					gte: nminCalories
 				},
 				fat: {
-				  lte: nmaxCalories, 
-				  gte: nminCalories
+					lte: nmaxFat, 
+					gte: nminFat
 				},
 				carbs: {
-				  lte: nmaxCalories, 
-				  gte: nminCalories
+					lte: nmaxCarbs, 
+					gte: nminCarbs
 				},
 				protein: {
-				  lte: nmaxCalories, 
-				  gte: nminCalories
+					lte: nmaxProtein, 
+					gte: nminProtein
 				}
 			},
 			select:{
