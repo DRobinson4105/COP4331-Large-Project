@@ -19,7 +19,7 @@ class SearchRecipes extends StatelessWidget {
             hintText: "Search Recipes",
           ),
           Filter(),
-          RecipeDisplay(),
+          RecipeDisplay([]),
         ]
       ),
       bottomNavigationBar: NavBar(userId),

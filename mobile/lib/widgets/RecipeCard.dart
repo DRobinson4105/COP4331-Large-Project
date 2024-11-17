@@ -1,8 +1,31 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import '../screens/Recipe.dart';
+import 'dart:convert';
 
-class RecipeCard extends StatelessWidget {
+class RecipeCard extends StatefulWidget {
+  const RecipeCard(this.id, this.name, this.desc, this.image, this.tags, {super.key});
+
+  final String id;
+  final String name;
+  final String desc;
+  final String image;
+  final List<dynamic> tags;
+
+  @override
+  State<RecipeCard> createState() => RecipeCardState(id, name, desc, image, tags);
+}
+
+class RecipeCardState extends State<RecipeCard> {
+  RecipeCardState(this.id, this.name, this.desc, this.image, this.tags);
+
+  final String id;
+  final String name;
+  final String desc;
+  final String image;
+  final List<dynamic> tags;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,14 +34,17 @@ class RecipeCard extends StatelessWidget {
       color: const Color(0xFFFFFEEE),
       child: Row(
         children: [
-          Image(image: ResizeImage(AssetImage('lib/assets/DefaultRecipePicture.png'), width: 100, height: 100,)),
+          if(image != "No Image")
+            Image(image: ResizeImage(MemoryImage(base64Decode(image)), width: 100, height: 100)), 
+          if(image == "No Image") 
+            Image(image: ResizeImage(AssetImage('lib/assets/DefaultRecipePicture.png'), width: 100, height: 100)),
           Flexible(
             child: 
             Column(
               children: [
                 RichText(
                   text: TextSpan(
-                    text: 'Homemade Stew',
+                    text: name,
                     style: const TextStyle(color: Color(0xFF000000), fontWeight: FontWeight.bold),
                     recognizer: TapGestureRecognizer()
                     ..onTap = () => 
@@ -27,7 +53,7 @@ class RecipeCard extends StatelessWidget {
                       })),
                   ),
                 ),
-                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod  tempor incididunt ut lab", ),
+                Text(desc),
               ],
             ),
           ),

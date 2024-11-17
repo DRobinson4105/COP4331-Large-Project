@@ -29,7 +29,6 @@ class Profile {
 }
 
 Future<Profile> fetchProfile(String id) async {
-  print(id);
   http.Response response = await http.post(
     Uri.parse('http://nomnom.network:3000/api/user/get'),
     headers: <String, String>{
@@ -89,14 +88,17 @@ class ProfilePageState extends State<ProfilePage> {
                             Text(snapshot.data!.name),
                           ]
                         ),
-                        Expanded(
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
                           child: Text(snapshot.data!.desc),
                         ),
                       ],
                     ),
                 ),
-                Text("My Recipes", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                RecipeDisplay(),
+                ListTile(
+                  title: Text("My Recipes", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
+                RecipeDisplay(snapshot.data!.recipes),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
