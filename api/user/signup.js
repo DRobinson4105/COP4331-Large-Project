@@ -1,10 +1,23 @@
 import { PrismaClient } from '@prisma/client';
+import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const prisma = new PrismaClient();
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS
+    }
+  });
 
 export default async function handler(req, res) {
     try {
         const { username, displayName, password, googleId, email } = req.body;
+        res.setHeader('Content-Type', 'application/json');
 
         if (
             (username && typeof username !== 'string') ||
@@ -14,7 +27,7 @@ export default async function handler(req, res) {
             (googleId && typeof googleId !== 'string')
         ) {
             return res.status(400).json({
-            error: 'Each argument must be a string'
+                error: 'Each argument must be a string'
             })
         }
         
@@ -60,15 +73,29 @@ export default async function handler(req, res) {
                 username: username,
                 name: displayName,
                 email: email,
-                varified: 0,
+                varified: false,
                 varifyCode: varifyCode,
                 ...(password ? { password } : {}),
                 ...(googleId ? { googleId } : {})
             }
         })
+
+        var mailOptions = {
+            from: 'help.nomnomnetwork@gmail.com',
+            to: email,
+            subject: 'Nom Nom Network Account Verification',
+            text: `Proceed to http://nomnom.network/verify?id=${user.id}&code=${varifyCode} to verify your account.`
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                return res.status(500).json({
+                    error: 'Error sending verification email'
+                })
+            }
+        });
         
         let ret = { userId: user.id, error: '' }
-        res.setHeader('Content-Type', 'application/json');
         return res.status(201).json(ret)
     } catch (error) {
         console.error('Error during signup:', error);

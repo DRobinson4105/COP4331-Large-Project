@@ -40,6 +40,8 @@ describe('POST /api/user/update', () => {
                     email: "_test1@test.com",
                     username: "_testuser",
                     password: "password",
+                    varified: true,
+                    varifyCode: 'test'
                 }
             })
             testAccountId = testAccountId.id
@@ -133,12 +135,17 @@ describe('POST /api/user/update', () => {
 
         const testImage = './_testPhoto.jpg'
         const unencoded = btoa(testImage);
+        /*
+        await prisma.account.deleteMany({
+            where: {
+                username: '_test3'
+            }
+        })*/
 
         input = {
-            id: testAccountId, username: '_test3',
+            id: testAccountId, username: '_test4',
         }
         response = await request(input)
-
         expect(response.status).toBe(200)
     })
 
@@ -152,6 +159,8 @@ describe('POST /api/user/update', () => {
                 email: "_test1@test.com",
                 username: "_testuser",
                 password: "password",
+                varified: true,
+                varifyCode: 'test'
             }
         })
         account = testAccountId.id
@@ -183,6 +192,8 @@ describe('POST /api/user/update', () => {
                 email: "_test1@test.com",
                 username: "testuser",
                 googleId: "defagoogleid",
+                varified: true,
+                varifyCode: 'test'
             }
         })
         testAccountId2 = testAccountId2.id

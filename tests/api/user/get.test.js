@@ -47,6 +47,8 @@ describe('POST /api/user/get', () => {
                     email: "_test1@test.com",
                     username: "testuser",
                     password: "password",
+                    varified: true,
+                    varifyCode: 'true'
                 }
             })
             testAccountId = testAccountId.id
@@ -58,6 +60,8 @@ describe('POST /api/user/get', () => {
                     email: "_test1@test.com",
                     username: "testuser",
                     password: "password",
+                    varified: true,
+                    varifyCode: 'test'
                 }
             })
             testAccountId2 = testAccountId2.id

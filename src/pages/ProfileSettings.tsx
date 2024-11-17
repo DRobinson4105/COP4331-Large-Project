@@ -16,11 +16,15 @@ const ProfileSettings: React.FC = () => {
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
-  const [settingsSaved, setSettingsSaved] = useState(false);
+  const [password, setPassword] = useState('');
+  const [isGoogle, setIsGoogle] = useState(false);
   const [profilePicture, setProfilePicture] = useState<string>('noPFP.png');
   const [userId, setUserId] = useState('');
   const [message, setMessage] = useState('');
-  
+  const [message2, setMessage2] = useState('');
+  const [message3, setMessage3] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+
   // Password state variables
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -46,12 +50,13 @@ const ProfileSettings: React.FC = () => {
         headers: { 'Content-Type': 'application/json' }
       });
       const res = await response.json();
-      console.log(res)
       
       setDisplayName(res.name);
       setUserName(res.username);
       setEmail(res.email);
       setBio(res.desc || '');
+      setPassword(res.password)
+      setIsGoogle(res.isGoogle)
 
       // Set profile picture (default if not provided)
       setProfilePicture(res.image || 'noPFP.png');
@@ -75,12 +80,70 @@ const ProfileSettings: React.FC = () => {
       console.log(error)
       return;
     }
-    setSettingsSaved(true);
-    setTimeout(() => setSettingsSaved(false), 2000);
   };
 
-  const handleUpdatePassword = () => {
-    console.log("Password updated");
+  const handleImageUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        if (typeof reader.result === 'string') {
+          const base64Image = reader.result?.split(',')[1];
+          var response = await fetch(
+            buildPath('user/update'),
+            {method:'POST',body:JSON.stringify({ id: userId, image: base64Image }),headers:{'Content-Type': 'application/json'}}
+          );
+    
+          let res = await response.json()
+          var error = res.error
+          setMessage3(error)
+          setProfilePicture(reader.result)
+        } else {
+          setMessage3('FileReader result is not a string');
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setMessage3('No file selected');
+    }
+  };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    if (newPassword == "") {
+      setMessage2("Empty new password")
+      return
+    }
+
+    if (newPassword != confirmNewPassword) {
+      setMessage2('New Passwords don\'t match')
+      return
+    }
+
+    if (currentPassword != password) {
+      setMessage2('Incorrect current password')
+      return
+    }
+
+    try {
+      var response = await fetch(
+          buildPath('user/update'),
+          {method:'POST',body:JSON.stringify({ id: userId, password: newPassword }),headers:{'Content-Type': 'application/json'}}
+      );
+
+      let res = await response.json()
+      var error = res.error
+      setMessage2(error)
+    } catch (error) {
+      console.log(error)
+      return;
+    }
   };
 
   // Navigate back to ProfilePage
@@ -97,12 +160,17 @@ const ProfileSettings: React.FC = () => {
         {/* Left Side: Profile Picture and User Information */}
         <div className="left-panel">
           <div className="profile-picture-section">
-            <img
-              src={profilePicture}
-              alt="Profile"
-              className="avatar-placeholder"
-            />
-            <button className="upload-button">Upload Photo</button>
+          <img src={profilePicture} alt="profilePicture" style={{ borderRadius: '50%', width: '200px', height: 'auto' }} />
+
+            <h1>Upload Image</h1>
+              <form onSubmit={handleImageUpload}>
+                <input type="file" accept="image/*" onChange={handleFileChange} />
+                <button type="submit">Upload</button>
+              </form>
+              <p className="save-confirmation">{message3}</p>
+            {/* <label htmlFor="upload-button">
+              <button>Upload Image</button>
+            </label> */}
           </div>
           <div className="user-info-section">
             <h2>User Information</h2>
@@ -138,26 +206,17 @@ const ProfileSettings: React.FC = () => {
             <button onClick={handleSaveSettings} className="save-changes-button">
               Save Changes
             </button>
-            {settingsSaved && <p className="save-confirmation">{message}</p>}
+            <p className="save-confirmation">{message}</p>
           </div>
         </div>
 
         {/* Right Side: Scrollable Content */}
         <div className="right-panel">
           <div className="update-email-section">
-            <h2>Update Email</h2>
-            <label>
-              Email:
-              <input 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                className="settings-input"
-              />
-            </label>
+            <h2>Email: {email}</h2>
           </div>
 
-          <div className="password-update-section">
+          {!isGoogle && <div className="password-update-section">
             <h2>Update Password</h2>
             <input
               type="password"
@@ -183,7 +242,8 @@ const ProfileSettings: React.FC = () => {
             <button onClick={handleUpdatePassword} className="update-password-button">
               Update Password
             </button>
-          </div>
+            <p className="save-confirmation">{message2}</p>
+          </div>}
         </div>
 
         {/* Save and Exit Button */}

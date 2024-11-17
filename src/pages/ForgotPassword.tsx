@@ -5,6 +5,14 @@ import { Link } from 'react-router-dom';
 
 const ForgotPasswordPage = () =>
 {
+    const baseUrl = process.env.NODE_ENV === 'production' 
+        ? import.meta.env.VITE_API_URL
+        : 'http://localhost:3000';
+
+    function buildPath(route: string) : string {  
+        return baseUrl + "/api/" + route;
+    }
+
     const [message,setMessage] = useState('');
     const [email,setEmail] = React.useState('');
 
@@ -21,7 +29,18 @@ const ForgotPasswordPage = () =>
             setMessage("Email field cannot be empty");
         }
         else {
-            window.location.href = '/resetcodeinput';
+            var response = await fetch(
+                buildPath('user/passwordReset'),
+                {method:'POST',body:JSON.stringify({ email }), headers:{'Content-Type': 'application/json'}}
+            );
+
+            var res = await response.json();
+
+            if (!response.ok) {
+                setMessage(res.error);
+            } else {
+                setMessage("If there is an account with the provided email address, an email will be sent.");
+            }
         }
     };
 

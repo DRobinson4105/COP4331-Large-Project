@@ -63,11 +63,9 @@ export default () => {
         }
 
         var user = {id:res.userId}
-        console.log(res.userId)
         localStorage.setItem('user_data', JSON.stringify(user));
 
-        setMessage('');
-        window.location.href = '/ProfilePage';
+        setMessage('Verify your account before logging in. An email has been sent.');
     };
 
     function handleSetUsername( e: any ) : void {

@@ -54,6 +54,14 @@ export default async function handler(req, res) {
         if(checker.googleId != null && password != null){
             return res.status(409).json({ error: 'Cannot input a password to an object with a googleId'})
         }
+
+        let checkUsername = await prisma.account.findFirst({
+            where: {username: username}
+        })
+
+        if(checkUsername != null){
+            return res.status(409).json({error: 'Cannot make another account with the same username'})
+        }
         
         let updated = await prisma.account.update({
             where: {

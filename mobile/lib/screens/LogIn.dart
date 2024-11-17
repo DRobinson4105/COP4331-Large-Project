@@ -3,8 +3,11 @@ import 'package:flutter/gestures.dart';
 import 'package:mobile/screens/ProfilePage.dart';
 import 'package:mobile/screens/ForgotPassword.dart';
 import 'package:mobile/screens/SignUp.dart';
+//import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+final authorizationEndpoint = Uri.parse('721352943169-jluhlu775h59okavhe60ab8dd4quknhn.apps.googleusercontent.com');
 
 void doLogIn(BuildContext context, String login, password) async {
   RegExp emailRegex = new RegExp(r'/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/');
@@ -32,7 +35,7 @@ void doLogIn(BuildContext context, String login, password) async {
 
     if(response.statusCode == 200) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ProfilePage();
+        return ProfilePage(jsonDecode(response.body)["userId"]);
       }));
     }
     print(response.body);

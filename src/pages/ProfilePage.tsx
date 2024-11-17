@@ -34,6 +34,7 @@ const ProfilePage: React.FC = () => {
         image: '',
         recipes: []
     });
+    const [error, setError] = useState<string | null>(null);
 
     const navigate = useNavigate();
 
@@ -65,7 +66,7 @@ const ProfilePage: React.FC = () => {
                     setUserData({
                         name: data.name || 'No Name Provided',
                         description: data.desc || 'No Description Available',
-                        image: data.image || '', 
+                        image: data.image || '',
                         recipes: data.recipes || []
                     });
                 } else {
@@ -79,9 +80,37 @@ const ProfilePage: React.FC = () => {
         fetchUserData();
     }, []);
 
-    // Function to navigate to ProfileSettings
-    const goToProfileSettings = () => {
-        navigate('/ProfileSettings');
+    // Function to navigate to EditRecipe page
+    const goToEditRecipe = (recipe: Recipe) => {
+        navigate(`/edit-recipe/${recipe.id}`, { state: { recipe } });
+    };
+
+    // Function to handle recipe deletion
+    const handleDeleteRecipe = async (recipeId: string) => {
+        try {
+            const response = await fetch(buildPath('recipe/delete'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: recipeId }),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                setError(`Error: ${errorText}`);
+                return;
+            }
+
+            // Update state to remove the deleted recipe
+            setUserData((prevState) => ({
+                ...prevState,
+                recipes: prevState.recipes.filter((recipe) => recipe.id !== recipeId),
+            }));
+
+            setError(null);
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+            setError('Failed to delete recipe.');
+        }
     };
 
     return (
@@ -102,6 +131,7 @@ const ProfilePage: React.FC = () => {
                     <Description description={userData.description} />
                 </div>
 
+                {/* Main Content Section */}
                 <div className="main-content">
                     <div className="recipes-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h2 className="recipes-title">
@@ -109,15 +139,7 @@ const ProfilePage: React.FC = () => {
                         </h2>
                         <button
                             className="settings-button"
-                            onClick={goToProfileSettings}
-                            style={{
-                                padding: '10px 20px',
-                                backgroundColor: '#4CAF50',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer'
-                            }}
+                            onClick={() => navigate('/ProfileSettings')}
                         >
                             Profile Settings
                         </button>
@@ -142,11 +164,26 @@ const ProfilePage: React.FC = () => {
                                         <div className="nutrition">
                                             <p>{recipe.desc}</p>
                                         </div>
+                                        {/* Edit Recipe Button */}
+                                        <button
+                                            className="edit-recipe-button"
+                                            onClick={() => goToEditRecipe(recipe)}
+                                        >
+                                            Edit Recipe
+                                        </button>
+                                        {/* Delete Recipe Button */}
+                                        <button
+                                            className="delete-recipe-button"
+                                            onClick={() => handleDeleteRecipe(recipe.id)}
+                                        >
+                                            Delete Recipe
+                                        </button>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
+                    {error && <p className="error-message">{error}</p>}
                 </div>
             </div>
         </div>
