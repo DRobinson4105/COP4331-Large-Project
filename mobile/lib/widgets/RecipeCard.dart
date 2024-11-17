@@ -35,8 +35,13 @@ class RecipeCardState extends State<RecipeCard> {
       child: Row(
         children: [
           if(image != "No Image")
-            Image(image: ResizeImage(MemoryImage(base64Decode(image)), width: 100, height: 100)), 
-          if(image == "No Image") 
+            Image(
+              image: ResizeImage(MemoryImage(base64Decode(image)), width: 100, height: 100),
+              errorBuilder: (context, error, stackTrace) {
+                return Image(image: ResizeImage(AssetImage('lib/assets/DefaultRecipePicture.png'), width: 100, height: 100));
+              },
+            ),
+          if(image == "No Image")
             Image(image: ResizeImage(AssetImage('lib/assets/DefaultRecipePicture.png'), width: 100, height: 100)),
           Flexible(
             child: 

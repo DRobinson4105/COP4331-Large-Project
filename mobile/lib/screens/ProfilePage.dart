@@ -82,7 +82,12 @@ class ProfilePageState extends State<ProfilePage> {
                         Column(
                           children: [
                             if(snapshot.data!.image != "No Image")
-                              Image.memory(Base64Decoder().convert(snapshot.data!.image)),
+                              Image(
+                                image: ResizeImage(MemoryImage(base64Decode(snapshot.data!.image)), width: 100, height: 100),
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image(image: ResizeImage(AssetImage('lib/assets/DefaultRecipePicture.png'), width: 100, height: 100));
+                                },
+                              ),
                             if(snapshot.data!.image == "No Image") 
                               Image(image: ResizeImage(AssetImage('lib/assets/DefaultPFP.png'), width: 100, height: 100)),
                             Text(snapshot.data!.name),
