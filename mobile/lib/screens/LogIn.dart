@@ -9,12 +9,11 @@ import 'dart:convert';
 
 final authorizationEndpoint = Uri.parse('721352943169-jluhlu775h59okavhe60ab8dd4quknhn.apps.googleusercontent.com');
 
-void doLogIn(BuildContext context, String login, password) async {
+Future<String> doLogIn(BuildContext context, String login, password) async {
   RegExp emailRegex = new RegExp(r'/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/');
 
   if(login.isEmpty || password.isEmpty) {
-    print("All fields must be filled out");
-    return;
+    return "All fields must be filled out";
   }
 
   try {
@@ -38,16 +37,26 @@ void doLogIn(BuildContext context, String login, password) async {
         return ProfilePage(jsonDecode(response.body)["userId"]);
       }));
     }
-    print(response.body);
+
+    return jsonDecode(response.body)["error"];
   }
   catch(e) {
-    print("Could not log the user in");
+    return "Could not log the user in";
   }
 }
 
-class LogIn extends StatelessWidget {
+class LogIn extends StatefulWidget {
+  const LogIn({super.key});
+
+  @override
+  State<LogIn> createState() => LogInState();
+}
+
+class LogInState extends State<LogIn> {
   final loginController = TextEditingController();
   final passwordController = TextEditingController();
+
+  String message = "Log in to Continue";
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +67,9 @@ class LogIn extends StatelessWidget {
         children: [
           const Image(image: ResizeImage(AssetImage('lib/assets/NomNomNetworkLogo.png'), width: 100, height: 100)),
           const Text("Nom Nom Network", style: TextStyle(fontSize: 36)),
+          ListTile(
+            title: Center(child: Text(message)),
+          ),
           ListTile(
             title: TextFormField(
               controller: loginController,
@@ -81,7 +93,11 @@ class LogIn extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              doLogIn(context, loginController.text.toString(), passwordController.text.toString());
+              doLogIn(context, loginController.text.toString(), passwordController.text.toString()).then((value) {
+                setState(() {
+                  message = value;
+                });
+              },);
             },
             child: const Text('Continue'),
           ),

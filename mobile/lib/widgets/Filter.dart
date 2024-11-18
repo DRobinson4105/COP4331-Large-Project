@@ -206,18 +206,20 @@ class FilterState extends State<Filter> {
         ListTile(
           title: ElevatedButton(
             onPressed: () {
-              fetchRecipes(
-                nameController.text.toString(), 
-                [], 
-                minCaloriesController.text.isEmpty ? 0 : int.parse(minCaloriesController.text.toString()),
-                maxCaloriesController.text.isEmpty ? 1e6 : int.parse(maxCaloriesController.text.toString()),
-                minProteinController.text.isEmpty ? 0 : int.parse(minProteinController.text.toString()),
-                maxProteinController.text.isEmpty ? 1e6 : int.parse(maxProteinController.text.toString()),
-                minFatController.text.isEmpty ? 0 : int.parse(minFatController.text.toString()),
-                maxFatController.text.isEmpty ? 1e6 : int.parse(maxFatController.text.toString()),
-                minCarbsController.text.isEmpty ? 0 : int.parse(minCarbsController.text.toString()),
-                maxCarbsController.text.isEmpty ? 1e6 : int.parse(maxCarbsController.text.toString()),
-              );
+              setState(() {
+                context.findAncestorStateOfType<SearchRecipesState>()!.activeFilter = fetchRecipes(
+                  nameController.text.toString(), 
+                  [], 
+                  minCaloriesController.text.isEmpty ? 0 : int.parse(minCaloriesController.text.toString()),
+                  maxCaloriesController.text.isEmpty ? 1e6 : int.parse(maxCaloriesController.text.toString()),
+                  minProteinController.text.isEmpty ? 0 : int.parse(minProteinController.text.toString()),
+                  maxProteinController.text.isEmpty ? 1e6 : int.parse(maxProteinController.text.toString()),
+                  minFatController.text.isEmpty ? 0 : int.parse(minFatController.text.toString()),
+                  maxFatController.text.isEmpty ? 1e6 : int.parse(maxFatController.text.toString()),
+                  minCarbsController.text.isEmpty ? 0 : int.parse(minCarbsController.text.toString()),
+                  maxCarbsController.text.isEmpty ? 1e6 : int.parse(maxCarbsController.text.toString()),
+                );
+              });
             },
             child: Text('Apply Filter'),
           ),

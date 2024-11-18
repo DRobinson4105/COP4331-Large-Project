@@ -49,6 +49,7 @@ class SearchRecipesState extends State<SearchRecipes>{
   SearchRecipesState(this.userId);
 
   final String userId;
+  Future<List<dynamic>> activeFilter = fetchRecipes("", [], 0, 1e6, 0, 1e6, 0, 1e6, 0, 1e6);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class SearchRecipesState extends State<SearchRecipes>{
           ),
           Filter(),
           FutureBuilder(
-            future: fetchRecipes("", [], 0, 1e6, 0, 1e6, 0, 1e6, 0, 1e6),
+            future: activeFilter,
             builder: (context, snapshot) {
               if(snapshot.hasData) {
                 return RecipeDisplay(snapshot.data!);

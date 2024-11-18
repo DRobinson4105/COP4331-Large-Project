@@ -5,28 +5,24 @@ import 'package:mobile/screens/ProfilePage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void doSignUp(BuildContext context, String username, displayName, email, password, verifyPassword) async {
+Future<String> doSignUp(BuildContext context, String username, displayName, email, password, verifyPassword) async {
   RegExp emailRegex = new RegExp(r'/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/');
   RegExp alphanumericRegex = new RegExp(r'/^[a-zA-Z0-9]+$/');
 
   if(username.isEmpty || displayName.isEmpty || password.isEmpty || email.isEmpty) {
-    print("All fields must be filled out");
-    return;
+    return "All fields must be filled out";
   }
 
   if(emailRegex.hasMatch(email) == 0) {
-    print("Invalid email");
-    return;
+    return "Invalid email";
   }
 
   if(alphanumericRegex.hasMatch(username) == 0) {
-    print("Invalid username");
-    return;
+    return "Invalid username";
   }
 
   if(!(password == verifyPassword)) {
-    print("Passwords do not match");
-    return;
+    return "Passwords do not match";
   }
 
   try {
@@ -49,19 +45,28 @@ void doSignUp(BuildContext context, String username, displayName, email, passwor
         return ProfilePage(jsonDecode(response.body)["userId"]);
       }));
     }
-    print(response.body);
+    return jsonDecode(response.body)["error"];
   }
   catch(e) {
-    print("Could not sign up the user");
+    return "Could not sign up the user";
   }
 }
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => SignUpState();
+}
+
+class SignUpState extends State<SignUp> {
   final usernameController = TextEditingController();
   final displayNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final verifyPasswordController = TextEditingController();
+
+  String message = "Sign up to Continue";
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +77,11 @@ class SignUp extends StatelessWidget {
         children: [
           const Image(image: ResizeImage(AssetImage('lib/assets/NomNomNetworkLogo.png'), width: 100, height: 100)),
           const Text("Nom Nom Network", style: TextStyle(fontSize: 36)),
+          ListTile(
+            title: Center(
+              child: Text(message),
+            )
+          ),
           ListTile(
             title: TextFormField(
               controller: usernameController,
@@ -126,7 +136,18 @@ class SignUp extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              doSignUp(context, usernameController.text.toString(), displayNameController.text.toString(), emailController.text.toString(), passwordController.text.toString(), verifyPasswordController.text.toString());
+              doSignUp(
+                context, 
+                usernameController.text.toString(), 
+                displayNameController.text.toString(), 
+                emailController.text.toString(), 
+                passwordController.text.toString(), 
+                verifyPasswordController.text.toString()
+              ).then((value) {
+                setState(() {
+                  message = value;
+                });
+              });
             },
             child: const Text('Sign Up'),
           ),

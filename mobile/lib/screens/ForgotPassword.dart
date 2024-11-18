@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:mobile/screens/LogIn.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ForgotPassword extends StatelessWidget {
+void sendRecoveryEmail(String email) async {
+  http.post(
+    Uri.parse('http://nomnom.network:3000/api/user/passwordReset'),
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(<String, dynamic> {
+      "email": email,
+    }),
+  );
+}
+
+class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
+
+  @override
+  State<ForgotPassword> createState() => ForgotPasswordState();
+}
+
+class ForgotPasswordState extends State<ForgotPassword> {
+  String message = "Forgot password? We'll send a recovery email to";
+
+  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +37,12 @@ class ForgotPassword extends StatelessWidget {
         children: [
           const Image(image: ResizeImage(AssetImage('lib/assets/NomNomNetworkLogo.png'), width: 100, height: 100)),
           const Text("Nom Nom Network", style: TextStyle(fontSize: 36)),
-          Text("Forgot password? We'll send a recovery email to"),
+          ListTile(
+            title: Center(child: Text(message)),
+          ),
           ListTile(
             title: TextFormField(
+              controller: emailController,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
                 border: UnderlineInputBorder(),
@@ -26,9 +52,10 @@ class ForgotPassword extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return LogIn();
-              }));
+              setState(() {
+                message = "If there is an account with the provided email address, an email will be sent.";
+              });
+              sendRecoveryEmail(emailController.text.toString());
             },
             child: const Text('Send Recovery Email'),
           ),
