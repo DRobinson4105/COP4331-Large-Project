@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:mobile/screens/LogIn.dart';
-import 'package:mobile/screens/ProfilePage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:google_sign_in/google_sign_in.dart';
+
+void googleSignIn() async {
+    // Initialize GoogleSignIn with the scopes you want:
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: <String>[
+            'email',
+        ],
+    );
+    
+    // Get the user after successful sign in
+    var googleUser = await googleSignIn.signIn();
+} 
 
 Future<String> doSignUp(BuildContext context, String username, displayName, email, password, verifyPassword) async {
   RegExp emailRegex = new RegExp(r'/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/');
@@ -41,9 +53,7 @@ Future<String> doSignUp(BuildContext context, String username, displayName, emai
     );
 
     if(response.statusCode == 200 || response.statusCode == 201) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ProfilePage(jsonDecode(response.body)["userId"]);
-      }));
+      return "Verify your account before logging in. An email has been sent.";
     }
     return jsonDecode(response.body)["error"];
   }
@@ -153,7 +163,9 @@ class SignUpState extends State<SignUp> {
           ),
           const Text('Or Continue with:'),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              googleSignIn();
+            },
             child: const Text('Google'),
           ),
           RichText(
