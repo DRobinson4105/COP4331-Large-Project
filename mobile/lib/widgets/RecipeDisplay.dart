@@ -21,16 +21,15 @@ class RecipeDisplayState extends State<RecipeDisplay> {
             padding: EdgeInsets.symmetric(vertical: 10),
             color: const Color(0xFF8ED081),
             child: Column(
-                children: recipes.map((recipe) {
-                  print(recipe["image"] == null || recipe["image"].split(",")[1] == "" ? "No Image" : recipe["image"].split(",")[1]);
-                  return RecipeCard(
-                    recipe["id"],
-                    recipe["name"], 
-                    recipe["desc"] == null ? "" : recipe["desc"], 
-                    recipe["image"] == null || recipe["image"].split(",")[1] == "" ? "No Image" : recipe["image"].split(",")[1], 
-                    recipe["tagId"]
-                  );
-                }).toList(),
+              children: recipes.map((recipe) {
+                return RecipeCard(
+                  recipe["id"],
+                  recipe["name"], 
+                  recipe["desc"] == null ? "" : recipe["desc"], 
+                  recipe["image"] == null || recipe["image"].split(",")[1] == "" ? "No Image" : recipe["image"].split(",")[1], 
+                  recipe["tagId"]
+                );
+              }).toList(),
             ),
         );
     }

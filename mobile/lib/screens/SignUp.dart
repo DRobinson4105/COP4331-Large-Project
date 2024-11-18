@@ -72,53 +72,63 @@ class SignUp extends StatelessWidget {
         children: [
           const Image(image: ResizeImage(AssetImage('lib/assets/NomNomNetworkLogo.png'), width: 100, height: 100)),
           const Text("Nom Nom Network", style: TextStyle(fontSize: 36)),
-          TextFormField(
-            controller: usernameController,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: UnderlineInputBorder(),
-              labelText: 'Enter a username',
+          ListTile(
+            title: TextFormField(
+              controller: usernameController,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Enter a username',
+              ),
             ),
           ),
-          TextFormField(
-            controller: displayNameController,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: UnderlineInputBorder(),
-              labelText: 'Enter a display name',
+          ListTile(
+            title: TextFormField(
+              controller: displayNameController,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Enter a display name',
+              ),
             ),
           ),
-          TextFormField(
-            controller: emailController,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: UnderlineInputBorder(),
-              labelText: 'Enter your email',
+          ListTile(
+            title: TextFormField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Enter your email',
+              ),
             ),
           ),
-          TextFormField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: UnderlineInputBorder(),
-              labelText: 'Enter a password',
+          ListTile(
+            title: TextFormField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Enter a password',
+              ),
             ),
           ),
-          TextFormField(
-            controller: verifyPasswordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: UnderlineInputBorder(),
-              labelText: 'Retype your password',
+          ListTile(
+            title: TextFormField(
+              controller: verifyPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Retype your password',
+              ),
             ),
           ),
           ElevatedButton(
             onPressed: () {
               doSignUp(context, usernameController.text.toString(), displayNameController.text.toString(), emailController.text.toString(), passwordController.text.toString(), verifyPasswordController.text.toString());
             },
-            child: const Text('Continue'),
+            child: const Text('Sign Up'),
           ),
           const Text('Or Continue with:'),
           ElevatedButton(

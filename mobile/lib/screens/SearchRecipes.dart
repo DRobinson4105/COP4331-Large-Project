@@ -56,9 +56,11 @@ class SearchRecipesState extends State<SearchRecipes>{
       body: ListView(
         shrinkWrap: true,
         children: [
-          SearchBar(
-            leading: const Icon(Icons.search),
-            hintText: "Search Recipes",
+          ListTile(
+            title: SearchBar(
+              leading: const Icon(Icons.search),
+              hintText: "Search Recipes",
+            ),
           ),
           Filter(),
           FutureBuilder(

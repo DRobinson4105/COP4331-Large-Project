@@ -52,27 +52,31 @@ class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body:  Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Image(image: ResizeImage(AssetImage('lib/assets/NomNomNetworkLogo.png'), width: 100, height: 100)),
           const Text("Nom Nom Network", style: TextStyle(fontSize: 36)),
-          TextFormField(
-            controller: loginController,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: UnderlineInputBorder(),
-              labelText: 'Enter your username or email',
+          ListTile(
+            title: TextFormField(
+              controller: loginController,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Enter your username or email',
+              ),
             ),
           ),
-          TextFormField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: UnderlineInputBorder(),
-              labelText: 'Enter your password',
+          ListTile(
+            title: TextFormField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Enter your password',
+              ),
             ),
           ),
           ElevatedButton(

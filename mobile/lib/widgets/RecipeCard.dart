@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import '../screens/Recipe.dart';
@@ -54,7 +53,7 @@ class RecipeCardState extends State<RecipeCard> {
                     recognizer: TapGestureRecognizer()
                     ..onTap = () => 
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return RecipePage();
+                        return RecipePage(id);
                       })),
                   ),
                 ),

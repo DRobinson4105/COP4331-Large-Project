@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:mobile/screens/LogIn.dart';
 
-class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+class CompleteProfile extends StatelessWidget {
+  const CompleteProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +14,22 @@ class ForgotPassword extends StatelessWidget {
         children: [
           const Image(image: ResizeImage(AssetImage('lib/assets/NomNomNetworkLogo.png'), width: 100, height: 100)),
           const Text("Nom Nom Network", style: TextStyle(fontSize: 36)),
-          Text("Forgot password? We'll send a recovery email to"),
+          Text("Choose your username and display name"),
           ListTile(
             title: TextFormField(
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
                 border: UnderlineInputBorder(),
-                labelText: 'Enter your email',
+                labelText: 'Enter a username',
+              ),
+            ),
+          ),
+          ListTile(
+            title: TextFormField(
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                border: UnderlineInputBorder(),
+                labelText: 'Enter a display name',
               ),
             ),
           ),
@@ -30,7 +39,7 @@ class ForgotPassword extends StatelessWidget {
                 return LogIn();
               }));
             },
-            child: const Text('Send Recovery Email'),
+            child: const Text('Sign Up'),
           ),
           RichText(
             text: TextSpan(
