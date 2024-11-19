@@ -144,11 +144,12 @@ const ProfilePage: React.FC = () => {
                             {userData.name ? `${userData.name}’s Recipes` : 'User’s Recipes'}
                         </h2>
                         <button
-                            className="settings-button"
-                            onClick={() => navigate('/ProfileSettings')}
+                        className="settings-button"
+                        onClick={() => navigate('/ProfileSettings')}
                         >
-                            Profile Settings
+                        Profile Settings
                         </button>
+
                     </div>
 
                     {/* Recipes Section */}
