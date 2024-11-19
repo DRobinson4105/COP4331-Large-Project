@@ -150,7 +150,7 @@ const ProfilePage: React.FC = () => {
                         <div className="recipes-grid">
                             {userData.recipes.map((recipe) => (
                                 <div className="recipe-card" key={recipe.id}>
-                                    <img className="recipe-image" src={recipe.image} alt={recipe.name} />
+                                    <img className="recipe-image" src={recipe.image || './Default_Recipe_Picture.png'} alt={recipe.name} />
                                     <div className="recipe-info">
                                         <h3 className="recipe-name">{recipe.name}</h3>
                                         <div className="tags">

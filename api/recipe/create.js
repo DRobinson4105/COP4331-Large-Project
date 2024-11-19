@@ -110,7 +110,7 @@ export default async function handler (req, res) {
 	} catch (error) {
 		console.error('Error: ', error)
 		res.setHeader('Content-Type', 'application/json')
-		return res.status(500).json({ error: error.message })
+		return res.status(500).json({ error: "Error during create recipe" + error.message })
 	} finally {
 		await prisma.$disconnect()
 	}

@@ -59,8 +59,16 @@ export default async function handler(req, res) {
             where: {username: username}
         })
 
-        if(checkUsername != null){
+        if( username && checkUsername != null){
             return res.status(409).json({error: 'Cannot make another account with the same username'})
+        }
+
+        let checkEmail = await prisma.account.findFirst({
+            where: {email: email}
+        })
+
+        if( email && checkEmail != null){
+            return res.status(409).json({error: 'Cannot make another account with the same email'})
         }
         
         let updated = await prisma.account.update({
