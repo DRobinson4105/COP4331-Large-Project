@@ -121,9 +121,9 @@ const LoginPage = () => {
             <h2 className="center">Or continue with:</h2>
             <input className="center input google" type="submit" id="loginButton" value = "Google" onClick={() => login()} />
             <div className="center">
-                <Link to={"/ForgotPassword"}>Forgot Password?</Link>
+                <Link to={"/ForgotPassword"} style={{ color: "blue", textDecoration: "underline"}}>Forgot Password?</Link>
                 <a> • </a>
-                <Link to={"/SignUp"}>Create an Account</Link>
+                <Link to={"/SignUp"} style={{ color: "blue", textDecoration: "underline"}}>Create an Account</Link>
             </div>
             <br></br>
         </div>

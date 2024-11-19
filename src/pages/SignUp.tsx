@@ -114,7 +114,7 @@ const SignUpPage = () => {
             var user = {id:res.userId}
             localStorage.setItem('user_data', JSON.stringify(user));
 
-            setMessage('Verify your account before logging in. An email has been sent.');
+            setMessage('Your account has been created. Verify your account before logging in. An email has been sent.');
         }
     }
 
@@ -165,7 +165,7 @@ const SignUpPage = () => {
             <input className="center input darkgreen button" type="submit" id="loginButton" value = "Sign Up" onClick={handleSignUp} />
             <h2 className="center">Or continue with:</h2>
             <input className="center input google" type="submit" id="loginButton" value = "Google" onClick={() => login()} />
-            <Link to={"/LogIn"} className="center" style={{display: "block"}}>Already have an account? Log in</Link>
+            <Link to={"/LogIn"} className="center" style={{display: "block", color: "blue", textDecoration: "underline"}}>Already have an account? Log in</Link>
             <br></br>
         </div>
     );
