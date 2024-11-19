@@ -160,7 +160,7 @@ const ProfileSettings: React.FC = () => {
         {/* Left Side: Profile Picture and User Information */}
         <div className="left-panel">
           <div className="profile-picture-section">
-          <img src={profilePicture} alt="profilePicture" style={{ borderRadius: '50%', width: '200px', height: 'auto' }} />
+          <img src={profilePicture} className='recipe-image' alt="profilePicture" />
 
             <h1>Upload Image</h1>
               <form onSubmit={handleImageUpload}>

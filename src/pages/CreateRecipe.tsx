@@ -48,15 +48,11 @@ const CreateRecipe: React.FC = () => {
     const instructionsList = instructions
       ? instructions.split('\n').map(item => item.trim())
       : [];
-  
-    // Regex to check if a string is a valid ObjectID (24 hex characters)
-    const isValidObjectId = (id: string) => /^[a-f\d]{24}$/i.test(id);
 
     // Filter and include only valid ObjectIDs
     const tagIds = tagId
-      ? tagId.split(',').map(tag => tag.trim()).filter(isValidObjectId)
+      ? tagId.split(',').map(tag => tag.trim())
       : [];
-
   
     const newRecipe = {
       name: title || '',

@@ -19,7 +19,7 @@ model recipe {
   authorId String    @db.ObjectId
   instructions String[]
   ingredients String[]
-  tagId String[] @db.ObjectId
+  tagId String[]
 }
 
 model account {
