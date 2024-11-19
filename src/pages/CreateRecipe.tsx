@@ -8,7 +8,7 @@ const CreateRecipe: React.FC = () => {
   const userData = JSON.parse(localStorage.getItem('user_data') || '{}') 
   const userId = userData.id;
 
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string>('./lein_Coin.gif');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [protein, setProtein] = useState<number | ''>('');
