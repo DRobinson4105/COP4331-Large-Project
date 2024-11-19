@@ -8,7 +8,7 @@ const CreateRecipe: React.FC = () => {
   const userData = JSON.parse(localStorage.getItem('user_data') || '{}') 
   const userId = userData.id;
 
-  const [image, setImage] = useState<string>('./lein_Coin.gif');
+  const [image, setImage] = useState<string>('/Default_Recipe_Picture.png');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [protein, setProtein] = useState<number | ''>('');
@@ -18,8 +18,7 @@ const CreateRecipe: React.FC = () => {
   const [ingredients, setIngredients] = useState<string>('');
   const [instructions, setInstructions] = useState<string>('');
   const [tagId, setTagId] = useState<string>(''); 
-  const [error, setError] = useState<string | null>(null);
-  console.log(error);
+
   const baseUrl = process.env.NODE_ENV === 'production'
     ? import.meta.env.VITE_API_URL
     : 'http://localhost:3000';
@@ -68,9 +67,6 @@ const CreateRecipe: React.FC = () => {
       image: image ? image.split(',')[1] : null,
     };
   
-    console.log('Payload to API:', newRecipe);
-    console.log('API URL:', buildPath('recipe/create'));
-  
     try {
       const response = await fetch(buildPath('recipe/create'), {
         method: 'POST',
@@ -83,7 +79,6 @@ const CreateRecipe: React.FC = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error Response:', errorText);
-        setError(`Error: ${errorText}`);
         return;
       }
   
@@ -92,18 +87,17 @@ const CreateRecipe: React.FC = () => {
       if (data && data.id) {
         navigate('/search');
       } else {
-        setError(data.error || 'An error occurred while saving the recipe.');
+        console.error(data.error || 'An error occurred while saving the recipe.');
       }
     } catch (error: any) {
       console.error('Network Error:', error.message);
-      setError('Network error: Failed to fetch. Please check your connection or server status.');
     }
   };
   
   return (
     <div className="recipe-container">
       <div className="image-section">
-        <img src={image || 'placeholder.jpg'} alt="Recipe" className="recipe-image" />
+        <img src={image} alt="Recipe" className="recipe-image" />
         <input type="file" accept="image/*" onChange={handleImageUpload} className="file-input" />
         <div className="button-group">
           <button className="save-button" onClick={handleSaveRecipe}>Save Recipe</button>

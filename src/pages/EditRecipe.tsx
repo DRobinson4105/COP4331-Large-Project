@@ -13,8 +13,7 @@ const EditRecipe: React.FC = () => {
   const [calories, setCalories] = useState<number | ''>('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
-  const [image, setImage] = useState<string | null>(null);
-  const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string>('/Default_Recipe_Picture.png');
   const [tagId, setTagId] = useState<string>('');
 
   const baseUrl = process.env.NODE_ENV === 'production'
@@ -45,8 +44,9 @@ const EditRecipe: React.FC = () => {
           setIngredients(data.ingredients.join('\n'));
           setInstructions(data.instructions.join('\n'));
           setTagId(data.tagId.join(', '));
-          setImage(data.image || null);
-          setCurrentImage(data.image || null);
+          if (data.image) {
+            setImage(data.image);
+          }
         }
       } catch (error) {
         console.error('Error fetching recipe data:', error);
@@ -106,7 +106,7 @@ const EditRecipe: React.FC = () => {
         ingredients: ingredients.split('\n').map(item => item.trim()),
         instructions: instructions.split('\n').map(item => item.trim()),
         tagId: tagIds.length > 0 ? tagIds : null,
-        image: image ? image.split(',')[1] : currentImage,
+        image: image ? image.split(',')[1] : null,
         authorId,
     };
 
