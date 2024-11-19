@@ -152,6 +152,22 @@ const ProfileSettings: React.FC = () => {
     navigate('/ProfilePage');
   };
 
+  const deleteAccount = async () => {
+    const response = await fetch(buildPath('user/delete'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: userId }),
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Error: ${errorText}`);
+        return;
+    }
+
+    navigate('/');
+  }
+
   return (
     <div className="profile-settings-page">
       <VerifiedNavBar />
@@ -261,6 +277,22 @@ const ProfileSettings: React.FC = () => {
             }}
           >
             Save and Exit
+          </button>
+        </div>
+        <div className="save-exit-section" style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={deleteAccount}
+            className="save-exit-button"
+            style={{
+              padding: '10px 20px',
+              backgroundColor: 'red',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Delete Account
           </button>
         </div>
       </div>
