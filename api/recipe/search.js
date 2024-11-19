@@ -127,7 +127,10 @@ export default async function handler (req, res) {
 	if(tagId && tagId.length > 0){
     var recipeList = await prisma.recipe.findMany({
         where: {
-            name: { contains: name },
+            name: {
+				contains: name,
+				mode: 'insensitive'
+			},
             tagId: {
               hasEvery: tagId
             },
@@ -176,7 +179,10 @@ export default async function handler (req, res) {
 	}else{
 		var recipeList = await prisma.recipe.findMany({
 			where: {
-				name: { contains: name },
+				name: {
+					contains: name,
+					mode: 'insensitive'
+				},
 				calories: {
 					lte: nmaxCalories, 
 					gte: nminCalories
