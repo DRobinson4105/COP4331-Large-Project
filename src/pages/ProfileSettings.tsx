@@ -153,20 +153,33 @@ const ProfileSettings: React.FC = () => {
   };
 
   const deleteAccount = async () => {
-    const response = await fetch(buildPath('user/delete'), {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
+  
+    if (!confirmDelete) {
+      return; 
+    }
+  
+    try {
+      const response = await fetch(buildPath('user/delete'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: userId }),
-    });
-
-    if (!response.ok) {
+      });
+  
+      if (!response.ok) {
         const errorText = await response.text();
         console.error(`Error: ${errorText}`);
         return;
+      }
+  
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting account:', error);
     }
-
-    navigate('/');
-  }
+  };
+  
 
   return (
     <div className="profile-settings-page">
