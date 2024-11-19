@@ -80,6 +80,21 @@ export default async function handler (req, res) {
           error: 'tagId must be an array of strings'
         })
       }
+      tagId.forEach(tag => {
+        let check = async () => {
+          let exists = await prisma.tag.findFirst({
+            where: {name: tag}
+          })
+          if (exists == null) {
+            await prisma.tag.create({
+              data: {
+                name: tag
+              }
+            })
+          }
+        }
+        check()
+      })
     }
 
     let checker = await prisma.recipe.findFirst({
@@ -130,7 +145,7 @@ export default async function handler (req, res) {
     
     console.error('Error during update Recipe:', error)
     res.setHeader('Content-Type', 'application/json')
-    return res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: "Error during update recipe" + error.message })
   } finally {
     await prisma.$disconnect()
   }

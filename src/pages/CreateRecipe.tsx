@@ -8,7 +8,7 @@ const CreateRecipe: React.FC = () => {
   const userData = JSON.parse(localStorage.getItem('user_data') || '{}') 
   const userId = userData.id;
 
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string>('./lein_Coin.gif');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [protein, setProtein] = useState<number | ''>('');
@@ -48,15 +48,11 @@ const CreateRecipe: React.FC = () => {
     const instructionsList = instructions
       ? instructions.split('\n').map(item => item.trim())
       : [];
-  
-    // Regex to check if a string is a valid ObjectID (24 hex characters)
-    const isValidObjectId = (id: string) => /^[a-f\d]{24}$/i.test(id);
 
     // Filter and include only valid ObjectIDs
     const tagIds = tagId
-      ? tagId.split(',').map(tag => tag.trim()).filter(isValidObjectId)
+      ? tagId.split(',').map(tag => tag.trim())
       : [];
-
   
     const newRecipe = {
       name: title || '',
@@ -141,7 +137,7 @@ const CreateRecipe: React.FC = () => {
           className="input description-input"
         />
       </div>
-      <div className="ingredients-instructions-section">
+      <div className="ingredien ts-instructions-section">
         <textarea
           className="input ingredients-input"
           placeholder="List ingredients here"

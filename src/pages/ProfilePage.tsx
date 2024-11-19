@@ -85,8 +85,14 @@ const ProfilePage: React.FC = () => {
         navigate(`/edit-recipe/${recipe.id}`, { state: { recipe } });
     };
 
-    // Function to handle recipe deletion
     const handleDeleteRecipe = async (recipeId: string) => {
+        const isConfirmed = window.confirm(
+            "Are you sure you want to delete this recipe?");
+
+        if (!isConfirmed) {
+            return;
+        }
+
         try {
             const response = await fetch(buildPath('recipe/delete'), {
                 method: 'POST',
@@ -100,13 +106,13 @@ const ProfilePage: React.FC = () => {
                 return;
             }
 
-            // Update state to remove the deleted recipe
             setUserData((prevState) => ({
                 ...prevState,
                 recipes: prevState.recipes.filter((recipe) => recipe.id !== recipeId),
             }));
 
             setError(null);
+            alert("Recipe successfully deleted.");
         } catch (error) {
             console.error('Error deleting recipe:', error);
             setError('Failed to delete recipe.');
@@ -138,11 +144,12 @@ const ProfilePage: React.FC = () => {
                             {userData.name ? `${userData.name}’s Recipes` : 'User’s Recipes'}
                         </h2>
                         <button
-                            className="settings-button"
-                            onClick={() => navigate('/ProfileSettings')}
+                        className="settings-button"
+                        onClick={() => navigate('/ProfileSettings')}
                         >
-                            Profile Settings
+                        Profile Settings
                         </button>
+
                     </div>
 
                     {/* Recipes Section */}
@@ -150,7 +157,7 @@ const ProfilePage: React.FC = () => {
                         <div className="recipes-grid">
                             {userData.recipes.map((recipe) => (
                                 <div className="recipe-card" key={recipe.id}>
-                                    <img className="recipe-image" src={recipe.image} alt={recipe.name} />
+                                    <img className="recipe-image" src={recipe.image || './Default_Recipe_Picture.png'} alt={recipe.name} />
                                     <div className="recipe-info">
                                         <h3 className="recipe-name">{recipe.name}</h3>
                                         <div className="tags">

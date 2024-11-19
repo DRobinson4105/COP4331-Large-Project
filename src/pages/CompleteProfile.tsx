@@ -82,7 +82,7 @@ export default () => {
                 <br></br>
                 <Branding />
             </div>
-            <h2 className="center">Choose your username and password</h2>
+            <h2 className="center">Choose your username and display name</h2>
             <a id="codeResult" className="center">{message}</a>
             <input className="center input" type="text" id="username" placeholder="Username" onChange={handleSetUsername} style={{textAlign: "left"}} />
             <input className="center input" type="text" id="displayName" placeholder="Display Name" onChange={handleSetDisplayName} style={{textAlign: "left"}} />

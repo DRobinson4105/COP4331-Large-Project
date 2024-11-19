@@ -152,6 +152,35 @@ const ProfileSettings: React.FC = () => {
     navigate('/ProfilePage');
   };
 
+  const deleteAccount = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
+  
+    if (!confirmDelete) {
+      return; 
+    }
+  
+    try {
+      const response = await fetch(buildPath('user/delete'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: userId }),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Error: ${errorText}`);
+        return;
+      }
+  
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting account:', error);
+    }
+  };
+  
+
   return (
     <div className="profile-settings-page">
       <VerifiedNavBar />
@@ -160,7 +189,7 @@ const ProfileSettings: React.FC = () => {
         {/* Left Side: Profile Picture and User Information */}
         <div className="left-panel">
           <div className="profile-picture-section">
-          <img src={profilePicture} alt="profilePicture" style={{ borderRadius: '50%', width: '200px', height: 'auto' }} />
+          <img src={profilePicture} className='recipe-image' alt="profilePicture" />
 
             <h1>Upload Image</h1>
               <form onSubmit={handleImageUpload}>
@@ -261,6 +290,22 @@ const ProfileSettings: React.FC = () => {
             }}
           >
             Save and Exit
+          </button>
+        </div>
+        <div className="save-exit-section" style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={deleteAccount}
+            className="save-exit-button"
+            style={{
+              padding: '10px 20px',
+              backgroundColor: 'red',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Delete Account
           </button>
         </div>
       </div>

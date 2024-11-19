@@ -1,10 +1,5 @@
 import TagFilter from './TagFilter';
 
-interface Tag {
-	name: string,
-	id: string
-}
-
 interface Props {
     addedTags: string[];
     setAddedTags: (addedTags:string[]) => void;
@@ -17,7 +12,7 @@ interface Props {
     setMinCarbs: (minCarbs:number) => void;
     setMaxCarbs: (maxCarbs:number) => void;
     searchRecipes: () => Promise<void>;
-    tags: Tag[];
+    tags: string[];
 }
 
 const Filter = (props: Props) =>
