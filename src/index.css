@@ -525,9 +525,27 @@ h2 {
 }
 
 .ingredients-instructions-section {
-  display: flex;
-  gap: 20px;
+  display: flex; /* Align items side-by-side */
+  flex-direction: row; /* Horizontal layout */
+  justify-content: space-between; /* Space between the two text areas */
+  align-items: flex-start; /* Align to the top */
+  gap: 20px; /* Space between the two sections */
+  margin-top: 20px;
+  height: 50%; /* Take up half of the bottom area */
 }
+
+.ingredients-input,
+.instructions-input {
+  width: 300%; /* Each text area takes up nearly half the container */
+  height: 150px; /* Adjust height as needed */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical; /* Allow resizing vertically if needed */
+}
+
+
 
 .collapsible-section {
   flex: 1;

@@ -141,7 +141,7 @@ const CreateRecipe: React.FC = () => {
           className="input description-input"
         />
       </div>
-      <div className="ingredients-instructions-section">
+      <div className="ingredien ts-instructions-section">
         <textarea
           className="input ingredients-input"
           placeholder="List ingredients here"
