@@ -24,6 +24,10 @@ export default async function handler(req, res) {
         await prisma.account.delete({
             where: {id: id}
         })
+
+        await prisma.account.deleteMany({
+            where: {authorId: id}
+        })
     
         let ret = {  error: '' }
         res.setHeader('Content-Type', 'application/json');
