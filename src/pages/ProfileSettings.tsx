@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VerifiedNavBar from '../components/VerifiedNavBar';
 import "../index.css";
+import FileUploadForm from '../components/FileUploadForm';
 
 const ProfileSettings: React.FC = () => {
   const baseUrl = process.env.NODE_ENV === 'production' 
@@ -85,33 +86,30 @@ const ProfileSettings: React.FC = () => {
   const handleImageUpload = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        if (typeof reader.result === 'string') {
-          const base64Image = reader.result?.split(',')[1];
-          var response = await fetch(
-            buildPath('user/update'),
-            {method:'POST',body:JSON.stringify({ id: userId, image: base64Image }),headers:{'Content-Type': 'application/json'}}
-          );
-    
-          let res = await response.json()
-          var error = res.error
-          setMessage3(error)
-          setProfilePicture(reader.result)
-        } else {
-          setMessage3('FileReader result is not a string');
-        }
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setMessage3('No file selected');
-    }
+    const base64Image = profilePicture.split(',')[1];
+    var response = await fetch(
+      buildPath('user/update'),
+      {method:'POST',body:JSON.stringify({ id: userId, image: base64Image }),headers:{'Content-Type': 'application/json'}}
+    );
+
+    let res = await response.json()
+    var error = res.error
+    setMessage3(error)
   };
   
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      let file = e.target.files[0]
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        if (typeof reader.result === 'string') {
+          setProfilePicture(reader.result)
+        } else {
+          setMessage3('Image is not valid');
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -192,10 +190,7 @@ const ProfileSettings: React.FC = () => {
           <img src={profilePicture} className='recipe-image' alt="profilePicture" />
 
             <h1>Upload Image</h1>
-              <form onSubmit={handleImageUpload}>
-                <input type="file" accept="image/*" onChange={handleFileChange} />
-                <button type="submit">Upload</button>
-              </form>
+              <FileUploadForm handleFileChange={handleFileChange} handleImageUpload={handleImageUpload} />
               <p className="save-confirmation">{message3}</p>
             {/* <label htmlFor="upload-button">
               <button>Upload Image</button>
