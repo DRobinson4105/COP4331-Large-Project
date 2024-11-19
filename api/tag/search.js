@@ -25,8 +25,12 @@ export default async function handler (req, res) {
 		let tagList = await prisma.tag.findMany({
 			where: {
 				name: { contains: name }
-			},
+			}, select: {
+				name: true
+			}
 		})
+
+		tagList = tagList.map(tag => tag.name)
 
 		res.setHeader('Content-Type', 'application/json')
 		return res.status(200).json(tagList)

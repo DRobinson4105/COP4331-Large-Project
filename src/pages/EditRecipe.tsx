@@ -16,7 +16,6 @@ const EditRecipe: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [tagId, setTagId] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
 
   const baseUrl = process.env.NODE_ENV === 'production'
     ? import.meta.env.VITE_API_URL
@@ -68,7 +67,7 @@ const EditRecipe: React.FC = () => {
     }
   };
 
-  const handleSaveChanges = async () => {
+  const handleSaveRecipe = async () => {
     interface UpdatedRecipe {
         id: string | undefined;
         name: string;
@@ -85,7 +84,7 @@ const EditRecipe: React.FC = () => {
     }
 
     const tagIds = tagId
-        ? tagId.split(',').map(tag => tag.trim()).filter(id => /^[a-f\d]{24}$/i.test(id))
+        ? tagId.split(',').map(tag => tag.trim())
         : [];
 
     const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
@@ -93,7 +92,6 @@ const EditRecipe: React.FC = () => {
 
     if (!authorId) {
         console.error('Invalid author ID');
-        setError('Invalid author ID. Please log in again.');
         return;
     }
 
@@ -121,7 +119,7 @@ const EditRecipe: React.FC = () => {
 
         if (!response.ok) {
             const errorText = await response.text();
-            setError(`Error: ${errorText}`);
+            console.error(`Error: ${errorText}`);
             return;
         }
 
@@ -129,59 +127,60 @@ const EditRecipe: React.FC = () => {
         navigate(`/profilePage`);
     } catch (error: any) {
         console.error('Network Error:', error.message);
-        setError('Network error: Failed to update recipe.');
     }
 };
 
   return (
-    <div className="edit-recipe-container">
-      <h2>Edit Recipe</h2>
+    <div className="recipe-container">
       <div className="image-section">
-        <img
-          src={image || currentImage || 'placeholder.jpg'}
-          alt="Recipe"
-          className="recipe-image"
+        <img src={image || 'placeholder.jpg'} alt="Recipe" className="recipe-image" />
+        <input type="file" accept="image/*" onChange={handleImageUpload} className="file-input" />
+        <div className="button-group">
+          <button className="save-button" onClick={handleSaveRecipe}>Save Recipe</button>
+        </div>
+      </div>
+      <div className="details-section">
+        <input
+          type="text"
+          placeholder="Recipe Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="input title-input"
         />
         <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="file-input"
+          type="text"
+          placeholder="Tag ID (e.g., vegan, gluten-free)"
+          value={tagId}
+          onChange={(e) => setTagId(e.target.value)}
+          className="input tag-input"
+        />
+        <div className="nutrition-section">
+          <div>Protein: <input type="number" value={protein} onChange={(e) => setProtein(Number(e.target.value))} /></div>
+          <div>Fat: <input type="number" value={fat} onChange={(e) => setFat(Number(e.target.value))} /></div>
+          <div>Carbs: <input type="number" value={carbs} onChange={(e) => setCarbs(Number(e.target.value))} /></div>
+          <div>Calories: <input type="number" value={calories} onChange={(e) => setCalories(Number(e.target.value))} /></div>
+        </div>
+        <textarea
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="input description-input"
         />
       </div>
-      <input
-        type="text"
-        placeholder="Recipe Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="input title-input"
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="input description-input"
-      />
-      <div className="nutrition-section">
-        <input type="number" placeholder="Protein" value={protein} onChange={(e) => setProtein(Number(e.target.value))} />
-        <input type="number" placeholder="Fat" value={fat} onChange={(e) => setFat(Number(e.target.value))} />
-        <input type="number" placeholder="Carbs" value={carbs} onChange={(e) => setCarbs(Number(e.target.value))} />
-        <input type="number" placeholder="Calories" value={calories} onChange={(e) => setCalories(Number(e.target.value))} />
+      <div className="ingredien ts-instructions-section">
+        <textarea
+          className="input ingredients-input"
+          placeholder="List ingredients here"
+          value={ingredients}
+          onChange={(e) => setIngredients(e.target.value)}
+        />
+        <textarea
+          className="input instructions-input"
+          placeholder="List instructions here"
+          value={instructions}
+          onChange={(e) => setInstructions(e.target.value)}
+        />
       </div>
-      <textarea
-        placeholder="Ingredients"
-        value={ingredients}
-        onChange={(e) => setIngredients(e.target.value)}
-        className="input ingredients-input"
-      />
-      <textarea
-        placeholder="Instructions"
-        value={instructions}
-        onChange={(e) => setInstructions(e.target.value)}
-        className="input instructions-input"
-      />
-      <button className="save-button" onClick={handleSaveChanges}>Save Changes</button>
-      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };

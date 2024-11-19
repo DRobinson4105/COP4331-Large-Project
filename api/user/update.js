@@ -59,7 +59,7 @@ export default async function handler(req, res) {
             where: {username: username}
         })
 
-        if( username && checkUsername != null){
+        if( username && checkUsername != null && username != checkUsername.username){
             return res.status(409).json({error: 'Cannot make another account with the same username'})
         }
 
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
             where: {email: email}
         })
 
-        if( email && checkEmail != null){
+        if( email && checkEmail != null && email != checkEmail.email){
             return res.status(409).json({error: 'Cannot make another account with the same email'})
         }
         

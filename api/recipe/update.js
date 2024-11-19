@@ -80,6 +80,21 @@ export default async function handler (req, res) {
           error: 'tagId must be an array of strings'
         })
       }
+      tagId.forEach(tag => {
+        let check = async () => {
+          let exists = await prisma.tag.findFirst({
+            where: {name: tag}
+          })
+          if (exists == null) {
+            await prisma.tag.create({
+              data: {
+                name: tag
+              }
+            })
+          }
+        }
+        check()
+      })
     }
 
     let checker = await prisma.recipe.findFirst({

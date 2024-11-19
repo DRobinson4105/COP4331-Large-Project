@@ -1,13 +1,8 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-interface Tag {
-	name: string,
-	id: string
-}
-
 interface Props {
-	tags: Tag[],
+	tags: string[],
 	setSelectedTags: (addedTags:string[]) => void
 }
 
@@ -17,7 +12,7 @@ export default (props: Props) => {
         multiple
         id="tags-outlined"
         options={props.tags}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => option}
         defaultValue={[]}
         filterSelectedOptions
         renderInput={(params) => (
@@ -26,7 +21,7 @@ export default (props: Props) => {
             label="Tags"
           />
         )}
-		onChange={(_, value: Tag[]) => props.setSelectedTags(value.map((val: Tag) => val.id))}
+		onChange={(_, value: string[]) => props.setSelectedTags(value.map((val: string) => val))}
       />
   );
 }

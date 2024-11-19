@@ -89,6 +89,22 @@ export default async function handler (req, res) {
 			})
 		}
 
+		tagId.forEach(tag => {
+			let check = async () => {
+				let exists = await prisma.tag.findFirst({
+					where: {name: tag}
+				})
+				if (exists == null) {
+					await prisma.tag.create({
+					data: {
+						name: tag
+					}
+					})
+				}
+			}
+			check()
+		})
+
 		let recipe = await prisma.recipe.create({
 			data: {
 				name,
