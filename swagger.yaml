@@ -168,7 +168,7 @@ paths:
       tags:
       - account
       summary: Emails the user's email address if they have an account and resets their password if they use one
-      operationId: doUpdateProfile
+      operationId: doPasswordReset
       description: Emails user and changes their password
       consumes:
       - application/json
@@ -411,21 +411,13 @@ definitions:
     required:
     - username
     - password
-    - email
-    - googleId
     properties:
       username:
         type: string
-        example: "LebronJ"
+        example: "LebronJames4"
       password:
         type: string
-        example: "Cleveland"
-      email:
-        type: string
-        example: "nba@nba.com"
-      googleId:
-        type: string
-        example: "67252a9906b07a7478339fe9"
+        example: "nba"
   
   SignUp:
     type: object
@@ -498,15 +490,6 @@ definitions:
       id:
         type: string
         example: "67257d85a43154e1fb7cd14b"
-    
-  UpdateProfile:
-    type: object
-    required:
-    - email
-    properties:
-      email:
-        type: string
-        example: "test@test.com"
   
   GetRecipe:
     type: object
@@ -575,7 +558,7 @@ definitions:
     required:
     - name
     - desc
-     - authorId
+    - authorId
     - calories
     - fat
     - carbs
@@ -674,6 +657,15 @@ definitions:
         items:
           type: string
         example: ["67252a9906b07a7478339fe9"]
+        
+  ResetPassword:
+    type: object
+    required:
+    - email
+    properties:
+      email:
+        type: string
+        example: "test@test.com"
 
   CreateTag:
     type: object
