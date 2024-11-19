@@ -25,7 +25,7 @@ export default async function handler(req, res) {
             where: {id: id}
         })
 
-        await prisma.account.deleteMany({
+        await prisma.recipe.deleteMany({
             where: {authorId: id}
         })
     
