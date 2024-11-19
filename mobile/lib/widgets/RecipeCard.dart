@@ -43,23 +43,25 @@ class RecipeCardState extends State<RecipeCard> {
           if(image == "No Image")
             Image(image: ResizeImage(AssetImage('lib/assets/DefaultRecipePicture.png'), width: 100, height: 100)),
           Flexible(
-            child: 
-            Column(
-              children: [
-                RichText(
-                  text: TextSpan(
-                    text: name,
-                    style: const TextStyle(color: Color(0xFF000000), fontWeight: FontWeight.bold),
-                    recognizer: TapGestureRecognizer()
-                    ..onTap = () => 
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return RecipePage(id);
-                      })),
+            child: ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: name,
+                      style: const TextStyle(color: Color(0xFF000000), fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                      ..onTap = () => 
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return RecipePage(id);
+                        })),
+                    ),
                   ),
-                ),
-                Text(desc),
-              ],
-            ),
+                  Text(desc),
+                ],
+              ),
+            ) ,
           ),
         ],
       ),

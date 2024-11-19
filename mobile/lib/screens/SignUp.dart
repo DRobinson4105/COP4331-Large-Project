@@ -3,19 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:mobile/screens/LogIn.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:google_sign_in/google_sign_in.dart';
-
-void googleSignIn() async {
-    // Initialize GoogleSignIn with the scopes you want:
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: <String>[
-            'email',
-        ],
-    );
-    
-    // Get the user after successful sign in
-    var googleUser = await googleSignIn.signIn();
-} 
 
 Future<String> doSignUp(BuildContext context, String username, displayName, email, password, verifyPassword) async {
   RegExp emailRegex = new RegExp(r'/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/');
@@ -160,13 +147,6 @@ class SignUpState extends State<SignUp> {
               });
             },
             child: const Text('Sign Up'),
-          ),
-          const Text('Or Continue with:'),
-          ElevatedButton(
-            onPressed: () {
-              googleSignIn();
-            },
-            child: const Text('Google'),
           ),
           RichText(
             text: TextSpan(

@@ -5,19 +5,6 @@ import 'package:mobile/screens/ForgotPassword.dart';
 import 'package:mobile/screens/SignUp.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:google_sign_in/google_sign_in.dart';
-
-void googleSignIn() async {
-    // Initialize GoogleSignIn with the scopes you want:
-    final GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: <String>[
-            'email',
-        ],
-    );
-    
-    // Get the user after successful sign in
-    var googleUser = await googleSignIn.signIn();
-} 
 
 Future<String> doLogIn(BuildContext context, String login, password) async {
   RegExp emailRegex = new RegExp(r'/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/');
@@ -110,13 +97,6 @@ class LogInState extends State<LogIn> {
               },);
             },
             child: const Text('Continue'),
-          ),
-          const Text('Or Continue with:'),
-          ElevatedButton(
-            onPressed: () {
-              googleSignIn();
-            },
-            child: const Text('Google'),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
