@@ -24,7 +24,6 @@ const ProfileSettings: React.FC = () => {
   const [message, setMessage] = useState('');
   const [message2, setMessage2] = useState('');
   const [message3, setMessage3] = useState('');
-  const [file, setFile] = useState<File | null>(null);
 
   // Password state variables
   const [currentPassword, setCurrentPassword] = useState('');
