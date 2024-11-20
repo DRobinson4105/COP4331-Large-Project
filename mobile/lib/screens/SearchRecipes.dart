@@ -21,7 +21,18 @@ class SearchRecipesState extends State<SearchRecipes>{
   final String userId;
   StreamController recipeController = StreamController.broadcast();
 
-  Future fetchRecipes(String name, List<String> tagId, int minCalories, maxCalories, minProtein, maxProtein, minFat, maxFat, minCarbs, maxCarbs) async {
+  String name = "";
+  List<dynamic> tagId = [];
+  int minCalories = 0;
+  int maxCalories = 1000000;
+  int minProtein = 0;
+  int maxProtein = 1000000;
+  int minFat = 0;
+  int maxFat = 1000000;
+  int minCarbs = 0;
+  int maxCarbs = 1000000;
+
+  Future fetchRecipes(String name, List<dynamic> tagId, int minCalories, maxCalories, minProtein, maxProtein, minFat, maxFat, minCarbs, maxCarbs) async {
     try {
       http.Response response = await http.post(
         Uri.parse('http://nomnom.network:3000/api/recipe/search'),
@@ -58,7 +69,17 @@ class SearchRecipesState extends State<SearchRecipes>{
     }
   }
 
-  getRecipes(String name, List<String> tagId, int minCalories, maxCalories, minProtein, maxProtein, minFat, maxFat, minCarbs, maxCarbs) async {
+  getRecipes(String name, List<dynamic> tagId, int minCalories, int maxCalories, int minProtein, int maxProtein, int minFat, int maxFat, int minCarbs, int maxCarbs) async {
+    this.name = name;
+    this.tagId = tagId;
+    this.minCalories = minCalories;
+    this.maxCalories = maxCalories;
+    this.minProtein = minProtein;
+    this.maxProtein = maxProtein;
+    this.minFat = minFat;
+    this.maxFat = maxFat;
+    this.minCarbs = minCarbs;
+    this.maxCarbs = maxCarbs;
     fetchRecipes(name, tagId, minCalories, maxCalories, minProtein, maxProtein, minFat, maxFat, minCarbs, maxCarbs).then((value) async {
       recipeController.add(value);
       return value;
@@ -68,7 +89,7 @@ class SearchRecipesState extends State<SearchRecipes>{
   @override
   void initState() {
     super.initState();
-    getRecipes("", [], 0, 1e6, 0, 1e6, 0, 1e6, 0, 1e6);
+    getRecipes(name, tagId, minCalories, maxCalories, minProtein, maxProtein, minFat, maxFat, minCarbs, maxCarbs);
   }
 
   @override
@@ -82,7 +103,7 @@ class SearchRecipesState extends State<SearchRecipes>{
               leading: const Icon(Icons.search),
               hintText: "Search Recipes",
               onSubmitted:(value) {
-                getRecipes(value, [], 0, 1e6, 0, 1e6, 0, 1e6, 0, 1e6);
+                getRecipes(value, tagId, 0, 1000000, 0, 1000000, 0, 1000000, 0, 1);
               },
             ),
           ),
@@ -91,21 +112,48 @@ class SearchRecipesState extends State<SearchRecipes>{
             stream: recipeController.stream,
             builder: (context, snapshot) {
               if(snapshot.hasData) {
-                print("~~~~~~~~~~~~~~~~~~~~~~~~Building recipes!!!!!!~~~~~~~~~~~~~~~~~~~~~~~");
-                print(snapshot.data!.length);
-                print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`");
-                return RecipeDisplay(snapshot.data!);
+                if(snapshot.data.length == 0) {
+                  return Container(
+                    color: const Color(0xFF8ED081),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          padding: EdgeInsets.all(10),
+                          color: const Color(0xFFFFFEEE),
+                          child: Center(
+                            child: Text("No Recipes Found", style: TextStyle(fontSize: 20)),
+                          )
+                        ),
+                      ]
+                    ),
+                  );
+                }
+                else {
+                  return RecipeDisplay(snapshot.data);
+                }
               }
 
               if(snapshot.hasError) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('${snapshot.error}'),
-                  ],
+                  children: [ Text('${snapshot.error}') ],
                 );
               }
+
+              getRecipes(
+                name, 
+                tagId,
+                minCalories, 
+                maxCalories, 
+                minProtein, 
+                maxProtein, 
+                minFat, 
+                maxFat, 
+                minCarbs, 
+                maxCarbs
+              );
 
               return Center(
                 child: const CircularProgressIndicator(),

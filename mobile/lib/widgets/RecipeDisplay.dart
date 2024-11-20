@@ -7,21 +7,16 @@ class RecipeDisplay extends StatefulWidget {
   final List<dynamic> recipes;
 
   @override
-  State<RecipeDisplay> createState() => RecipeDisplayState(recipes);
+  State<RecipeDisplay> createState() => RecipeDisplayState();
 }
 
 class RecipeDisplayState extends State<RecipeDisplay> {
-    RecipeDisplayState(this.recipes);
-
-    final List<dynamic> recipes;
-
     @override
     Widget build(BuildContext context) {
         return Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
             color: const Color(0xFF8ED081),
             child: Column(
-              children: recipes.map((recipe) {
+              children: widget.recipes.map((recipe) {
                 return RecipeCard(
                   recipe["id"],
                   recipe["name"], 

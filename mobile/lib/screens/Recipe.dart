@@ -30,7 +30,6 @@ class Recipe {
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
-    print(json);
     return Recipe(
       name: json["name"] == null ? "" : json["name"],
       desc: json["desc"] == null ? "" : json["desc"],
@@ -117,14 +116,21 @@ class RecipePageState extends State<RecipePage> {
               shrinkWrap: true,
               children: [
                 if(snapshot.data!.image != "No Image")
-                  Image(
-                    image: ResizeImage(MemoryImage(base64Decode(snapshot.data!.image)), width: 300, height: 300),
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image(image: ResizeImage(AssetImage('lib/assets/DefaultRecipePicture.png'), width: 100, height: 100));
-                    },
+                  Padding(
+                    padding: EdgeInsets.all(25),
+                    child: Image(
+                      image: MemoryImage(base64Decode(snapshot.data!.image)),
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image(image: AssetImage('lib/assets/DefaultRecipePicture.png'));
+                      },
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 if(snapshot.data!.image == "No Image") 
-                  Image(image: ResizeImage(AssetImage('lib/assets/DefaultPFP.png'), width: 300, height: 300)),
+                  Padding(
+                    padding: EdgeInsets.all(35),
+                    child: Image(image: AssetImage('lib/assets/DefaultRecipePicture.png'), fit: BoxFit.contain),
+                  ),
                 ListTile(
                   title: Column(
                     children: [
@@ -143,8 +149,7 @@ class RecipePageState extends State<RecipePage> {
                         },
                       ),
                     ],
-                  )
-                  
+                  )  
                 ),
                 ListTile(
                   title: Column(
@@ -156,7 +161,25 @@ class RecipePageState extends State<RecipePage> {
                     ],
                   )
                 ),
+                Container(
+                  height: 30,
+                  margin: EdgeInsets.only(left: 10, bottom: 10),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: snapshot.data!.tagId.map((tag) {
+                      return Container(
+                        margin: EdgeInsets.only(right: 5),
+                        padding: const EdgeInsets.all(3.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black)
+                        ),
+                        child: Text(tag),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 ExpansionTile(
+                  initiallyExpanded: true,
                   title: Text("Description"),
                   children: [
                     ListTile(
@@ -165,6 +188,7 @@ class RecipePageState extends State<RecipePage> {
                   ],
                 ),
                 ExpansionTile(
+                  initiallyExpanded: true,
                   title: Text("Ingredients"),
                   children: [
                     ListTile(
@@ -177,6 +201,7 @@ class RecipePageState extends State<RecipePage> {
                   ],
                 ),
                 ExpansionTile(
+                  initiallyExpanded: true,
                   title: Text("Instructions"),
                   children: [
                     ListTile(

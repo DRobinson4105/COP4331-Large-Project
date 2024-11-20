@@ -50,6 +50,8 @@ class FilterState extends State<Filter> {
   final minCarbsController = TextEditingController();
   final maxCarbsController = TextEditingController();
 
+  final selectController = MultipleSearchController();
+
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
@@ -149,6 +151,7 @@ class FilterState extends State<Filter> {
             builder: (context, snapshot) {
               if(snapshot.hasData) {
                 return MultipleSearchSelection(
+                  controller: selectController,
                   searchField: TextField(
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -208,15 +211,15 @@ class FilterState extends State<Filter> {
             onPressed: () {
               context.findAncestorStateOfType<SearchRecipesState>()!.getRecipes(
                 nameController.text.toString(), 
-                [], 
+                selectController.getPickedItems(), 
                 minCaloriesController.text.isEmpty ? 0 : int.parse(minCaloriesController.text.toString()),
-                maxCaloriesController.text.isEmpty ? 1e6 : int.parse(maxCaloriesController.text.toString()),
+                maxCaloriesController.text.isEmpty ? 1000000 : int.parse(maxCaloriesController.text.toString()),
                 minProteinController.text.isEmpty ? 0 : int.parse(minProteinController.text.toString()),
-                maxProteinController.text.isEmpty ? 1e6 : int.parse(maxProteinController.text.toString()),
+                maxProteinController.text.isEmpty ? 1000000 : int.parse(maxProteinController.text.toString()),
                 minFatController.text.isEmpty ? 0 : int.parse(minFatController.text.toString()),
-                maxFatController.text.isEmpty ? 1e6 : int.parse(maxFatController.text.toString()),
+                maxFatController.text.isEmpty ? 1000000 : int.parse(maxFatController.text.toString()),
                 minCarbsController.text.isEmpty ? 0 : int.parse(minCarbsController.text.toString()),
-                maxCarbsController.text.isEmpty ? 1e6 : int.parse(maxCarbsController.text.toString()),
+                maxCarbsController.text.isEmpty ? 1000000 : int.parse(maxCarbsController.text.toString()),
               );
             },
             child: Text('Apply Filter'),
