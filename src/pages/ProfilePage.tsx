@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import VerifiedNavBar from '../components/VerifiedNavBar';
 import Description from '../components/Description';
 import "../index.css";
+import { Link } from 'react-router-dom';
 
 const baseUrl = process.env.NODE_ENV === 'production'
     ? import.meta.env.VITE_API_URL
@@ -159,7 +160,7 @@ const ProfilePage: React.FC = () => {
                                 <div className="recipe-card" key={recipe.id}>
                                     <img className="recipe-image" src={recipe.image || './Default_Recipe_Picture.png'} alt={recipe.name} />
                                     <div className="recipe-info">
-                                        <h3 className="recipe-name">{recipe.name}</h3>
+                                        <Link to={"/" + recipe.id}><h3 className="recipe-name">{recipe.name}</h3></Link>
                                         <div className="tags">
                                             <span>Tags:</span>
                                             <ul>
