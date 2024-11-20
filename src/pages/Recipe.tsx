@@ -40,7 +40,6 @@ const RecipePage: React.FC = () => {
                 );
                 
                 let recipeInfo = JSON.parse(await response.text());
-                console.log(recipeInfo);
 
                 setTitle(recipeInfo.name);
                 setCalories(recipeInfo.calories);

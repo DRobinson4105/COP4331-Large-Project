@@ -22,14 +22,14 @@ const SearchPage: React.FC = () => {
   ]);
   const [search, setSearch] = useState('');
   const [addedTags, setAddedTags] = useState<string[]>([]);
-  const [minCalories, setMinCalories] = useState(0);
-  const [maxCalories, setMaxCalories] = useState(1e6);
-  const [minProtein, setMinProtein] = useState(0);
-  const [maxProtein, setMaxProtein] = useState(1e6);
-  const [minFat, setMinFat] = useState(0);
-  const [maxFat, setMaxFat] = useState(1e6);
-  const [minCarbs, setMinCarbs] = useState(0);
-  const [maxCarbs, setMaxCarbs] = useState(1e6);
+  const [minCalories, setMinCalories] = useState<number>(0);
+  const [maxCalories, setMaxCalories] = useState<number>(1e6);
+  const [minProtein, setMinProtein] = useState<number>(0);
+  const [maxProtein, setMaxProtein] = useState<number>(1e6);
+  const [minFat, setMinFat] = useState<number>(0);
+  const [maxFat, setMaxFat] = useState<number>(1e6);
+  const [minCarbs, setMinCarbs] = useState<number>(0);
+  const [maxCarbs, setMaxCarbs] = useState<number>(1e6);
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
@@ -63,6 +63,7 @@ const SearchPage: React.FC = () => {
   }
 
   async function searchRecipes(): Promise<void> {
+
     const obj = {
       name: search,
       minCalories,
