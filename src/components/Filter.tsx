@@ -18,40 +18,40 @@ interface Props {
 const Filter = (props: Props) =>
 {
     function handleSetMinCalories(e:any) : void {
-        props.setMinCalories(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMinCalories(isNaN(Number(e.target.value)) || e.target.value == "" ? 0 : Number(e.target.value));
     }
 
     function handleSetMaxCalories(e:any) : void {
-        props.setMaxCalories(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMaxCalories(isNaN(Number(e.target.value)) || e.target.value == "" ? 1e6 : Number(e.target.value));
     }
 
     function handleSetMinProtein(e:any) : void {
-        props.setMinProtein(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMinProtein(isNaN(Number(e.target.value)) || e.target.value == "" ? 0 : Number(e.target.value));
 
     }
 
     function handleSetMaxProtein(e:any) : void {
-        props.setMaxProtein(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMaxProtein(isNaN(Number(e.target.value)) || e.target.value == "" ? 1e6 : Number(e.target.value));
 
     }
 
     function handleSetMinFat(e:any) : void {
-        props.setMinFat(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMinFat(isNaN(Number(e.target.value)) || e.target.value == "" ? 0 : Number(e.target.value));
 
     }
 
     function handleSetMaxFat(e:any) : void {
-        props.setMaxFat(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMaxFat(isNaN(Number(e.target.value)) || e.target.value == "" ? 1e6 : Number(e.target.value));
 
     }
 
     function handleSetMinCarbs(e:any) : void {
-        props.setMinCarbs(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMinCarbs(isNaN(Number(e.target.value)) || e.target.value == "" ? 0 : Number(e.target.value));
 
     }
 
     function handleSetMaxCarbs(e:any) : void {
-        props.setMaxCarbs(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value));
+        props.setMaxCarbs(isNaN(Number(e.target.value)) || e.target.value == "" ? 1e6 : Number(e.target.value));
 
     }
 
