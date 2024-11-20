@@ -33,6 +33,16 @@ class SearchRecipesState extends State<SearchRecipes>{
   int maxCarbs = 1000000;
 
   Future fetchRecipes(String name, List<dynamic> tagId, int minCalories, maxCalories, minProtein, maxProtein, minFat, maxFat, minCarbs, maxCarbs) async {
+    print(name);
+    print(tagId);
+    print(minCalories);
+    print(maxCalories);
+    print(minProtein);
+    print(maxProtein);
+    print(minFat);
+    print(maxFat);
+    print(minCarbs);
+    print(maxCarbs);
     try {
       http.Response response = await http.post(
         Uri.parse('http://nomnom.network:3000/api/recipe/search'),
@@ -56,6 +66,7 @@ class SearchRecipesState extends State<SearchRecipes>{
       if (response.statusCode == 200) {
         // If the server did return a 200 OK response,
         // then parse the JSON.
+        print(response.body);
         return json.decode(response.body);
       } else {
         // If the server did not return a 200 OK response,
@@ -80,6 +91,9 @@ class SearchRecipesState extends State<SearchRecipes>{
     this.maxFat = maxFat;
     this.minCarbs = minCarbs;
     this.maxCarbs = maxCarbs;
+
+    print(name);
+
     fetchRecipes(name, tagId, minCalories, maxCalories, minProtein, maxProtein, minFat, maxFat, minCarbs, maxCarbs).then((value) async {
       recipeController.add(value);
       return value;
@@ -103,7 +117,7 @@ class SearchRecipesState extends State<SearchRecipes>{
               leading: const Icon(Icons.search),
               hintText: "Search Recipes",
               onSubmitted:(value) {
-                getRecipes(value, tagId, 0, 1000000, 0, 1000000, 0, 1000000, 0, 1);
+                getRecipes(value, tagId, 0, 1000000, 0, 1000000, 0, 1000000, 0, 1000000);
               },
             ),
           ),
